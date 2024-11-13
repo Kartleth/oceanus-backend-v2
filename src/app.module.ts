@@ -1,19 +1,24 @@
+// src/app.module.ts
+
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { connectionSource } from './config/typeorm';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'karla',
-      database: 'oceanusBD',
-      autoLoadEntities: true,
-      synchronize: true,
+    // Configurar el módulo de configuración
+    ConfigModule.forRoot({
+      isGlobal: true,  // Hacer que las variables de entorno sean globales
+    }),
+
+    // Configurar el módulo TypeORM
+    TypeOrmModule.forRootAsync({
+      useFactory: async () => ({
+        ...connectionSource.options,  // Usar las opciones generadas en connectionSource
+      }),
     }),
   ],
   controllers: [AppController],
