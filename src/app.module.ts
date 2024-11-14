@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { connectionSource } from './config/typeorm';
+import { CambiosModule } from './cambios/cambios.module';
 
 @Module({
   imports: [
@@ -20,6 +21,8 @@ import { connectionSource } from './config/typeorm';
         ...connectionSource.options,  // Usar las opciones generadas en connectionSource
       }),
     }),
+
+    CambiosModule,
   ],
   controllers: [AppController],
   providers: [AppService],
