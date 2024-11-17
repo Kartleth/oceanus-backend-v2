@@ -1,60 +1,58 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Persona {
-    @PrimaryGeneratedColumn()
-    id:number
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({nullable:false,length:18})
-    nombre:string
+  @Column({ nullable: false, length: 18 })
+  nombre: string;
 
-    @Column({type:"date",nullable:false})
-    fechanacimiento:Date
+  @Column({ type: 'date', nullable: false })
+  fechanacimiento: Date;
 
-    @Column({nullable:false,length:18})
-    curp:string
+  @Column({ nullable: false, length: 18 })
+  curp: string;
 
-    @Column({nullable:false,length:13})
-    rfc:string
+  @Column({ nullable: false, length: 13 })
+  rfc: string;
 
-    @Column({default:null,length:13})
-    numerofijo:string
+  @Column({ default: null, length: 13 })
+  numerofijo: string;
 
-    @Column({nullable:false,length:13})
-    numerocelular:string
+  @Column({ nullable: false, length: 13 })
+  numerocelular: string;
 
-    @Column({nullable:false,length:150})
-    direccion:string
+  @Column({ nullable: false, length: 150 })
+  direccion: string;
 
-    @Column({default:null,length:15})
-    numerolicencia:string
- 
-    @Column({default:null,length:9})
-    numeropasaporte:string
+  @Column({ default: null, length: 15 })
+  numerolicencia: string;
 
-    @Column({type:'date'})
-    fechaingreso:Date
+  @Column({ default: null, length: 9 })
+  numeropasaporte: string;
 
-    @Column({length:20})
-    estado:string
+  @Column({ type: 'date' })
+  fechaingreso: Date;
 
-    @Column({default:null,length:50})
-    tipocontrato:string
+  @Column({ length: 20 })
+  estado: string;
 
-    @Column({type:'date'})
-    iniciocontrato:Date
+  @Column({ default: null, length: 50 })
+  tipocontrato: string;
 
-    
-    @Column({type:'date'})
-    fincontrato:Date
+  @Column({ type: 'date' })
+  iniciocontrato: Date;
 
-    
-    @Column({default:null,length:50})
-    correo:String
+  @Column({ type: 'date' })
+  fincontrato: Date;
 
-    @Column({default:null,length:20})
-    ine:String
+  @Column({ default: null, length: 50 })
+  correo: String;
 
-    @Column({default:null,length:20})
-    estadocivil:String
+  @Column({ default: null, length: 20 })
+  ine: String;
+
+  @Column({ default: null, length: 20 })
+  estadocivil: String;
 }

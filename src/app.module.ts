@@ -10,6 +10,7 @@ import { CambiosModule } from './cambios/cambios.module';
 import { ContratoModule } from './contrato/contrato.module';
 import { ConvenioModule } from './convenio/convenio.module';
 import { PersonasModule } from './personas/personas.module';
+import { UsuariosModule } from './usuarios/usuarios.module';
 
 @Module({
   imports: [
@@ -32,6 +33,8 @@ import { PersonasModule } from './personas/personas.module';
     ConvenioModule,
 
     PersonasModule,
+
+    UsuariosModule,
 
   ],
   controllers: [AppController],
