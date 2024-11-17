@@ -1,3 +1,4 @@
+import { Contrato } from 'src/contrato/entities/contrato.entity';
 import { FianzaAnticipo } from 'src/fianza_anticipo/entities/fianza_anticipo.entity';
 import { FianzaCumplimiento } from 'src/fianza_cumplimiento/entities/fianza_cumplimiento.entity';
 import { FianzaViciosOculto } from 'src/fianza_vicios_ocultos/entities/fianza_vicios_oculto.entity';
@@ -6,6 +7,7 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
+  ManyToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -35,4 +37,7 @@ export class Fianza {
   @OneToOne(() => FianzaViciosOculto)
   @JoinColumn()
   ocultos: FianzaViciosOculto;
+
+  @ManyToMany(() => Contrato, (contrato) => contrato.fianzas)
+  contratos: Array<Contrato>;
 }

@@ -1,5 +1,6 @@
 import { timestamp } from 'rxjs';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
+import { Fianza } from 'src/fianza/entities/fianza.entity';
 import {
   Column,
   CreateDateColumn,
@@ -44,6 +45,10 @@ export class Contrato {
   @ManyToMany(() => Convenio, (convenio) => convenio.contratos)
   @JoinTable({ name: 'contrato_convenio' })
   convenios: Array<Convenio>;
+
+  @ManyToMany(() => Fianza, (fianza) => fianza.contratos)
+  @JoinTable({ name: 'contrato_fianza' })
+  fianzas: Array<Fianza>;
 
   //@Column({default:null})
   //idconvenio:number
