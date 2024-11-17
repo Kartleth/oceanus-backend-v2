@@ -17,6 +17,7 @@ import { FianzaModule } from './fianza/fianza.module';
 import { FianzaAnticipoModule } from './fianza_anticipo/fianza_anticipo.module';
 import { FianzaCumplimientoModule } from './fianza_cumplimiento/fianza_cumplimiento.module';
 import { FianzaViciosOcultosModule } from './fianza_vicios_ocultos/fianza_vicios_ocultos.module';
+import { SubcontratadosModule } from './subcontratados/subcontratados.module';
 
 @Module({
   imports: [
@@ -53,6 +54,8 @@ import { FianzaViciosOcultosModule } from './fianza_vicios_ocultos/fianza_vicios
     FianzaCumplimientoModule,
 
     FianzaViciosOcultosModule,
+
+    SubcontratadosModule,
 
   ],
   controllers: [AppController],
