@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { connectionSource } from './config/typeorm';
 import { CambiosModule } from './cambios/cambios.module';
 import { ContratoModule } from './contrato/contrato.module';
+import { ConvenioModule } from './convenio/convenio.module';
 
 @Module({
   imports: [
@@ -26,6 +27,9 @@ import { ContratoModule } from './contrato/contrato.module';
     CambiosModule,
 
     ContratoModule,
+
+    ConvenioModule,
+
   ],
   controllers: [AppController],
   providers: [AppService],

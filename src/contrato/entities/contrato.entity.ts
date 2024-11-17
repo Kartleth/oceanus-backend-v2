@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { timestamp } from "rxjs";
+import { Convenio } from "src/convenio/entities/convenio.entity";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
 export class Contrato {
@@ -27,19 +29,24 @@ export class Contrato {
     @Column({default:null})
     numerocontrato:number
 
-    @CreateDateColumn()
+    @Column({type:"timestamp"})
     iniciocontrato: Date
 
-    @CreateDateColumn()
+    @Column({type:"timestamp"})
     fincontrato: Date
 
-    @Column({default:null})
-    idconvenio:number
+    @ManyToMany(()=>Convenio,(convenio)=>convenio.contratos)
+    @JoinTable({name:'contrato_convenio'})
+    convenios:Array<Convenio>
 
-    @Column()
+    //@Column({default:null})
+    //idconvenio:number
+
+
+    @Column({type:"decimal",precision:12,scale:2})
     montocontrato:number
 
-    @Column()
+    @Column({type:"decimal",precision:12,scale:2})
     anticipocontrato:number
 
     @Column({default:null})
