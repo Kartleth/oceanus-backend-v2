@@ -13,6 +13,10 @@ import { PersonasModule } from './personas/personas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EmpresaModule } from './empresa/empresa.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
+import { FianzaModule } from './fianza/fianza.module';
+import { FianzaAnticipoModule } from './fianza_anticipo/fianza_anticipo.module';
+import { FianzaCumplimientoModule } from './fianza_cumplimiento/fianza_cumplimiento.module';
+import { FianzaViciosOcultosModule } from './fianza_vicios_ocultos/fianza_vicios_ocultos.module';
 
 @Module({
   imports: [
@@ -41,6 +45,14 @@ import { NotificacionesModule } from './notificaciones/notificaciones.module';
     EmpresaModule,
 
     NotificacionesModule,
+
+    FianzaModule,
+
+    FianzaAnticipoModule,
+
+    FianzaCumplimientoModule,
+
+    FianzaViciosOcultosModule,
 
   ],
   controllers: [AppController],
