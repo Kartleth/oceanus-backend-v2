@@ -9,6 +9,7 @@ import { connectionSource } from './config/typeorm';
 import { CambiosModule } from './cambios/cambios.module';
 import { ContratoModule } from './contrato/contrato.module';
 import { ConvenioModule } from './convenio/convenio.module';
+import { PersonasModule } from './personas/personas.module';
 
 @Module({
   imports: [
@@ -29,6 +30,8 @@ import { ConvenioModule } from './convenio/convenio.module';
     ContratoModule,
 
     ConvenioModule,
+
+    PersonasModule,
 
   ],
   controllers: [AppController],

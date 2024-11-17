@@ -11,7 +11,7 @@ export class Contrato {
     @Column({default:null})
     titulo:string
 
-    @Column({default:0})
+    @Column({default:'0'})
     nombrecontrato:string
     
     @Column({default:0})
