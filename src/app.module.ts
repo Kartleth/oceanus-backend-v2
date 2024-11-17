@@ -12,6 +12,7 @@ import { ConvenioModule } from './convenio/convenio.module';
 import { PersonasModule } from './personas/personas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { EmpresaModule } from './empresa/empresa.module';
+import { NotificacionesModule } from './notificaciones/notificaciones.module';
 
 @Module({
   imports: [
@@ -38,6 +39,8 @@ import { EmpresaModule } from './empresa/empresa.module';
     UsuariosModule,
 
     EmpresaModule,
+
+    NotificacionesModule,
 
   ],
   controllers: [AppController],
