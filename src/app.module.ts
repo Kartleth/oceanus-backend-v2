@@ -11,6 +11,7 @@ import { ContratoModule } from './contrato/contrato.module';
 import { ConvenioModule } from './convenio/convenio.module';
 import { PersonasModule } from './personas/personas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
+import { EmpresaModule } from './empresa/empresa.module';
 
 @Module({
   imports: [
@@ -35,6 +36,8 @@ import { UsuariosModule } from './usuarios/usuarios.module';
     PersonasModule,
 
     UsuariosModule,
+
+    EmpresaModule,
 
   ],
   controllers: [AppController],
