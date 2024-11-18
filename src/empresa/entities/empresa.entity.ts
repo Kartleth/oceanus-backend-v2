@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Contrato } from 'src/contrato/entities/contrato.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Empresa {
@@ -43,4 +44,10 @@ export class Empresa {
 
   @Column({ type: 'date' })
   fechavencimientoconstancia: Date;
+
+  @OneToMany(() => Contrato, (contrato) => contrato.contratante)
+  contratosEmitidos: Array<Contrato>;
+
+  @OneToMany(() => Contrato, (contrato) => contrato.contratado)
+  contratosRecibidos: Array<Contrato>;
 }
