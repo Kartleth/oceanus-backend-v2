@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { EmpresaPersonal } from 'src/empresa_personal/entities/empresa_personal.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Persona {
@@ -55,4 +62,10 @@ export class Persona {
 
   @Column({ default: null, length: 20 })
   estadocivil: String;
+
+  @OneToMany(
+    () => EmpresaPersonal,
+    (empresapersonal) => empresapersonal.empresa,
+  )
+  empresapersonal: EmpresaPersonal;
 }
