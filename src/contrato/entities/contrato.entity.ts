@@ -4,6 +4,7 @@ import { Empresa } from 'src/empresa/entities/empresa.entity';
 import { Factura } from 'src/factura/entities/factura.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
+import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
   Column,
   CreateDateColumn,
@@ -44,6 +45,12 @@ export class Contrato {
 
   @ManyToMany(() => OrdenServicio, (orden) => orden.contratos)
   ordenes: Array<OrdenServicio>;
+
+  @OneToMany(
+    () => PersonalContrato,
+    (personalcontrato) => personalcontrato.contrato,
+  )
+  personalcontrato: Array<PersonalContrato>;
 
   @Column({
     default: TipoSubcontrato.ContratoOrigen,

@@ -21,6 +21,7 @@ import { SubcontratadosModule } from './subcontratados/subcontratados.module';
 import { OrdenServicioModule } from './orden_servicio/orden_servicio.module';
 import { EmpresaPersonalModule } from './empresa_personal/empresa_personal.module';
 import { FacturaModule } from './factura/factura.module';
+import { PersonalContratoModule } from './personal_contrato/personal_contrato.module';
 
 @Module({
   imports: [
@@ -65,6 +66,8 @@ import { FacturaModule } from './factura/factura.module';
     EmpresaPersonalModule,
 
     FacturaModule,
+
+    PersonalContratoModule,
 
   ],
   controllers: [AppController],

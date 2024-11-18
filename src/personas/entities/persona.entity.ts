@@ -1,4 +1,5 @@
 import { EmpresaPersonal } from 'src/empresa_personal/entities/empresa_personal.entity';
+import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
   Column,
   Entity,
@@ -67,5 +68,11 @@ export class Persona {
     () => EmpresaPersonal,
     (empresapersonal) => empresapersonal.empresa,
   )
-  empresapersonal: EmpresaPersonal;
+  empresapersonal: Array<EmpresaPersonal>;
+
+  @OneToMany(
+    () => PersonalContrato,
+    (personalcontrato) => personalcontrato.persona,
+  )
+  personalcontrato: Array<PersonalContrato>;
 }
