@@ -25,6 +25,8 @@ import { PersonalContratoModule } from './personal_contrato/personal_contrato.mo
 import { FormacademicaModule } from './formacademica/formacademica.module';
 import { FamiliaresModule } from './familiares/familiares.module';
 import { DatosMedicosModule } from './datos_medicos/datos_medicos.module';
+import { DocumentacionModule } from './documentacion/documentacion.module';
+import { DocsubcontratadoModule } from './docsubcontratado/docsubcontratado.module';
 
 @Module({
   imports: [
@@ -77,6 +79,10 @@ import { DatosMedicosModule } from './datos_medicos/datos_medicos.module';
     FamiliaresModule,
 
     DatosMedicosModule,
+
+    DocumentacionModule,
+
+    DocsubcontratadoModule,
 
   ],
   controllers: [AppController],
