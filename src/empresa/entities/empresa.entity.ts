@@ -1,4 +1,5 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
+import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -50,4 +51,5 @@ export class Empresa {
 
   @OneToMany(() => Contrato, (contrato) => contrato.contratado)
   contratosRecibidos: Array<Contrato>;
+
 }

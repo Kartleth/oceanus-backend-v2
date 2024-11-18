@@ -2,6 +2,7 @@ import { timestamp } from 'rxjs';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
 import { Empresa } from 'src/empresa/entities/empresa.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
+import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import {
   Column,
   CreateDateColumn,
@@ -36,11 +37,8 @@ export class Contrato {
   @JoinColumn({ name: 'idcontratado' })
   contratado: Empresa;
 
-  //@Column({ default: 0 })
-  //idcontratante: number;
-
-  //@Column({ default: 0 })
-  //idcontratado: number;
+  @ManyToMany(() => OrdenServicio, (orden) => orden.contratos)
+  ordenes: Array<OrdenServicio>;
 
   @Column({
     default: TipoSubcontrato.ContratoOrigen,
@@ -68,9 +66,6 @@ export class Contrato {
   @ManyToMany(() => Fianza, (fianza) => fianza.contratos)
   @JoinTable({ name: 'contrato_fianza' })
   fianzas: Array<Fianza>;
-
-  //@Column({default:null})
-  //idconvenio:number
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   montocontrato: number;

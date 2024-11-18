@@ -18,6 +18,7 @@ import { FianzaAnticipoModule } from './fianza_anticipo/fianza_anticipo.module';
 import { FianzaCumplimientoModule } from './fianza_cumplimiento/fianza_cumplimiento.module';
 import { FianzaViciosOcultosModule } from './fianza_vicios_ocultos/fianza_vicios_ocultos.module';
 import { SubcontratadosModule } from './subcontratados/subcontratados.module';
+import { OrdenServicioModule } from './orden_servicio/orden_servicio.module';
 
 @Module({
   imports: [
@@ -56,6 +57,8 @@ import { SubcontratadosModule } from './subcontratados/subcontratados.module';
     FianzaViciosOcultosModule,
 
     SubcontratadosModule,
+
+    OrdenServicioModule,
 
   ],
   controllers: [AppController],
