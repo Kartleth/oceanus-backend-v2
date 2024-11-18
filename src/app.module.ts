@@ -24,6 +24,7 @@ import { FacturaModule } from './factura/factura.module';
 import { PersonalContratoModule } from './personal_contrato/personal_contrato.module';
 import { FormacademicaModule } from './formacademica/formacademica.module';
 import { FamiliaresModule } from './familiares/familiares.module';
+import { DatosMedicosModule } from './datos_medicos/datos_medicos.module';
 
 @Module({
   imports: [
@@ -74,6 +75,8 @@ import { FamiliaresModule } from './familiares/familiares.module';
     FormacademicaModule,
 
     FamiliaresModule,
+
+    DatosMedicosModule,
 
   ],
   controllers: [AppController],
