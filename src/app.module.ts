@@ -23,6 +23,7 @@ import { EmpresaPersonalModule } from './empresa_personal/empresa_personal.modul
 import { FacturaModule } from './factura/factura.module';
 import { PersonalContratoModule } from './personal_contrato/personal_contrato.module';
 import { FormacademicaModule } from './formacademica/formacademica.module';
+import { FamiliaresModule } from './familiares/familiares.module';
 
 @Module({
   imports: [
@@ -71,6 +72,8 @@ import { FormacademicaModule } from './formacademica/formacademica.module';
     PersonalContratoModule,
 
     FormacademicaModule,
+
+    FamiliaresModule,
 
   ],
   controllers: [AppController],
