@@ -1,6 +1,7 @@
 import { timestamp } from 'rxjs';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
 import { Empresa } from 'src/empresa/entities/empresa.entity';
+import { Factura } from 'src/factura/entities/factura.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import {
@@ -11,6 +12,7 @@ import {
   JoinTable,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 export enum TipoSubcontrato {
@@ -36,6 +38,9 @@ export class Contrato {
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosRecibidos)
   @JoinColumn({ name: 'idcontratado' })
   contratado: Empresa;
+
+  @OneToMany(()=>Factura,(factura)=>factura.contrato)
+  facturas:Array<Factura>
 
   @ManyToMany(() => OrdenServicio, (orden) => orden.contratos)
   ordenes: Array<OrdenServicio>;

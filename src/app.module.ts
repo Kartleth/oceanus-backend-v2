@@ -20,6 +20,7 @@ import { FianzaViciosOcultosModule } from './fianza_vicios_ocultos/fianza_vicios
 import { SubcontratadosModule } from './subcontratados/subcontratados.module';
 import { OrdenServicioModule } from './orden_servicio/orden_servicio.module';
 import { EmpresaPersonalModule } from './empresa_personal/empresa_personal.module';
+import { FacturaModule } from './factura/factura.module';
 
 @Module({
   imports: [
@@ -62,6 +63,8 @@ import { EmpresaPersonalModule } from './empresa_personal/empresa_personal.modul
     OrdenServicioModule,
 
     EmpresaPersonalModule,
+
+    FacturaModule,
 
   ],
   controllers: [AppController],
