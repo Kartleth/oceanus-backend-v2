@@ -1,23 +1,27 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Cambio {
-    @PrimaryGeneratedColumn()
-    idcambio: number
+  @PrimaryGeneratedColumn()
+  idcambio: number;
 
-    @Column({default:null})
-    titulo:string
+  @Column({ default: null })
+  titulo: string;
 
-    @Column({type:"text"})
-    descripcion:string
+  @Column({ type: 'text' })
+  descripcion: string;
 
-    @Column()
-    idusuario:number
+  @Column()
+  idusuario: number;
 
-    @CreateDateColumn({type:"timestamp"})
-    timestamp: Date
+  @CreateDateColumn({ type: 'timestamp' })
+  timestamp: Date;
 
-    @Column()
-    tablacambio:string
-
+  @Column()
+  tablacambio: string;
 }

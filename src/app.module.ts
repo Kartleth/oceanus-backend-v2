@@ -32,13 +32,13 @@ import { DocsubcontratadoModule } from './docsubcontratado/docsubcontratado.modu
   imports: [
     // Configurar el módulo de configuración
     ConfigModule.forRoot({
-      isGlobal: true,  // Hacer que las variables de entorno sean globales
+      isGlobal: true, // Hacer que las variables de entorno sean globales
     }),
 
     // Configurar el módulo TypeORM
     TypeOrmModule.forRootAsync({
       useFactory: async () => ({
-        ...connectionSource.options,  // Usar las opciones generadas en connectionSource
+        ...connectionSource.options, // Usar las opciones generadas en connectionSource
       }),
     }),
 
@@ -83,7 +83,6 @@ import { DocsubcontratadoModule } from './docsubcontratado/docsubcontratado.modu
     DocumentacionModule,
 
     DocsubcontratadoModule,
-
   ],
   controllers: [AppController],
   providers: [AppService],
