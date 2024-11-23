@@ -11,7 +11,6 @@ import { UsuariosService } from './usuarios.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 import { JwtService } from '@nestjs/jwt';
-import { UnauthorizedException } from '@nestjs/common';
 
 @Controller('usuarios')
 export class UsuariosController {
@@ -68,13 +67,14 @@ export class UsuariosController {
     const { usuario, password } = loginDto;
 
     // Aquí puedes agregar lógica de validación de usuario y contraseña
-    const usuarioValido = await this.usuariosService.validateUser(usuario, password);
+    const usuarioValido = await this.usuariosService.validateUser(
+      usuario,
+      password,
+    );
 
     if (!usuarioValido) {
       throw new Error('Usuario o contraseña incorrectos');
     }
-
-    // Si el usuario es válido, devolver un JWT o algún dato
     return { message: 'Login exitoso', usuario: usuarioValido };
   }
 }

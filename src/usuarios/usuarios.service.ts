@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Usuario } from './entities/usuario.entity'; // Ruta a tu entidad
+import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import bcrypt from 'bcryptjs';
 
@@ -50,7 +50,7 @@ export class UsuariosService {
       updateUsuarioDto.password = bcrypt.hashSync(
         updateUsuarioDto.password,
         salt,
-      ); // Encriptar si se actualiza la contraseña
+      ); // Encripta si se actualiza la contraseña
     }
 
     await this.usuarioRepository.update(id, updateUsuarioDto);
@@ -94,7 +94,7 @@ export class UsuariosService {
       where: { usuario },
     });
 
-    // Verificar que la contraseña sea correcta (aquí puedes usar bcrypt para comparar contraseñas)
+    // Verificar que la contraseña sea correctas (USAR BYCRYPT PARA COMPARAR LAS CONTRASEÑAAAS)
     if (foundUser && foundUser.password === password) {
       return foundUser;
     }
