@@ -1,26 +1,40 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Persona } from './entities/persona.entity';
+import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 
 @Injectable()
 export class PersonasService {
-  create(createPersonaDto: CreatePersonaDto) {
-    return 'This action adds a new persona';
+  constructor(
+    @InjectRepository(Persona)
+    private readonly personaRepository: Repository<Persona>,
+  ) {}
+
+  async create(createPersonaDto: CreatePersonaDto): Promise<Persona> {
+    const newPersona = this.personaRepository.create(createPersonaDto);
+    return this.personaRepository.save(newPersona);
   }
 
-  findAll() {
-    return `This action returns all personas`;
+  async findAll(): Promise<Persona[]> {
+    return this.personaRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} persona`;
+  async findOne(id: number): Promise<Persona> {
+    return this.personaRepository.findOneBy({ id });
   }
 
-  update(id: number, updatePersonaDto: UpdatePersonaDto) {
-    return `This action updates a #${id} persona`;
+  async update(
+    id: number,
+    updatePersonaDto: UpdatePersonaDto,
+  ): Promise<Persona> {
+    await this.personaRepository.update(id, updatePersonaDto);
+    return this.personaRepository.findOneBy({ id });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} persona`;
+  async remove(id: number): Promise<void> {
+    await this.personaRepository.delete(id);
   }
 }
