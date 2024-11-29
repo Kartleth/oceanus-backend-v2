@@ -56,13 +56,13 @@ export class Persona {
   fincontrato: Date;
 
   @Column({ default: null, length: 50 })
-  correo: String;
+  correo: string;
 
   @Column({ default: null, length: 20 })
-  ine: String;
+  ine: string;
 
   @Column({ default: null, length: 20 })
-  estadocivil: String;
+  estadocivil: string;
 
   @OneToMany(
     () => EmpresaPersonal,
