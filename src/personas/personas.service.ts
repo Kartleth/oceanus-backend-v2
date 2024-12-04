@@ -18,7 +18,7 @@ export class PersonasService {
     return this.personaRepository.save(newPersona);
   }
 
-  async findAll(): Promise<Persona[]> {
+  async findAll(p0: { relations: string[] }): Promise<Persona[]> {
     return this.personaRepository.find();
   }
 

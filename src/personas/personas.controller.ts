@@ -22,7 +22,9 @@ export class PersonasController {
 
   @Get()
   findAll() {
-    return this.personasService.findAll();
+    return this.personasService.findAll({
+      relations: ['formacademica'], //ando viendo si sí esta bien hacer esto jeasjdh
+    });
   }
 
   @Get(':id')
