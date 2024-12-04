@@ -1,6 +1,6 @@
 export class CreatePersonaDto {
   nombre: string;
-  fechanacimiento: Date;
+  fechanacimiento?: Date;
   curp: string;
   rfc: string;
   numerofijo: string;

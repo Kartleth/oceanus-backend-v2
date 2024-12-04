@@ -1,11 +1,38 @@
 import { Injectable } from '@nestjs/common';
 import { CreateDatosMedicoDto } from './dto/create-datos_medico.dto';
 import { UpdateDatosMedicoDto } from './dto/update-datos_medico.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DatosMedico } from './entities/datos_medico.entity';
+import { Repository } from 'typeorm';
+import { Persona } from 'src/personas/entities/persona.entity';
 
 @Injectable()
 export class DatosMedicosService {
-  create(createDatosMedicoDto: CreateDatosMedicoDto) {
-    return 'This action adds a new datosMedico';
+  constructor(
+    @InjectRepository(DatosMedico)
+    private datosmedicosRepository: Repository<DatosMedico>,
+    @InjectRepository(Persona)
+    private personaRepository: Repository<Persona>,
+  ) {}
+
+  async create(
+    createDatosMedicoDto: CreateDatosMedicoDto,
+  ): Promise<DatosMedico> {
+    const { empleado, ...datosmedicoData } = createDatosMedicoDto;
+    const persona = await this.personaRepository.findOne({
+      where: { id: empleado.id },
+    });
+
+    if (!persona) {
+      throw new Error('La persona no existe');
+    }
+
+    const datosmedico = this.datosmedicosRepository.create({
+      ...datosmedicoData,
+      empleado: persona,
+    });
+
+    return await this.datosmedicosRepository.save(datosmedico);
   }
 
   findAll() {

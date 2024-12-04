@@ -1,3 +1,4 @@
+import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 import { EmpresaPersonal } from 'src/empresa_personal/entities/empresa_personal.entity';
 import { Formacademica } from 'src/formacademica/entities/formacademica.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
@@ -79,4 +80,7 @@ export class Persona {
 
   @OneToOne(() => Formacademica, (formacademica) => formacademica.empleado)
   formacademica: Formacademica;
+
+  @OneToOne(() => DatosMedico, (datosmedico) => datosmedico.empleado)
+  datosmedico: DatosMedico;
 }
