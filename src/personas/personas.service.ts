@@ -4,7 +4,7 @@ import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Persona } from './entities/persona.entity';
-import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
+//import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 
 @Injectable()
 export class PersonasService {
@@ -23,7 +23,10 @@ export class PersonasService {
   }
 
   async findOne(id: number): Promise<Persona> {
-    return this.personaRepository.findOneBy({ id });
+    return this.personaRepository.findOne({
+      where: { id },
+      relations: ['formacademica'], // Carga la relación de Formacademica
+    });
   }
 
   async update(

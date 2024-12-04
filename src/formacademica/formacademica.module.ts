@@ -6,9 +6,7 @@ import { Formacademica } from './entities/formacademica.entity';
 import { Persona } from 'src/personas/entities/persona.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Formacademica, Persona]), // Registra las entidades aquí
-  ],
+  imports: [TypeOrmModule.forFeature([Formacademica, Persona])],
   controllers: [FormacademicaController],
   providers: [FormacademicaService],
 })
