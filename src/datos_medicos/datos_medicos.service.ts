@@ -10,9 +10,9 @@ import { Persona } from 'src/personas/entities/persona.entity';
 export class DatosMedicosService {
   constructor(
     @InjectRepository(DatosMedico)
-    private datosmedicosRepository: Repository<DatosMedico>,
+    private readonly datosmedicosRepository: Repository<DatosMedico>,
     @InjectRepository(Persona)
-    private personaRepository: Repository<Persona>,
+    private readonly personaRepository: Repository<Persona>,
   ) {}
 
   async create(
@@ -35,12 +35,17 @@ export class DatosMedicosService {
     return await this.datosmedicosRepository.save(datosmedico);
   }
 
-  findAll() {
-    return `This action returns all datosMedicos`;
+  async findAll() {
+    return await this.datosmedicosRepository.find({
+      relations: ['empleado'], // Esto incluirá los datos relacionados de Persona
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} datosMedico`;
+  async findOne(id: number) {
+    return await this.datosmedicosRepository.findOne({
+      where: { idmedicos: id },
+      relations: ['empleado'], // Asegúrate de incluir la relación
+    });
   }
 
   update(id: number, updateDatosMedicoDto: UpdateDatosMedicoDto) {

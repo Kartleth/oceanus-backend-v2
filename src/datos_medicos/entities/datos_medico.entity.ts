@@ -14,11 +14,7 @@ export enum Genero {
 @Entity()
 export class DatosMedico {
   @PrimaryGeneratedColumn()
-  idmedicos: string;
-
-  @OneToOne(() => Persona)
-  @JoinColumn()
-  empleado: Persona;
+  idmedicos: number;
 
   @Column({ default: null })
   alergias: string;
@@ -49,4 +45,8 @@ export class DatosMedico {
 
   @Column({ default: null })
   relaemergencia: string;
+
+  @OneToOne(() => Persona, (persona) => persona.datosmedico)
+  @JoinColumn()
+  empleado: Persona;
 }

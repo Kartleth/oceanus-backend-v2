@@ -78,9 +78,13 @@ export class Persona {
   )
   personalcontrato: Array<PersonalContrato>;
 
-  @OneToOne(() => Formacademica, (formacademica) => formacademica.empleado)
+  @OneToOne(() => Formacademica, (formacademica) => formacademica.empleado, {
+    cascade: true,
+  })
   formacademica: Formacademica;
 
-  @OneToOne(() => DatosMedico, (datosmedico) => datosmedico.empleado)
+  @OneToOne(() => DatosMedico, (datosmedico) => datosmedico.empleado, {
+    cascade: true,
+  })
   datosmedico: DatosMedico;
 }

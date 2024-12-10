@@ -25,7 +25,7 @@ export class PersonasService {
   async findOne(id: number): Promise<Persona> {
     return this.personaRepository.findOne({
       where: { id },
-      relations: ['formacademica'], // Carga la relación de Formacademica
+      relations: ['formacademica', 'datosmedico'], // Carga la relación de Formacademica
     });
   }
 

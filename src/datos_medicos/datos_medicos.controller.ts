@@ -16,8 +16,8 @@ export class DatosMedicosController {
   constructor(private readonly datosMedicosService: DatosMedicosService) {}
 
   @Post()
-  create(@Body() createDatosMedicoDto: CreateDatosMedicoDto) {
-    return this.datosMedicosService.create(createDatosMedicoDto);
+  async create(@Body() createDatosMedicoDto: CreateDatosMedicoDto) {
+    return await this.datosMedicosService.create(createDatosMedicoDto);
   }
 
   @Get()
@@ -26,7 +26,7 @@ export class DatosMedicosController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string) {
     return this.datosMedicosService.findOne(+id);
   }
 
