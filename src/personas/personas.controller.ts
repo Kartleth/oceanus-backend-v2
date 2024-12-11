@@ -1,14 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { PersonasService } from './personas.service';
 import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
+import { CreateDatosMedicoDto } from 'src/datos_medicos/dto/create-datos_medico.dto';
+import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademica.dto';
 
 @Controller('personas')
 export class PersonasController {
   constructor(private readonly personasService: PersonasService) {}
 
   @Post()
-  create(@Body() createPersonaDto: CreatePersonaDto) {
+  create(
+    @Body()
+    createPersonaDto: CreatePersonaDto &
+      CreateDatosMedicoDto &
+      CreateFormacademicaDto,
+  ) {
+    console.log(createPersonaDto);
     return this.personasService.create(createPersonaDto);
   }
 
