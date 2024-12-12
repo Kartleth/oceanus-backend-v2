@@ -81,10 +81,10 @@ export class Persona {
   @OneToOne(() => Formacademica, (formacademica) => formacademica.empleado, {
     cascade: true,
   })
-  formacademica?: Formacademica;
+  formacademica: Formacademica;
 
   @OneToOne(() => DatosMedico, (datosmedico) => datosmedico.empleado, {
     cascade: true,
   })
-  datosmedico?: DatosMedico;
+  datosmedico: DatosMedico;
 }
