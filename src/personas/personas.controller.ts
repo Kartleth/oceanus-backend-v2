@@ -8,7 +8,7 @@ import {
   Delete,
 } from '@nestjs/common';
 import { PersonasService } from './personas.service';
-import { CreatePersonaDto } from './dto/create-persona.dto';
+import { CreatePersona, CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { CreateDatosMedicoDto } from 'src/datos_medicos/dto/create-datos_medico.dto';
 import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademica.dto';
@@ -20,12 +20,11 @@ export class PersonasController {
   @Post()
   create(
     @Body()
-    createPersonaDto: CreatePersonaDto &
-      CreateDatosMedicoDto &
-      CreateFormacademicaDto,
+    data: CreatePersona,
   ) {
-    console.log(createPersonaDto);
-    return this.personasService.create(createPersonaDto);
+    console.log(data);
+
+    return this.personasService.create(data.datosPersonales);
   }
 
   @Get()

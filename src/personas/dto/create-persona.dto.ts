@@ -1,3 +1,6 @@
+import { CreateDatosMedicoDto } from 'src/datos_medicos/dto/create-datos_medico.dto';
+import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademica.dto';
+
 export class CreatePersonaDto {
   name: string;
   fechaNacimiento: string;
@@ -17,3 +20,9 @@ export class CreatePersonaDto {
   fechaInicioContrato: string;
   fechaFinContrato: string;
 }
+
+export type CreatePersona = {
+  datosPersonales: CreatePersonaDto;
+  datosMedicos: CreateDatosMedicoDto;
+  datosAcademicos: CreateFormacademicaDto;
+};

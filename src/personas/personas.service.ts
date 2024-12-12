@@ -10,8 +10,27 @@ export class PersonasService {
   constructor(
     @InjectRepository(Persona) private personasRepository: Repository<Persona>,
   ) {}
-  create(createPersonaDto: CreatePersonaDto) {
-    this.personasRepository.save(createPersonaDto);
+  create(data: CreatePersonaDto) {
+    const persona: Partial<Persona> = {
+      nombre: data.name,
+      correo: data.correoElectronico,
+      curp: data.curp,
+      direccion: data.direccion,
+      numerofijo: data.numeroCasa,
+      estado: data.estadoEmpleado,
+      estadocivil: data.estadoCivil,
+      fechaingreso: new Date(data.fechaIngreso),
+      fechanacimiento: new Date(data.fechaNacimiento),
+      fincontrato: new Date(data.fechaFinContrato),
+      ine: data.clave,
+      iniciocontrato: new Date(data.fechaInicioContrato),
+      numerocelular: data.numeroCelular,
+      numerolicencia: data.numeroLicencia,
+      numeropasaporte: data.numeroPasaporte,
+      rfc: data.rfc,
+      tipocontrato: data.tipoContrato,
+    };
+    this.personasRepository.save(persona);
     return { message: 'This action adds a new persona' };
   }
 

@@ -13,7 +13,7 @@ export class Persona {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ nullable: false, length: 18 })
+  @Column({ nullable: false, length: 150 })
   nombre: string;
 
   @Column({ type: 'date', nullable: false })
