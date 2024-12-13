@@ -10,7 +10,7 @@ export class PersonasService {
   constructor(
     @InjectRepository(Persona) private personasRepository: Repository<Persona>,
   ) {}
-  create(data: CreatePersonaDto) {
+  async create(data: CreatePersonaDto) {
     const persona: Partial<Persona> = {
       nombre: data.name,
       correo: data.correoElectronico,
@@ -30,8 +30,8 @@ export class PersonasService {
       rfc: data.rfc,
       tipocontrato: data.tipoContrato,
     };
-    this.personasRepository.save(persona);
-    return { message: 'This action adds a new persona' };
+    const result = await this.personasRepository.save(persona);
+    return result;
   }
 
   findAll() {

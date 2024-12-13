@@ -8,4 +8,5 @@ export class CreateDatosMedicoDto {
   numeroSeguro: string;
   relacionPersona: string;
   tipoSangre: string;
+  nombreemergencia: string;
 }

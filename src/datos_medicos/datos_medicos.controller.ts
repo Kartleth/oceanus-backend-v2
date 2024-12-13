@@ -7,10 +7,10 @@ import { UpdateDatosMedicoDto } from './dto/update-datos_medico.dto';
 export class DatosMedicosController {
   constructor(private readonly datosMedicosService: DatosMedicosService) {}
 
-  @Post()
-  create(@Body() createDatosMedicoDto: CreateDatosMedicoDto) {
-    return this.datosMedicosService.create(createDatosMedicoDto);
-  }
+  // @Post()
+  // create(@Body() createDatosMedicoDto: CreateDatosMedicoDto) {
+  //   return this.datosMedicosService.create(createDatosMedicoDto);
+  // }
 
   @Get()
   findAll() {

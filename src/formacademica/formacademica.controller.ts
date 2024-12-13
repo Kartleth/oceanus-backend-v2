@@ -7,10 +7,10 @@ import { UpdateFormacademicaDto } from './dto/update-formacademica.dto';
 export class FormacademicaController {
   constructor(private readonly formacademicaService: FormacademicaService) {}
 
-  @Post()
-  create(@Body() createFormacademicaDto: CreateFormacademicaDto) {
-    return this.formacademicaService.create(createFormacademicaDto);
-  }
+  // @Post()
+  // create(@Body() createFormacademicaDto: CreateFormacademicaDto) {
+  //   return this.formacademicaService.create(createFormacademicaDto);
+  // }
 
   @Get()
   findAll() {
