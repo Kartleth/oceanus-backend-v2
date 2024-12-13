@@ -23,7 +23,7 @@ export class PersonasController {
   @Get()
   findAll() {
     return this.personasService.findAll({
-      relations: ['formacademica'], //ando viendo si sí esta bien hacer esto jeasjdh
+      relations: ['formacademica', 'datosmedico'], //ando viendo si sí esta bien hacer esto jeasjdh
     });
   }
 
@@ -38,7 +38,8 @@ export class PersonasController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.personasService.remove(+id);
+  async remove(@Param('id') id: number): Promise<{ message: string }> {
+    await this.personasService.remove(id);
+    return { message: `Persona con id ${id} eliminada exitosamente` };
   }
 }

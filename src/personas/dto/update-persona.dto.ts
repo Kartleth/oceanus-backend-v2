@@ -1,5 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreatePersonaDto } from './create-persona.dto';
+import { UpdateFormacademicaDto } from 'src/formacademica/dto/update-formacademica.dto';
+import { UpdateDatosMedicoDto } from 'src/datos_medicos/dto/update-datos_medico.dto';
 
 export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {
   nombre?: string;
@@ -19,4 +21,7 @@ export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {
   correo?: string;
   ine?: string;
   estadocivil?: string;
+  // Campos de datos médicos y formación académica
+  formacademica?: UpdateFormacademicaDto;
+  datosmedico?: UpdateDatosMedicoDto;
 }
