@@ -4,14 +4,41 @@ import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Persona } from './entities/persona.entity';
 import { Repository } from 'typeorm';
+import {
+  DatosMedico,
+  Genero,
+} from 'src/datos_medicos/entities/datos_medico.entity';
+import { Formacademica } from 'src/formacademica/entities/formacademica.entity';
 
 @Injectable()
 export class PersonasService {
   constructor(
     @InjectRepository(Persona) private personasRepository: Repository<Persona>,
   ) {}
+
   async create(data: CreatePersonaDto) {
+    const datosAcademicos: Partial<Formacademica> = {
+      carrera: data.datosAcademicos.carrera,
+      cedula: data.datosAcademicos.cadulaProfesional,
+      certificaciones: data.datosAcademicos.certificaciones,
+      explaboral: data.datosAcademicos.experienciaLaboral,
+      gradoestudios: data.datosAcademicos.gradosEstudios,
+    };
+    const datosMedicos: Partial<DatosMedico> = {
+      alergias: data.datosMedicos.alegias,
+      alergiasmed: data.datosMedicos.alergiasMedicamentos,
+      enfercronicas: data.datosMedicos.enfermedadCronica,
+      lesiones: data.datosMedicos.lesiones,
+      genero: data.datosMedicos.genero as Genero,
+      nombremergencia: data.datosMedicos.nombreemergencia,
+      numemergencia: data.datosMedicos.numeroEmergencia,
+      numseguro: data.datosMedicos.numeroSeguro,
+      relaemergencia: data.datosMedicos.relacionPersona,
+      tiposangre: data.datosMedicos.tipoSangre,
+    };
     const persona: Partial<Persona> = {
+      datosAcademicos: datosAcademicos as Formacademica,
+      datosMedicos: datosMedicos as DatosMedico,
       nombre: data.name,
       correo: data.correoElectronico,
       curp: data.curp,
@@ -34,8 +61,11 @@ export class PersonasService {
     return result;
   }
 
-  findAll() {
-    return `This action returns all personas`;
+  async findAll() {
+    const personas = await this.personasRepository.find({
+      relations: { datosAcademicos: true, datosMedicos: true },
+    });
+    return personas;
   }
 
   findOne(id: number) {

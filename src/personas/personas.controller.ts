@@ -31,31 +31,35 @@ export class PersonasController {
     data: CreatePersona,
   ) {
     console.log(data);
-
-    const persona = await this.personasService.create(data.datosPersonales);
+    const transpersona = {
+      ...data.datosPersonales,
+      datosMedicos: data.datosMedicos,
+      datosAcademicos: data.datosAcademicos,
+    };
+    const persona = await this.personasService.create(transpersona);
     if (!persona) {
       throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    const datosMedicos = await this.medicosService.create(
-      data.datosMedicos,
-      persona,
-    );
-    if (!datosMedicos) {
-      throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-    const datosAcademicos = await this.academicoService.create(
-      data.datosAcademicos,
-      persona,
-    );
-    if (!datosAcademicos) {
-      throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+    // const datosMedicos = await this.medicosService.create(
+    //   data.datosMedicos,
+    //   persona,
+    // );
+    // if (!datosMedicos) {
+    //   throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
+    // const datosAcademicos = await this.academicoService.create(
+    //   data.datosAcademicos,
+    //   persona,
+    // );
+    // if (!datosAcademicos) {
+    //   throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
+    // }
     return { message: 'Se creo exitosamente.' };
   }
 
   @Get()
-  findAll() {
-    return this.personasService.findAll();
+  async findAll() {
+    return await this.personasService.findAll();
   }
 
   @Get(':id')

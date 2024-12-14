@@ -12,8 +12,7 @@ export class Formacademica {
   @PrimaryGeneratedColumn()
   idacademicos: number;
 
-  @OneToOne(() => Persona)
-  @JoinColumn()
+  @OneToOne(() => Persona, (persona) => persona.datosAcademicos)
   empleado: Persona;
 
   @Column({ nullable: false })

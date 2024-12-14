@@ -16,8 +16,7 @@ export class DatosMedico {
   @PrimaryGeneratedColumn()
   idmedicos: string;
 
-  @OneToOne(() => Persona)
-  @JoinColumn()
+  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
   empleado: Persona;
 
   @Column({ default: null })
