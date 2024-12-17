@@ -40,20 +40,7 @@ export class PersonasController {
     if (!persona) {
       throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    // const datosMedicos = await this.medicosService.create(
-    //   data.datosMedicos,
-    //   persona,
-    // );
-    // if (!datosMedicos) {
-    //   throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
-    // const datosAcademicos = await this.academicoService.create(
-    //   data.datosAcademicos,
-    //   persona,
-    // );
-    // if (!datosAcademicos) {
-    //   throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);
-    // }
+
     return { message: 'Se creo exitosamente.' };
   }
 
@@ -73,7 +60,8 @@ export class PersonasController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.personasService.remove(+id);
+  async remove(@Param('id') id: string) {
+    console.log(id);
+    return await this.personasService.remove(+id);
   }
 }

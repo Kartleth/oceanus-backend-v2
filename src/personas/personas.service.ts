@@ -76,7 +76,7 @@ export class PersonasService {
     return `This action updates a #${id} persona`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} persona`;
+  async remove(id: number) {
+    return await this.personasRepository.delete(id);
   }
 }
