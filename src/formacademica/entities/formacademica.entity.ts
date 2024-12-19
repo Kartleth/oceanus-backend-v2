@@ -12,7 +12,7 @@ export class Formacademica {
   @PrimaryGeneratedColumn()
   idacademicos: number;
 
-  @OneToOne(() => Persona, (persona) => persona.formacademica, {
+  @OneToOne(() => Persona, (persona) => persona.datosAcademicos, {
     onDelete: 'CASCADE',
   })
   @JoinColumn()

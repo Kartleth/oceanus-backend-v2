@@ -4,36 +4,21 @@ import { Repository } from 'typeorm';
 import { Formacademica } from './entities/formacademica.entity';
 import { CreateFormacademicaDto } from './dto/create-formacademica.dto';
 import { UpdateFormacademicaDto } from './dto/update-formacademica.dto';
-import { Persona } from 'src/personas/entities/persona.entity';
 
 @Injectable()
 export class FormacademicaService {
   constructor(
     @InjectRepository(Formacademica)
-    private formacademicaRepository: Repository<Formacademica>,
-    @InjectRepository(Persona)
-    private personaRepository: Repository<Persona>,
+    private readonly formacademicaRepository: Repository<Formacademica>,
   ) {}
 
   async create(
     createFormacademicaDto: CreateFormacademicaDto,
   ): Promise<Formacademica> {
-    const { empleado, ...formacademicaData } = createFormacademicaDto;
-
-    const persona = await this.personaRepository.findOne({
-      where: { id: empleado.id },
-    });
-
-    if (!persona) {
-      throw new Error('La persona no existe');
-    }
-
-    const formacademica = this.formacademicaRepository.create({
-      ...formacademicaData,
-      empleado: persona,
-    });
-
-    return await this.formacademicaRepository.save(formacademica);
+    const newAcademicData = this.formacademicaRepository.create(
+      createFormacademicaDto,
+    );
+    return await this.formacademicaRepository.save(newAcademicData);
   }
 
   async findAll(): Promise<Formacademica[]> {

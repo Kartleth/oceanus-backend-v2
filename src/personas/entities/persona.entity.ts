@@ -80,7 +80,7 @@ export class Persona {
   personalcontrato: Array<PersonalContrato>;
 
   @OneToOne(() => DatosMedico, (datosMedicos) => datosMedicos.empleado, {
-    cascade: ['insert'],
+    cascade: ['insert', 'update'],
   })
   @JoinColumn()
   datosMedicos: DatosMedico;
@@ -88,7 +88,7 @@ export class Persona {
   @OneToOne(
     () => Formacademica,
     (datosAcademicos) => datosAcademicos.empleado,
-    { cascade: ['insert'] },
+    { cascade: ['insert', 'update'] },
   )
   @JoinColumn()
   datosAcademicos: Formacademica;
