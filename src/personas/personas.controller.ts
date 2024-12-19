@@ -50,8 +50,8 @@ export class PersonasController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.personasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.personasService.findOne(+id);
   }
 
   @Patch(':id')

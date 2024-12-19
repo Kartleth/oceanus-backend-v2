@@ -68,8 +68,12 @@ export class PersonasService {
     return personas;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} persona`;
+  async findOne(id: number) {
+    const persona = await this.personasRepository.findOne({
+      where: { id: id },
+      relations: { datosAcademicos: true, datosMedicos: true },
+    });
+    return persona;
   }
 
   update(id: number, updatePersonaDto: UpdatePersonaDto) {
