@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { Persona } from './entities/persona.entity';
-//import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 
 @Injectable()
 export class PersonasService {
@@ -41,22 +40,22 @@ export class PersonasService {
     }
 
     // Actualizar datos de Persona
-    if (updatePersonaDto.formacademica) {
+    if (updatePersonaDto.datosAcademicos) {
       // Aquí actualizas la formación académica
-      if (persona.formacademica) {
-        persona.formacademica = {
-          ...persona.formacademica,
-          ...updatePersonaDto.formacademica,
+      if (persona.datosAcademicos) {
+        persona.datosAcademicos = {
+          ...persona.datosAcademicos,
+          ...updatePersonaDto.datosAcademicos,
         };
       }
     }
 
     // Actualizar datos médicos
-    if (updatePersonaDto.datosmedico) {
-      if (persona.datosmedico) {
-        persona.datosmedico = {
-          ...persona.datosmedico,
-          ...updatePersonaDto.datosmedico,
+    if (updatePersonaDto.datosMedicos) {
+      if (persona.datosMedicos) {
+        persona.datosMedicos = {
+          ...persona.datosMedicos,
+          ...updatePersonaDto.datosMedicos,
         };
       }
     }

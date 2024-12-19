@@ -83,6 +83,7 @@ export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {
 
   @ValidateNested()
   @Type(() => UpdateFormacademicaDto)
-  @IsOptional()s
+  @IsOptional()
   datosAcademicos?: UpdateFormacademicaDto;
+  formacademica: any;
 }

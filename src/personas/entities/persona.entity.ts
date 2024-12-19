@@ -5,6 +5,7 @@ import { PersonalContrato } from 'src/personal_contrato/entities/personal_contra
 import {
   Column,
   Entity,
+  JoinColumn,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -78,13 +79,17 @@ export class Persona {
   )
   personalcontrato: Array<PersonalContrato>;
 
-  @OneToOne(() => Formacademica, (formacademica) => formacademica.empleado, {
-    cascade: true,
+  @OneToOne(() => DatosMedico, (datosMedicos) => datosMedicos.empleado, {
+    cascade: ['insert'],
   })
-  formacademica?: Formacademica;
+  @JoinColumn()
+  datosMedicos: DatosMedico;
 
-  @OneToOne(() => DatosMedico, (datosmedico) => datosmedico.empleado, {
-    cascade: true,
-  })
-  datosmedico?: DatosMedico;
+  @OneToOne(
+    () => Formacademica,
+    (datosAcademicos) => datosAcademicos.empleado,
+    { cascade: ['insert'] },
+  )
+  @JoinColumn()
+  datosAcademicos: Formacademica;
 }
