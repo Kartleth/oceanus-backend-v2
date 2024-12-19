@@ -18,21 +18,9 @@ export class DatosMedicosService {
   async create(
     createDatosMedicoDto: CreateDatosMedicoDto,
   ): Promise<DatosMedico> {
-    const { empleado, ...datosmedicoData } = createDatosMedicoDto;
-    const persona = await this.personaRepository.findOne({
-      where: { id: empleado.id },
-    });
-
-    if (!persona) {
-      throw new Error('La persona no existe');
-    }
-
-    const datosmedico = this.datosmedicosRepository.create({
-      ...datosmedicoData,
-      empleado: persona,
-    });
-
-    return await this.datosmedicosRepository.save(datosmedico);
+    const newDatosMedicos =
+      this.datosmedicosRepository.create(createDatosMedicoDto);
+    return this.datosmedicosRepository.save(newDatosMedicos);
   }
 
   async findAll() {
