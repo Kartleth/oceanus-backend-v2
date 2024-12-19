@@ -4,6 +4,8 @@ import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindManyOptions, Repository } from 'typeorm';
 import { Persona } from './entities/persona.entity';
+import { Formacademica } from 'src/formacademica/entities/formacademica.entity';
+import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 
 @Injectable()
 export class PersonasService {
@@ -12,8 +14,21 @@ export class PersonasService {
     private readonly personaRepository: Repository<Persona>,
   ) {}
 
-  async create(createPersonaDto: CreatePersonaDto): Promise<Persona> {
-    const newPersona = this.personaRepository.create(createPersonaDto);
+  async create(createPersonaDto: CreatePersonaDto) {
+    const { datosAcademicos, datosMedicos, ...personaData } = createPersonaDto;
+
+    const academicData = new Formacademica();
+    Object.assign(academicData, datosAcademicos);
+
+    const medicalData = new DatosMedico();
+    Object.assign(medicalData, datosMedicos);
+
+    const newPersona = this.personaRepository.create({
+      ...personaData,
+      datosAcademicos: academicData,
+      datosMedicos: medicalData,
+    });
+
     return this.personaRepository.save(newPersona);
   }
 
