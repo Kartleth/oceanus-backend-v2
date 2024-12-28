@@ -1,8 +1,6 @@
-import { Persona } from 'src/personas/entities/persona.entity';
 import { Genero } from '../entities/datos_medico.entity';
 
 export class CreateDatosMedicoDto {
-  empleado: Persona;
   alergias: string;
   enfercronicas: string;
   lesiones: string;

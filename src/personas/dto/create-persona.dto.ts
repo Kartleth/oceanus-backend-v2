@@ -4,23 +4,22 @@ import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademi
 export class CreatePersonaDto {
   datosMedicos: CreateDatosMedicoDto;
   datosAcademicos: CreateFormacademicaDto;
-  name: string;
-  fechaNacimiento: string;
+  nombre: string;
+  fechanacimiento: Date;
   curp: string;
   rfc: string;
-  clave: string;
-  estadoCivil: string;
-  numeroCasa: string;
-  numeroCelular: string;
-  correoElectronico: string;
+  numerofijo: string;
+  numerocelular: string;
   direccion: string;
-  numeroLicencia: string;
-  numeroPasaporte: string;
-  fechaIngreso: string;
-  tipoContrato: string;
-  estadoEmpleado: string;
-  fechaInicioContrato: string;
-  fechaFinContrato: string;
+  numerolicencia: string;
+  numeropasaporte: string;
+  fechaingreso: Date;
+  estado: string;
+  tipocontrato: string;
+  iniciocontrato: Date;
+  correo: string;
+  ine: string;
+  estadocivil: string;
 }
 
 export type CreatePersona = {

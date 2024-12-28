@@ -39,7 +39,7 @@ export class PersonasService {
     const persona: Partial<Persona> = {
       datosAcademicos: datosAcademicos as Formacademica,
       datosMedicos: datosMedicos as DatosMedico,
-      nombre: data.name,
+      nombre: data.nombre,
       correo: data.correoElectronico,
       curp: data.curp,
       direccion: data.direccion,

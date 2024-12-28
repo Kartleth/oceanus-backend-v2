@@ -1,11 +1,4 @@
-import { Persona } from 'src/personas/entities/persona.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 export enum Genero {
   Masculino = 'masculino',
   Femenino = 'femenino',
@@ -15,9 +8,6 @@ export enum Genero {
 export class DatosMedico {
   @PrimaryGeneratedColumn()
   idmedicos: string;
-
-  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
-  empleado: Persona;
 
   @Column({ default: null })
   alergias: string;
@@ -48,10 +38,4 @@ export class DatosMedico {
 
   @Column({ default: null })
   relaemergencia: string;
-
-  @OneToOne(() => Persona, (persona) => persona.formacademica, {
-    onDelete: 'CASCADE',
-  })
-  @JoinColumn()
-  empleado: Persona;
 }

@@ -1,26 +1,9 @@
-import { Persona } from 'src/personas/entities/persona.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Formacademica {
   @PrimaryGeneratedColumn()
   idacademicos: number;
-
-  @OneToOne(
-    () => Persona,
-    (persona) => persona.formacademica,
-    {
-      onDelete: 'CASCADE',
-    },
-    (persona) => persona.datosAcademicos,
-  )
-  empleado: Persona;
 
   @Column({ nullable: false })
   cedula: string;
