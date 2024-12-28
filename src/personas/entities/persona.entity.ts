@@ -79,18 +79,4 @@ export class Persona {
     (personalcontrato) => personalcontrato.persona,
   )
   personalcontrato: Array<PersonalContrato>;
-
-  @OneToOne(() => DatosMedico, (datosMedicos) => datosMedicos.empleado, {
-    cascade: ['insert'],
-  })
-  @JoinColumn()
-  datosMedicos: DatosMedico;
-
-  @OneToOne(
-    () => Formacademica,
-    (datosAcademicos) => datosAcademicos.empleado,
-    { cascade: ['insert'] },
-  )
-  @JoinColumn()
-  datosAcademicos: Formacademica;
 }

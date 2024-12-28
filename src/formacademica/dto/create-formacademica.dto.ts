@@ -1,7 +1,10 @@
+import { Persona } from 'src/personas/entities/persona.entity';
+
 export class CreateFormacademicaDto {
-  cadulaProfesional: string;
+  empleado: Persona;
+  cedula: string;
   carrera: string;
+  explaboral: string;
   certificaciones: string;
-  experienciaLaboral: string;
-  gradosEstudios: string;
+  gradoestudios: string;
 }

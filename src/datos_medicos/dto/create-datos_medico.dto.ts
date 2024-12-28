@@ -1,12 +1,16 @@
+import { Persona } from 'src/personas/entities/persona.entity';
+import { Genero } from '../entities/datos_medico.entity';
+
 export class CreateDatosMedicoDto {
-  alegias: string;
-  alergiasMedicamentos: string;
-  enfermedadCronica: string;
-  genero: string;
+  empleado: Persona;
+  alergias: string;
+  enfercronicas: string;
   lesiones: string;
-  numeroEmergencia: string;
-  numeroSeguro: string;
-  relacionPersona: string;
-  tipoSangre: string;
-  nombreemergencia: string;
+  alergiasmed: string;
+  numemergencia: string;
+  numseguro: string;
+  tiposangre: string;
+  nombremergencia: string;
+  genero: Genero;
+  relaemergencia: string;
 }

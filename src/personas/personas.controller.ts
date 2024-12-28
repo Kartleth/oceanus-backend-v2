@@ -46,12 +46,14 @@ export class PersonasController {
 
   @Get()
   async findAll() {
-    return await this.personasService.findAll();
+    return await this.personasService.findAll({
+      relations: ['formacademica', 'datosmedico'], //ando viendo si sí esta bien hacer esto jeasjdh
+    });
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.personasService.findOne(+id);
+  async async findOne(@Param('id') id: string) {
+    return await await this.personasService.findOne(+id);
   }
 
   @Patch(':id')
@@ -60,8 +62,7 @@ export class PersonasController {
   }
 
   @Delete(':id')
-  async remove(@Param('id') id: string) {
-    console.log(id);
-    return await this.personasService.remove(+id);
+  remove(@Param('id') id: string) {
+    return this.personasService.remove(+id);
   }
 }

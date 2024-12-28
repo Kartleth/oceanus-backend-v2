@@ -48,4 +48,10 @@ export class DatosMedico {
 
   @Column({ default: null })
   relaemergencia: string;
+
+  @OneToOne(() => Persona, (persona) => persona.formacademica, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn()
+  empleado: Persona;
 }

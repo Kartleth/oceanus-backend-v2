@@ -10,31 +10,42 @@ import { Persona } from 'src/personas/entities/persona.entity';
 export class DatosMedicosService {
   constructor(
     @InjectRepository(DatosMedico)
-    private medicoRepository: Repository<DatosMedico>,
+    private readonly datosmedicosRepository: Repository<DatosMedico>,
+    @InjectRepository(Persona)
+    private readonly personaRepository: Repository<Persona>,
   ) {}
-  async create(data: CreateDatosMedicoDto, persona: Persona) {
-    const datosMedicos: Partial<DatosMedico> = {
-      alergias: data.alegias,
-      alergiasmed: data.alergiasMedicamentos,
-      enfercronicas: data.enfermedadCronica,
-      lesiones: data.lesiones,
-      genero: data.genero as Genero,
-      nombremergencia: data.nombreemergencia,
-      numemergencia: data.numeroEmergencia,
-      numseguro: data.numeroSeguro,
-      relaemergencia: data.relacionPersona,
-      tiposangre: data.tipoSangre,
+
+  async create(
+    createDatosMedicoDto: CreateDatosMedicoDto,
+  ): Promise<DatosMedico> {
+    const { empleado, ...datosmedicoData } = createDatosMedicoDto;
+    const persona = await this.personaRepository.findOne({
+      where: { id: empleado.id },
+    });
+
+    if (!persona) {
+      throw new Error('La persona no existe');
+    }
+
+    const datosmedico = this.datosmedicosRepository.create({
+      ...datosmedicoData,
       empleado: persona,
-    };
-    return await this.medicoRepository.save(datosMedicos);
+    });
+
+    return await this.datosmedicosRepository.save(datosmedico);
   }
 
-  findAll() {
-    return `This action returns all datosMedicos`;
+  async findAll() {
+    return await this.datosmedicosRepository.find({
+      relations: ['empleado'], // Esto incluirá los datos relacionados de Persona
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} datosMedico`;
+  async findOne(id: number) {
+    return await this.datosmedicosRepository.findOne({
+      where: { idmedicos: id },
+      relations: ['empleado'], // Asegúrate de incluir la relación
+    });
   }
 
   update(id: number, updateDatosMedicoDto: UpdateDatosMedicoDto) {

@@ -61,26 +61,63 @@ export class PersonasService {
     return result;
   }
 
-  async findAll() {
-    const personas = await this.personasRepository.find({
-      relations: { datosAcademicos: true, datosMedicos: true },
+  async findAll(options?: FindManyOptions<Persona>): Promise<Persona[]> {
+    return await this.personaRepository.find(options);
+  }
+
+  async findOne(id: number): Promise<Persona> {
+    return await this.personaRepository.findOne({
+      where: { id },
+      relations: ['formacademica', 'datosmedico'],
     });
-    return personas;
   }
 
-  async findOne(id: number) {
-    const persona = await this.personasRepository.findOne({
-      where: { id: id },
-      relations: { datosAcademicos: true, datosMedicos: true },
+  async update(id: number, updatePersonaDto: UpdatePersonaDto) {
+    // Cambiar la forma de llamar a findOne()
+    const persona = await this.personaRepository.findOne({
+      where: { id }, // Filtra por ID
+      relations: ['formacademica', 'datosmedico'], // Relacionar formacademica y datosmedico
     });
-    return persona;
+
+    if (!persona) {
+      throw new Error('Persona no encontrada');
+    }
+
+    // Actualizar datos de Persona
+    if (updatePersonaDto.formacademica) {
+      // Aquí actualizas la formación académica
+      if (persona.formacademica) {
+        persona.formacademica = {
+          ...persona.formacademica,
+          ...updatePersonaDto.formacademica,
+        };
+      }
+    }
+
+    // Actualizar datos médicos
+    if (updatePersonaDto.datosmedico) {
+      if (persona.datosmedico) {
+        persona.datosmedico = {
+          ...persona.datosmedico,
+          ...updatePersonaDto.datosmedico,
+        };
+      }
+    }
+
+    // Actualizar persona
+    Object.assign(persona, updatePersonaDto);
+    return this.personaRepository.save(persona);
   }
 
-  update(id: number, updatePersonaDto: UpdatePersonaDto) {
-    return `This action updates a #${id} persona`;
-  }
+  async remove(id: number): Promise<void> {
+    const persona = await this.personaRepository.findOne({
+      where: { id },
+    });
 
-  async remove(id: number) {
-    return await this.personasRepository.delete(id);
+    if (!persona) {
+      throw new Error('Persona no encontrada');
+    }
+
+    await this.personaRepository.remove(persona);
   }
 }
