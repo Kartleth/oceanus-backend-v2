@@ -2,49 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { CreateDatosMedicoDto } from './dto/create-datos_medico.dto';
 import { UpdateDatosMedicoDto } from './dto/update-datos_medico.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DatosMedico, Genero } from './entities/datos_medico.entity';
+import { DatosMedico } from './entities/datos_medico.entity';
 import { Repository } from 'typeorm';
-import { Persona } from 'src/personas/entities/persona.entity';
 
 @Injectable()
 export class DatosMedicosService {
   constructor(
     @InjectRepository(DatosMedico)
     private readonly datosmedicosRepository: Repository<DatosMedico>,
-    @InjectRepository(Persona)
-    private readonly personaRepository: Repository<Persona>,
   ) {}
 
-  async create(
-    createDatosMedicoDto: CreateDatosMedicoDto,
-  ): Promise<DatosMedico> {
-    const { empleado, ...datosmedicoData } = createDatosMedicoDto;
-    const persona = await this.personaRepository.findOne({
-      where: { id: empleado.id },
-    });
-
-    if (!persona) {
-      throw new Error('La persona no existe');
-    }
-
-    const datosmedico = this.datosmedicosRepository.create({
-      ...datosmedicoData,
-      empleado: persona,
-    });
-
-    return await this.datosmedicosRepository.save(datosmedico);
+  async create(data: CreateDatosMedicoDto): Promise<DatosMedico> {
+    const nuevaFormacionAcademica = this.datosmedicosRepository.create(data);
+    return await this.datosmedicosRepository.save(nuevaFormacionAcademica);
   }
 
-  async findAll() {
-    return await this.datosmedicosRepository.find({
-      relations: ['empleado'], // Esto incluirá los datos relacionados de Persona
-    });
+  async findAll(): Promise<DatosMedico[]> {
+    return await this.datosmedicosRepository.find();
   }
 
-  async findOne(id: number) {
+  async findOne(id: number): Promise<DatosMedico> {
     return await this.datosmedicosRepository.findOne({
       where: { idmedicos: id },
-      relations: ['empleado'], // Asegúrate de incluir la relación
     });
   }
 

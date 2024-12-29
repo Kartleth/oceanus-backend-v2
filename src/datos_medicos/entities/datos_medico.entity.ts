@@ -8,7 +8,7 @@ export enum Genero {
 @Entity()
 export class DatosMedico {
   @PrimaryGeneratedColumn()
-  idmedicos: string;
+  idmedicos: number;
 
   @OneToOne(() => Persona, (persona) => persona.datosMedicos)
   empleado: Persona;

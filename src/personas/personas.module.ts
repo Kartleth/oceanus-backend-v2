@@ -9,6 +9,7 @@ import { Formacademica } from 'src/formacademica/entities/formacademica.entity';
 import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 
 @Module({
+  imports: [TypeOrmModule.forFeature([Persona, Formacademica, DatosMedico])],
   controllers: [PersonasController],
   providers: [PersonasService, DatosMedicosService, FormacademicaService],
 })

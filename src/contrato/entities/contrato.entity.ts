@@ -1,4 +1,3 @@
-import { timestamp } from 'rxjs';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
 import { Empresa } from 'src/empresa/entities/empresa.entity';
 import { Factura } from 'src/factura/entities/factura.entity';
@@ -7,7 +6,6 @@ import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   JoinTable,
@@ -40,8 +38,8 @@ export class Contrato {
   @JoinColumn({ name: 'idcontratado' })
   contratado: Empresa;
 
-  @OneToMany(()=>Factura,(factura)=>factura.contrato)
-  facturas:Array<Factura>
+  @OneToMany(() => Factura, (factura) => factura.contrato)
+  facturas: Array<Factura>;
 
   @ManyToMany(() => OrdenServicio, (orden) => orden.contratos)
   ordenes: Array<OrdenServicio>;

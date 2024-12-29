@@ -4,75 +4,34 @@ import { Repository } from 'typeorm';
 import { Formacademica } from './entities/formacademica.entity';
 import { CreateFormacademicaDto } from './dto/create-formacademica.dto';
 import { UpdateFormacademicaDto } from './dto/update-formacademica.dto';
-import { Formacademica } from './entities/formacademica.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Persona } from 'src/personas/entities/persona.entity';
-import { Persona } from 'src/personas/entities/persona.entity';
 
 @Injectable()
 export class FormacademicaService {
   constructor(
     @InjectRepository(Formacademica)
-    private formacademicaRepository: Repository<Formacademica>,
-    @InjectRepository(Persona)
-    private personaRepository: Repository<Persona>,
+    private readonly formacademicaRepository: Repository<Formacademica>,
   ) {}
 
-  async create(
-    createFormacademicaDto: CreateFormacademicaDto,
-  ): Promise<Formacademica> {
-    const { empleado, ...formacademicaData } = createFormacademicaDto;
-
-    const persona = await this.personaRepository.findOne({
-      where: { id: empleado.id },
-    });
-
-    if (!persona) {
-      throw new Error('La persona no existe');
-    }
-
-    const formacademica = this.formacademicaRepository.create({
-      ...formacademicaData,
-      empleado: persona,
-    });
-
-    return await this.formacademicaRepository.save(formacademica);
+  async create(data: CreateFormacademicaDto): Promise<Formacademica> {
+    const nuevaFormacionAcademica = this.formacademicaRepository.create(data);
+    return await this.formacademicaRepository.save(nuevaFormacionAcademica);
   }
 
   async findAll(): Promise<Formacademica[]> {
-    return await this.formacademicaRepository.find({ relations: ['empleado'] });
+    return await this.formacademicaRepository.find();
   }
 
   async findOne(id: number): Promise<Formacademica> {
     return await this.formacademicaRepository.findOne({
       where: { idacademicos: id },
-      relations: ['empleado'],
     });
   }
 
-  async update(
-    id: number,
-    updateFormacademicaDto: UpdateFormacademicaDto,
-  ): Promise<Formacademica> {
-    const formacademica = await this.formacademicaRepository.findOne({
-      where: { idacademicos: id },
-    });
-
-    if (!formacademica) {
-      throw new Error('Registro no encontrado');
-    }
-
-    Object.assign(formacademica, updateFormacademicaDto);
-
-    return await this.formacademicaRepository.save(formacademica);
+  async update(p0: number, updateFormacademicaDto: UpdateFormacademicaDto) {
+    //luego se va a hacer
   }
 
-  async remove(id: number): Promise<void> {
-    const result = await this.formacademicaRepository.delete(id);
-
-    if (result.affected === 0) {
-      throw new Error('Registro no encontrado');
-    }
+  remove(id: number) {
+    return `This action removes a #${id} formacademica`;
   }
 }
