@@ -6,7 +6,7 @@ export class Formacademica {
   @PrimaryGeneratedColumn()
   idacademicos: number;
 
-  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
+  @OneToOne(() => Persona, (persona) => persona.datosAcademicos)
   empleado: Persona;
 
   @Column({ nullable: false })

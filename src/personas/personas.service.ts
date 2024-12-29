@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePersonaDto } from './dto/create-persona.dto';
+import { CreatePersonaDatosCompletosDto, CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Persona } from './entities/persona.entity';
@@ -15,7 +15,8 @@ export class PersonasService {
     private readonly personasRepository: Repository<Persona>,
   ) {}
 
-  async create(data: CreatePersonaDto) {
+  async create(data: CreatePersonaDatosCompletosDto) {
+    console.log(data);
     const datosAcademicos = plainToClass(Formacademica, data.datosAcademicos);
     const datosMedico = plainToClass(DatosMedico, data.datosMedicos);
 
