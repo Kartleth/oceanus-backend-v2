@@ -23,7 +23,7 @@ export class CreatePersonaDto {
   estadocivil: string;
 }
 
-export type CreatePersona = {
+export type CreatePersonaDatosCompletosDto = {
   datosPersonales: CreatePersonaDto;
   datosMedicos: CreateDatosMedicoDto;
   datosAcademicos: CreateFormacademicaDto;
