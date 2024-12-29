@@ -1,61 +1,77 @@
 import { Injectable } from '@nestjs/common';
-import { CreatePersonaDatosCompletosDto } from './dto/create-persona.dto';
+import { CreatePersonaDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Persona } from './entities/persona.entity';
-import { FindManyOptions, Repository } from 'typeorm';
 import { DatosMedico } from 'src/datos_medicos/entities/datos_medico.entity';
 import { Formacademica } from 'src/formacademica/entities/formacademica.entity';
-import { plainToClass } from 'class-transformer';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PersonasService {
   constructor(
     @InjectRepository(Persona)
     private readonly personasRepository: Repository<Persona>,
-    @InjectRepository(DatosMedico)
-    private readonly datosMedicosRepository: Repository<DatosMedico>,
-    @InjectRepository(Formacademica)
-    private readonly formacademicaRepository: Repository<Formacademica>,
   ) {}
 
-  async create(data: CreatePersonaDatosCompletosDto) {
-    const { datosPersonales, datosMedicos, datosAcademicos } = data;
-
-    // Crear la persona con los datos personales
-    const persona = this.personasRepository.create(datosPersonales);
-    const savedPersona = await this.personasRepository.save(persona);
-
-    // Guardar los datos médicos si existen
-    if (datosMedicos) {
-      const datosMedicosEntity = this.datosMedicosRepository.create({
-        ...datosMedicos,
-        idmedicos: savedPersona.id, // Asumimos que tienes una columna personaId en DatosMedico
-      });
-      await this.datosMedicosRepository.save(datosMedicosEntity);
-    }
-
-    // Guardar los datos académicos si existen
-    if (datosAcademicos) {
-      const datosAcademicosEntity = this.formacademicaRepository.create({
-        ...datosAcademicos,
-        idacademicos: savedPersona.id, // Asumimos que tienes una columna personaId en Formacademica
-      });
-      await this.formacademicaRepository.save(datosAcademicosEntity);
-    }
-
-    return savedPersona;
+  async create(data: CreatePersonaDto) {
+    const datosAcademicos: Partial<Formacademica> = {
+      carrera: data.datosAcademicos.carrera,
+      cedula: data.datosAcademicos.cedula,
+      certificaciones: data.datosAcademicos.certificaciones,
+      explaboral: data.datosAcademicos.explaboral,
+      gradoestudios: data.datosAcademicos.gradoestudios,
+    };
+    const datosMedicos: Partial<DatosMedico> = {
+      alergias: data.datosMedicos.alergias,
+      alergiasmed: data.datosMedicos.alergiasmed,
+      enfercronicas: data.datosMedicos.enfercronicas,
+      lesiones: data.datosMedicos.lesiones,
+      genero: data.datosMedicos.genero,
+      nombremergencia: data.datosMedicos.nombremergencia,
+      numemergencia: data.datosMedicos.numemergencia,
+      numseguro: data.datosMedicos.numseguro,
+      relaemergencia: data.datosMedicos.relaemergencia,
+      tiposangre: data.datosMedicos.tiposangre,
+    };
+    const persona: Partial<Persona> = {
+      datosAcademicos: datosAcademicos as Formacademica,
+      datosMedicos: datosMedicos as DatosMedico,
+      nombre: data.nombre,
+      correo: data.correo,
+      curp: data.curp,
+      direccion: data.direccion,
+      numerofijo: data.numerofijo,
+      estado: data.estado,
+      estadocivil: data.estadocivil,
+      fechaingreso: data.fechaingreso,
+      fechanacimiento: data.fechanacimiento,
+      fincontrato: data.fincontrato,
+      ine: data.ine,
+      iniciocontrato: data.iniciocontrato,
+      numerocelular: data.numerocelular,
+      numerolicencia: data.numerolicencia,
+      numeropasaporte: data.numeropasaporte,
+      rfc: data.rfc,
+      tipocontrato: data.tipocontrato,
+    };
+    const result = await this.personasRepository.save(persona);
+    return result;
   }
 
-  async findAll(options?: FindManyOptions<Persona>): Promise<Persona[]> {
-    return await this.personasRepository.find(options);
-  }
-
-  async findOne(id: number): Promise<Persona> {
-    return await this.personasRepository.findOne({
-      where: { id },
-      relations: ['formacademica', 'datosmedico'],
+  async findAll() {
+    const personas = await this.personasRepository.find({
+      relations: { datosAcademicos: true, datosMedicos: true },
     });
+    return personas;
+  }
+
+  async findOne(id: number) {
+    const persona = await this.personasRepository.findOne({
+      where: { id: id },
+      relations: { datosAcademicos: true, datosMedicos: true },
+    });
+    return persona;
   }
 
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
