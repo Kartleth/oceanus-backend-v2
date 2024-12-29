@@ -10,10 +10,8 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { PersonasService } from './personas.service';
-import { CreatePersona, CreatePersonaDto } from './dto/create-persona.dto';
+import { CreatePersonaDatosCompletosDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
-import { CreateDatosMedicoDto } from 'src/datos_medicos/dto/create-datos_medico.dto';
-import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademica.dto';
 import { DatosMedicosService } from 'src/datos_medicos/datos_medicos.service';
 import { FormacademicaService } from 'src/formacademica/formacademica.service';
 
@@ -28,7 +26,7 @@ export class PersonasController {
   @Post()
   async create(
     @Body()
-    data: CreatePersona,
+    data: CreatePersonaDatosCompletosDto,
   ) {
     console.log(data);
     const transpersona = {
@@ -46,14 +44,12 @@ export class PersonasController {
 
   @Get()
   async findAll() {
-    return await this.personasService.findAll({
-      relations: ['formacademica', 'datosmedico'], //ando viendo si sí esta bien hacer esto jeasjdh
-    });
+    return await this.personasService.findAll({});
   }
 
   @Get(':id')
-  async async findOne(@Param('id') id: string) {
-    return await await this.personasService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.personasService.findOne(+id);
   }
 
   @Patch(':id')

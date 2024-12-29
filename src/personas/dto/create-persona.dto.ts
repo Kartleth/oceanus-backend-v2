@@ -17,12 +17,13 @@ export class CreatePersonaDto {
   estado: string;
   tipocontrato: string;
   iniciocontrato: Date;
+  fincontrato: Date;
   correo: string;
   ine: string;
   estadocivil: string;
 }
 
-export type CreatePersona = {
+export type CreatePersonaDatosCompletosDto = {
   datosPersonales: CreatePersonaDto;
   datosMedicos: CreateDatosMedicoDto;
   datosAcademicos: CreateFormacademicaDto;

@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Persona } from 'src/personas/entities/persona.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 export enum Genero {
   Masculino = 'masculino',
   Femenino = 'femenino',
@@ -8,6 +9,9 @@ export enum Genero {
 export class DatosMedico {
   @PrimaryGeneratedColumn()
   idmedicos: string;
+
+  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
+  empleado: Persona;
 
   @Column({ default: null })
   alergias: string;

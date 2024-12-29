@@ -1,9 +1,13 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Persona } from 'src/personas/entities/persona.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Formacademica {
   @PrimaryGeneratedColumn()
   idacademicos: number;
+
+  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
+  empleado: Persona;
 
   @Column({ nullable: false })
   cedula: string;
