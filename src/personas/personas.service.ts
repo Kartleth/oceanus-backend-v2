@@ -42,4 +42,12 @@ export class PersonasService {
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
     //Codigo para hacer update que luego se va a agregar porque ahorita se esta arreglando la BD
   }
+
+  async remove(id: number): Promise<void> {
+    const result = await this.personasRepository.delete(id);
+
+    if (result.affected === 0) {
+      throw new Error('Persona no encontrado');
+    }
+  }
 }
