@@ -44,7 +44,7 @@ export class PersonasController {
 
   @Get()
   async findAll() {
-    return await this.personasService.findAll({});
+    return await this.personasService.findAll();
   }
 
   @Get(':id')
@@ -58,7 +58,8 @@ export class PersonasController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.personasService.remove(+id);
+  async remove(@Param('id') id: string) {
+    console.log(id);
+    return await this.personasService.remove(+id);
   }
 }
