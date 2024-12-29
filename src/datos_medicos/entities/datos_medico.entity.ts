@@ -10,9 +10,6 @@ export class DatosMedico {
   @PrimaryGeneratedColumn()
   idmedicos: number;
 
-  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
-  empleado: Persona;
-
   @Column({ default: null })
   alergias: string;
 
@@ -42,4 +39,7 @@ export class DatosMedico {
 
   @Column({ default: null })
   relaemergencia: string;
+
+  @OneToOne(() => Persona, (persona) => persona.datosMedicos)
+  empleado: Persona;
 }

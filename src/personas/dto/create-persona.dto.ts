@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsDateString,
-  IsString,
-  IsOptional,
-} from 'class-validator';
+import { IsNotEmpty, IsDateString, IsString, IsOptional } from 'class-validator';
 import { CreateDatosMedicoDto } from 'src/datos_medicos/dto/create-datos_medico.dto';
 import { CreateFormacademicaDto } from 'src/formacademica/dto/create-formacademica.dto';
 
@@ -62,6 +57,7 @@ export class CreatePersonaDto {
 
   @IsOptional()
   datosMedicos: CreateDatosMedicoDto;
+
   @IsOptional()
   datosAcademicos: CreateFormacademicaDto;
 }
