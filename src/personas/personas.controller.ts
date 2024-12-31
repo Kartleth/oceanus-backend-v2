@@ -34,6 +34,7 @@ export class PersonasController {
       datosMedicos: data.datosMedicos,
       datosAcademicos: data.datosAcademicos,
     };
+    console.log('transpersona', transpersona);
     const persona = await this.personasService.create(transpersona);
     if (!persona) {
       throw new HttpException('error.', HttpStatus.INTERNAL_SERVER_ERROR);

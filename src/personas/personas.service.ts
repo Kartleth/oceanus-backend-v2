@@ -15,6 +15,7 @@ export class PersonasService {
   ) {}
 
   async create(data: CreatePersonaDto) {
+    console.log('CreatePersonaDto', data);
     const datosAcademicos: Partial<Formacademica> = {
       carrera: data.datosAcademicos.carrera,
       cedula: data.datosAcademicos.cedula,
@@ -22,6 +23,7 @@ export class PersonasService {
       explaboral: data.datosAcademicos.explaboral,
       gradoestudios: data.datosAcademicos.gradoestudios,
     };
+    console.log('datosAcademicos ', datosAcademicos);
     const datosMedicos: Partial<DatosMedico> = {
       alergias: data.datosMedicos.alergias,
       alergiasmed: data.datosMedicos.alergiasmed,

@@ -18,7 +18,7 @@ export class Formacademica {
   @Column({ type: 'text' })
   certificaciones: string;
 
-  @Column({ default: null })
+  @Column({ nullable: false })
   gradoestudios: string;
 
   @OneToOne(() => Persona, (persona) => persona.datosAcademicos)
