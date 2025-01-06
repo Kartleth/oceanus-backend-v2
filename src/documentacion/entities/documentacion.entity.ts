@@ -1,20 +1,10 @@
 import { Persona } from 'src/personas/entities/persona.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Documentacion {
   @PrimaryGeneratedColumn()
   iddocumento: number;
-
-  @OneToOne(() => Persona)
-  @JoinColumn()
-  empleado: Persona;
 
   @Column({ nullable: false })
   credencial: string;
@@ -57,4 +47,7 @@ export class Documentacion {
 
   @Column({ default: null })
   comprodomicilio: string;
+
+  @OneToOne(() => Persona, (persona) => persona.documentacion)
+  empleado: Persona;
 }
