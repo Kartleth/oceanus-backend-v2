@@ -78,6 +78,7 @@ export class PersonasService {
 
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
     //Codigo para hacer update que luego se va a agregar porque ahorita se esta arreglando la BD
+    return await this.personasRepository.update({ id: id }, updatePersonaDto);
   }
 
   async remove(id: number) {

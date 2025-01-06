@@ -54,8 +54,11 @@ export class PersonasController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePersonaDto: UpdatePersonaDto) {
-    return this.personasService.update(+id, updatePersonaDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updatePersonaDto: UpdatePersonaDto,
+  ) {
+    return await this.personasService.update(+id, updatePersonaDto);
   }
 
   @Delete(':id')
