@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { DocumentacionService } from './documentacion.service';
 import { CreateDocumentacionDto } from './dto/create-documentacion.dto';
 import { UpdateDocumentacionDto } from './dto/update-documentacion.dto';
@@ -7,9 +15,15 @@ import { UpdateDocumentacionDto } from './dto/update-documentacion.dto';
 export class DocumentacionController {
   constructor(private readonly documentacionService: DocumentacionService) {}
 
-  @Post()
-  create(@Body() createDocumentacionDto: CreateDocumentacionDto) {
-    return this.documentacionService.create(createDocumentacionDto);
+  @Post(':personaId')
+  async addDocumentToPersona(
+    @Param('personaId') personaId: number,
+    @Body() createDocumentacionDto: CreateDocumentacionDto,
+  ) {
+    return await this.documentacionService.addDocumentoPersona(
+      personaId,
+      createDocumentacionDto,
+    );
   }
 
   @Get()
@@ -18,8 +32,8 @@ export class DocumentacionController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.documentacionService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.documentacionService.findOne(+id);
   }
 
   @Patch(':id')
