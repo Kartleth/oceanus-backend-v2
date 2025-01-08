@@ -32,7 +32,7 @@ export class Documentacion {
   curp: string;
 
   @Column({ nullable: false })
-  inss: string;
+  nss: string;
 
   @Column({ nullable: false })
   constanciasat: string;
