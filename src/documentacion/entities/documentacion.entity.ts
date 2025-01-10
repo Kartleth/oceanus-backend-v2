@@ -6,28 +6,28 @@ export class Documentacion {
   @PrimaryGeneratedColumn()
   iddocumento: number;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   credencial: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   licencia: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   pasaporte: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   cv: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   curp: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   inss: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   constanciasat: string;
 
-  @Column({ nullable: false })
+  @Column({ default: null })
   foto: string;
 
   @Column({ default: null })
