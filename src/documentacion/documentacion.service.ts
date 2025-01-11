@@ -17,7 +17,9 @@ export class DocumentacionService {
     private readonly personaRepository: Repository<Persona>,
   ) {}
 
-  //Primer metodo que cree de prueba --Lo borrare despues
+  //--------------------------------------------------------------------------------
+  //Metodo para agregar documentación a una persona
+  //Es el primer metodo que cree de prueba --Lo borrare despues
   async addDocumentoPersona(
     personaId: number,
     createDocumentacionDto: CreateDocumentacionDto,
@@ -38,8 +40,11 @@ export class DocumentacionService {
 
     return await this.documentacionRepository.save(documentacion);
   }
+  //Fin del metodo para agregar documentación a una persona
+  //--------------------------------------------------------------------------------
 
-  // Guardar documentación
+  //--------------------------------------------------------------------------------
+  //Metodo para guardar documentación
   async saveDocumentacion(
     filePaths: Record<string, string>,
     personaId: number,
@@ -66,7 +71,11 @@ export class DocumentacionService {
 
     return await this.documentacionRepository.save(documentacion);
   }
+  //Fin del metodo para guardar documentación
+  //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  //Metodo para obtener la documentación de la persona
   async getDocumentacion(personaId: number): Promise<Record<string, string>> {
     const persona = await this.personaRepository.findOne({
       where: { id: personaId },
@@ -94,7 +103,11 @@ export class DocumentacionService {
 
     return filePaths;
   }
+  //Fin del metodo para obtener la documentación de la persona
+  //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  //Metodo para crear la documentación de la persona
   async create(createDocumentacionDto: CreateDocumentacionDto) {
     const newDocumentacion = this.documentacionRepository.create(
       createDocumentacionDto,
@@ -112,7 +125,11 @@ export class DocumentacionService {
       relations: ['empleado'],
     });
   }
+  //Fin del metodo para crear la documentación de la persona
+  //----------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  //Metodo para actualizar la documentación de la persona
   async updateDocumentacion(
     personaId: number,
     updateDocumentacionDto: UpdateDocumentacionDto,
@@ -157,4 +174,46 @@ export class DocumentacionService {
 
     return await this.documentacionRepository.save(persona.documentacion);
   }
+  //Fin del metodo para actualizar la documentación de la persona
+  //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
+  //Metodo para eliminar un documento de la persona
+  async deleteDocument(personaId: number, fileKey: string): Promise<void> {
+    const persona = await this.personaRepository.findOne({
+      where: { id: personaId },
+      relations: ['documentacion'],
+    });
+
+    if (!persona?.documentacion) {
+      throw new NotFoundException(
+        'No se encontró la documentación para esta persona',
+      );
+    }
+
+    const filePath = persona.documentacion[fileKey];
+    if (!filePath) {
+      throw new NotFoundException(
+        `No se encontró el archivo con la clave ${fileKey}`,
+      );
+    }
+
+    const fullPath = path.join(__dirname, '..', '..', 'uploads', filePath);
+
+    try {
+      await fs.promises.access(fullPath, fs.constants.F_OK);
+      await fs.promises.unlink(fullPath);
+      delete persona.documentacion[fileKey];
+      await this.documentacionRepository.save(persona.documentacion);
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        throw new NotFoundException(
+          `El archivo con la clave ${fileKey} ya ha sido eliminado o no existe.`,
+        );
+      }
+      throw new Error(`Error al intentar eliminar el archivo: ${err.message}`);
+    }
+  }
+  //Fin del metodo para eliminar un documento de la persona
+  //--------------------------------------------------------------------------------
 }

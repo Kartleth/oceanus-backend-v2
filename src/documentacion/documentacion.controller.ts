@@ -7,6 +7,7 @@ import {
   Param,
   UseInterceptors,
   UploadedFiles,
+  Delete,
 } from '@nestjs/common';
 import { DocumentacionService } from './documentacion.service';
 import { CreateDocumentacionDto } from './dto/create-documentacion.dto';
@@ -19,7 +20,8 @@ import { extname } from 'path';
 export class DocumentacionController {
   constructor(private readonly documentacionService: DocumentacionService) {}
 
-  // Ruta para agregar documentación a una persona
+  //--------------------------------------------------------------------------------
+  // Ruta para agregar documentación a una persona (Es del metodo que borrare despues)
   @Post(':personaId')
   async addDocumentToPersona(
     @Param('personaId') personaId: number,
@@ -30,18 +32,29 @@ export class DocumentacionController {
       createDocumentacionDto,
     );
   }
+  // Fin de la ruta para agregar documentación a una persona
+  //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  // Ruta para obtener toda la documentación aun no implementada
   @Get()
   findAll() {
     return this.documentacionService.findAll();
   }
+  // Fin de la ruta para obtener toda la documentación
+  //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  // Ruta para obtener la documentación de una persona por su id
   @Get(':id')
   async findOne(@Param('id') id: string) {
     return await this.documentacionService.findOne(+id);
   }
+  // Fin de la ruta para obtener la documentación de una persona por su id
+  //--------------------------------------------------------------------------------
 
-  //Logica para actualizar/editar archivos de documentación, sirve para agregar nuevo documento también jejhje
+  //--------------------------------------------------------------------------------
+  // Ruta para actualizar/editar archivos de documentación, sirve para agregar nuevo documento también
   @Patch('updateDoc/:personaId')
   @UseInterceptors(
     FileFieldsInterceptor(
@@ -127,8 +140,17 @@ export class DocumentacionController {
     }
   }
 
-  //@Delete(':id')
-  //remove(@Param('id') id: string) {
-  //  return this.documentacionService.remove(+id);
-  //}
+  // Fin de la ruta para actualizar/editar archivos de documentación
+  //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
+  // Ruta para eliminar un archivo de documentación
+  @Delete(':personaId/deleteDoc/:fileKey')
+  async deleteFile(
+    @Param('personaId') personaId: number,
+    @Param('fileKey') fileKey: string,
+  ) {
+    await this.documentacionService.deleteDocument(personaId, fileKey);
+    return { message: 'Archivo eliminado correctamente' };
+  }
 }
