@@ -39,7 +39,7 @@ export class DocumentacionService {
     return await this.documentacionRepository.save(documentacion);
   }
 
-  // Guardar documentación y agregar tipo de archivo
+  // Guardar documentación
   async saveDocumentacion(
     filePaths: Record<string, string>,
     personaId: number,
@@ -142,14 +142,13 @@ export class DocumentacionService {
               'uploads',
               oldFilePath,
             );
-            await fs.promises.access(filePath, fs.constants.F_OK); // Verifica si el archivo existe
+            await fs.promises.access(filePath, fs.constants.F_OK);
             await fs.promises.unlink(filePath); // Elimina el archivo si existe
           } catch (err) {
             console.error(
               `Error al intentar eliminar el archivo ${oldFilePath}:`,
               err,
             );
-            // Maneja el error adecuadamente, por ejemplo, ignorando si no existe
           }
         }
         persona.documentacion[key] = newFilePath;

@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   UseInterceptors,
   UploadedFiles,
 } from '@nestjs/common';
@@ -14,8 +13,7 @@ import { CreateDocumentacionDto } from './dto/create-documentacion.dto';
 import { UpdateDocumentacionDto } from './dto/update-documentacion.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname, join } from 'path';
-import * as path from 'path';
+import { extname } from 'path';
 
 @Controller('documentacion')
 export class DocumentacionController {
@@ -33,72 +31,6 @@ export class DocumentacionController {
     );
   }
 
-  // Ruta para la carga de archivos
-  @Post(':personaId/upload')
-  @UseInterceptors(
-    FileFieldsInterceptor(
-      [
-        { name: 'credencial', maxCount: 1 },
-        { name: 'licencia', maxCount: 1 },
-        { name: 'pasaporte', maxCount: 1 },
-        { name: 'cv', maxCount: 1 },
-        { name: 'curp', maxCount: 1 },
-        { name: 'inss', maxCount: 1 },
-        { name: 'constanciasat', maxCount: 1 },
-        { name: 'foto', maxCount: 1 },
-        { name: 'actnacimiento', maxCount: 1 },
-        { name: 'estcuenta', maxCount: 1 },
-        { name: 'altasegsocial', maxCount: 1 },
-        { name: 'cedulaprofe', maxCount: 1 },
-        { name: 'copiacontrato', maxCount: 1 },
-        { name: 'comprodomicilio', maxCount: 1 },
-      ],
-      {
-        storage: diskStorage({
-          destination: './uploads',
-          filename: (req, file, cb) => {
-            const fileName = `${Date.now()}${extname(file.originalname)}`;
-            cb(null, fileName);
-          },
-        }),
-        fileFilter: (req, file, cb) => {
-          const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
-          if (
-            !allowedExtensions.includes(
-              extname(file.originalname).toLowerCase(),
-            )
-          ) {
-            return cb(new Error('Archivo no permitido'), false);
-          }
-          cb(null, true);
-        },
-      },
-    ),
-  )
-  async uploadFile(
-    @Param('personaId') personaId: number,
-    @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
-  ) {
-    try {
-      console.log('Archivos recibidos:', files);
-
-      const filePaths = {};
-      for (const key in files) {
-        if (files[key]) {
-          filePaths[key] = files[key][0].filename;
-        }
-      }
-
-      console.log('Rutas generadas para guardar:', filePaths);
-
-      await this.documentacionService.saveDocumentacion(filePaths, personaId);
-      return { message: 'Archivos subidos correctamente', filePaths };
-    } catch (error) {
-      console.error('Error al subir archivos:', error.message);
-      return { message: 'Error al subir archivos', error: error.message };
-    }
-  }
-
   @Get()
   findAll() {
     return this.documentacionService.findAll();
@@ -109,6 +41,7 @@ export class DocumentacionController {
     return await this.documentacionService.findOne(+id);
   }
 
+  //Logica para actualizar/editar archivos de documentación, sirve para agregar nuevo documento también jejhje
   @Patch('updateDoc/:personaId')
   @UseInterceptors(
     FileFieldsInterceptor(
