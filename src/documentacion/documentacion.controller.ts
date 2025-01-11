@@ -79,6 +79,8 @@ export class DocumentacionController {
     @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
   ) {
     try {
+      console.log('Archivos recibidos:', files);
+
       const filePaths = {};
       for (const key in files) {
         if (files[key]) {
@@ -86,9 +88,12 @@ export class DocumentacionController {
         }
       }
 
+      console.log('Rutas generadas para guardar:', filePaths);
+
       await this.documentacionService.saveDocumentacion(filePaths, personaId);
       return { message: 'Archivos subidos correctamente', filePaths };
     } catch (error) {
+      console.error('Error al subir archivos:', error.message);
       return { message: 'Error al subir archivos', error: error.message };
     }
   }
@@ -103,7 +108,7 @@ export class DocumentacionController {
     return await this.documentacionService.findOne(+id);
   }
 
-  @Patch('update/:personaId')
+  @Patch('updateDoc/:personaId')
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -137,9 +142,13 @@ export class DocumentacionController {
               extname(file.originalname).toLowerCase(),
             )
           ) {
-            return cb(new Error('Archivo no permitido'), false);
+            const errorMessage = `Archivo no permitido. Se esperaba uno de los siguientes formatos: ${allowedExtensions.join(', ')}`;
+            return cb(new Error(errorMessage), false);
           }
           cb(null, true);
+        },
+        limits: {
+          fileSize: 5 * 1024 * 1024, // Límite de 5MB para los archivos
         },
       },
     ),
@@ -150,12 +159,20 @@ export class DocumentacionController {
     @Body() updateDocumentacionDto: UpdateDocumentacionDto,
   ) {
     try {
+      console.log('Archivos recibidos:', files);
+
+      if (!files?.credencial) {
+        throw new Error('No se recibió el archivo de "credencial"');
+      }
+
       const filePaths = {};
       for (const key in files) {
         if (files[key]) {
           filePaths[key] = files[key][0].filename;
         }
       }
+
+      console.log('Rutas generadas para guardar:', filePaths);
 
       const updatedDto: UpdateDocumentacionDto = {
         ...updateDocumentacionDto,
@@ -168,6 +185,7 @@ export class DocumentacionController {
       );
       return { message: 'Archivos actualizados correctamente', filePaths };
     } catch (error) {
+      console.error('Error detallado al actualizar archivos:', error); // Esto imprimirá el error con más detalles
       return { message: 'Error al actualizar archivos', error: error.message };
     }
   }

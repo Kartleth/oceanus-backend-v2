@@ -46,17 +46,23 @@ export class DocumentacionService {
   ): Promise<Documentacion> {
     const persona = await this.personaRepository.findOne({
       where: { id: personaId },
+      relations: ['documentacion'],
     });
 
     if (!persona) {
       throw new Error('Persona not found');
     }
 
-    // Crea un objeto de Documentacion y asigna las rutas de los archivos
-    const documentacion = this.documentacionRepository.create({
-      ...filePaths, // Añade las rutas de los archivos
-      empleado: persona, // Relaciona el documento con la persona
-    });
+    let documentacion = persona.documentacion;
+
+    if (!documentacion) {
+      documentacion = this.documentacionRepository.create({
+        ...filePaths,
+        empleado: persona,
+      });
+    } else {
+      Object.assign(documentacion, filePaths);
+    }
 
     return await this.documentacionRepository.save(documentacion);
   }
@@ -89,7 +95,9 @@ export class DocumentacionService {
     });
 
     if (!persona || !persona.documentacion) {
-      throw new NotFoundException('Documentación no encontrada');
+      throw new NotFoundException(
+        'No se encontró la documentación para esta persona',
+      );
     }
 
     const filePaths = updateDocumentacionDto.filePaths;
@@ -110,6 +118,9 @@ export class DocumentacionService {
             await fs.promises.unlink(oldFile);
           } catch (err) {
             console.error(`Error al eliminar el archivo ${oldFile}:`, err);
+            throw new Error(
+              `No se pudo eliminar el archivo anterior: ${oldFilePath}`,
+            );
           }
         }
         persona.documentacion[key] = newFilePath;
@@ -117,9 +128,5 @@ export class DocumentacionService {
     }
 
     return await this.documentacionRepository.save(persona.documentacion);
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} documentacion`;
   }
 }

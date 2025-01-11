@@ -95,7 +95,7 @@ export class Persona {
   datosAcademicos: Formacademica;
 
   @OneToOne(() => Documentacion, (documentacion) => documentacion.empleado, {
-    cascade: ['insert'],
+    cascade: ['insert', 'update'],
   })
   @JoinColumn()
   documentacion: Documentacion;
