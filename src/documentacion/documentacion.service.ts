@@ -39,7 +39,7 @@ export class DocumentacionService {
     return await this.documentacionRepository.save(documentacion);
   }
 
-  // Nuevo método para guardar los archivos subidos
+  // Guardar documentación y agregar tipo de archivo
   async saveDocumentacion(
     filePaths: Record<string, string>,
     personaId: number,
@@ -65,6 +65,34 @@ export class DocumentacionService {
     }
 
     return await this.documentacionRepository.save(documentacion);
+  }
+
+  async getDocumentacion(personaId: number): Promise<Record<string, string>> {
+    const persona = await this.personaRepository.findOne({
+      where: { id: personaId },
+      relations: ['documentacion'],
+    });
+
+    if (!persona?.documentacion) {
+      throw new NotFoundException(
+        'No se encontró la documentación para esta persona',
+      );
+    }
+
+    // Retorna solo las rutas de los archivos de la persona
+    const documentacion = persona.documentacion;
+    const filePaths: Record<string, string> = {};
+
+    for (const key in documentacion) {
+      if (
+        documentacion.hasOwnProperty(key) &&
+        typeof documentacion[key] === 'string'
+      ) {
+        filePaths[key] = documentacion[key];
+      }
+    }
+
+    return filePaths;
   }
 
   async create(createDocumentacionDto: CreateDocumentacionDto) {
@@ -94,7 +122,7 @@ export class DocumentacionService {
       relations: ['documentacion'],
     });
 
-    if (!persona || !persona.documentacion) {
+    if (!persona?.documentacion) {
       throw new NotFoundException(
         'No se encontró la documentación para esta persona',
       );
@@ -106,21 +134,22 @@ export class DocumentacionService {
       if (newFilePath) {
         const oldFilePath = persona.documentacion[key];
         if (oldFilePath) {
-          const oldFile = path.join(
-            __dirname,
-            '..',
-            '..',
-            'uploads',
-            oldFilePath,
-          );
           try {
-            await fs.promises.access(oldFile);
-            await fs.promises.unlink(oldFile);
-          } catch (err) {
-            console.error(`Error al eliminar el archivo ${oldFile}:`, err);
-            throw new Error(
-              `No se pudo eliminar el archivo anterior: ${oldFilePath}`,
+            const filePath = path.join(
+              __dirname,
+              '..',
+              '..',
+              'uploads',
+              oldFilePath,
             );
+            await fs.promises.access(filePath, fs.constants.F_OK); // Verifica si el archivo existe
+            await fs.promises.unlink(filePath); // Elimina el archivo si existe
+          } catch (err) {
+            console.error(
+              `Error al intentar eliminar el archivo ${oldFilePath}:`,
+              err,
+            );
+            // Maneja el error adecuadamente, por ejemplo, ignorando si no existe
           }
         }
         persona.documentacion[key] = newFilePath;

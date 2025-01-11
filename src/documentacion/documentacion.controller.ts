@@ -14,7 +14,8 @@ import { CreateDocumentacionDto } from './dto/create-documentacion.dto';
 import { UpdateDocumentacionDto } from './dto/update-documentacion.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
+import * as path from 'path';
 
 @Controller('documentacion')
 export class DocumentacionController {
@@ -131,8 +132,11 @@ export class DocumentacionController {
         storage: diskStorage({
           destination: './uploads',
           filename: (req, file, cb) => {
-            const fileName = `${Date.now()}${extname(file.originalname)}`;
-            cb(null, fileName);
+            // Obtener la extensión del archivo
+            const ext = extname(file.originalname);
+            // Crear un nuevo nombre con la extensión del archivo
+            const fileName = `${Date.now()}${ext}`; // El nombre del archivo ahora incluye la extensión
+            cb(null, fileName); // Pasar el nombre de archivo generado a la función cb
           },
         }),
         fileFilter: (req, file, cb) => {
@@ -190,8 +194,8 @@ export class DocumentacionController {
     }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.documentacionService.remove(+id);
-  }
+  //@Delete(':id')
+  //remove(@Param('id') id: string) {
+  //  return this.documentacionService.remove(+id);
+  //}
 }
