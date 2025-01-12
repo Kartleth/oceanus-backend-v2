@@ -111,8 +111,8 @@ export class DocumentacionController {
     try {
       console.log('Archivos recibidos:', files);
 
-      if (!files?.credencial) {
-        throw new Error('No se recibió el archivo de "credencial"');
+      if (!files || Object.keys(files).length === 0) {
+        throw new Error('No se recibieron archivos');
       }
 
       const filePaths = {};
