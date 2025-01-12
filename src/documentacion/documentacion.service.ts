@@ -178,6 +178,52 @@ export class DocumentacionService {
   //--------------------------------------------------------------------------------
 
   //--------------------------------------------------------------------------------
+  // Método para actualizar un documento específico de la persona
+  async updateSpecificDocument(
+    personaId: number,
+    fileKey: string,
+    newFilePath: string,
+  ): Promise<void> {
+    const persona = await this.personaRepository.findOne({
+      where: { id: personaId },
+      relations: ['documentacion'],
+    });
+
+    if (!persona?.documentacion) {
+      throw new NotFoundException(
+        'No se encontró la documentación para esta persona',
+      );
+    }
+
+    // Validación de fileKey si es necesario
+    if (!(fileKey in persona.documentacion)) {
+      throw new NotFoundException(
+        `No se encontró la clave de documento: ${fileKey}`,
+      );
+    }
+
+    const oldFilePath = persona.documentacion[fileKey];
+    if (oldFilePath) {
+      await this.deleteFileIfExists(oldFilePath);
+    }
+
+    persona.documentacion[fileKey] = newFilePath;
+    await this.documentacionRepository.save(persona.documentacion);
+  }
+
+  private async deleteFileIfExists(filePath: string): Promise<void> {
+    try {
+      const fullPath = path.join(__dirname, '..', '..', 'uploads', filePath);
+      await fs.promises.access(fullPath, fs.constants.F_OK);
+      await fs.promises.unlink(fullPath);
+    } catch (err) {
+      console.error(`Error al intentar eliminar el archivo ${filePath}:`, err);
+    }
+  }
+  // Fin del método para actualizar un documento específico de la persona
+  //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
   //Metodo para eliminar un documento de la persona
   async deleteDocument(personaId: number, fileKey: string): Promise<void> {
     const persona = await this.personaRepository.findOne({
