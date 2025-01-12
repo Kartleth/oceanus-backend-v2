@@ -201,19 +201,43 @@ export class DocumentacionService {
     const fullPath = path.join(__dirname, '..', '..', 'uploads', filePath);
 
     try {
-      await fs.promises.access(fullPath, fs.constants.F_OK);
-      await fs.promises.unlink(fullPath);
-      delete persona.documentacion[fileKey];
-      await this.documentacionRepository.save(persona.documentacion);
+      // Elimina el archivo del sistema de archivos
+      await fs.promises.access(fullPath, fs.constants.F_OK); // Verifica si el archivo existe
+      await fs.promises.unlink(fullPath); // Elimina el archivo
+      console.log(`Archivo eliminado del sistema de archivos: ${fullPath}`);
     } catch (err) {
       if (err.code === 'ENOENT') {
-        throw new NotFoundException(
-          `El archivo con la clave ${fileKey} ya ha sido eliminado o no existe.`,
+        console.warn(
+          `Archivo ya no existe en el sistema de archivos: ${fullPath}`,
         );
+      } else {
+        throw new Error(`Error al eliminar archivo: ${err.message}`);
       }
-      throw new Error(`Error al intentar eliminar el archivo: ${err.message}`);
+    }
+
+    // Elimina la referencia en la base de datos
+    // Elimina la referencia en la base de datos
+    try {
+      console.log(
+        'Documentación antes de eliminar el archivo:',
+        persona.documentacion,
+      );
+
+      // Actualizar la clave eliminada en el objeto
+      persona.documentacion[fileKey] = null;
+
+      // Guardar los cambios en la base de datos
+      await this.documentacionRepository.save(persona.documentacion);
+
+      console.log('Documentación después de guardar:', persona.documentacion);
+    } catch (err) {
+      console.error(`Error al actualizar la base de datos: ${err.message}`);
+      throw new Error(
+        'Error al eliminar la referencia del archivo en la base de datos',
+      );
     }
   }
+
   //Fin del metodo para eliminar un documento de la persona
   //--------------------------------------------------------------------------------
 }
