@@ -238,9 +238,8 @@ export class DocumentacionController {
         storage: diskStorage({
           destination: './uploads',
           filename: (req, file, cb) => {
-            const ext = extname(file.originalname);
-            const fileName = `${Date.now()}${ext}`;
-            cb(null, fileName);
+            const originalName = file.originalname;
+            cb(null, originalName); // Usar el nombre original del archivo
           },
         }),
         fileFilter: (req, file, cb) => {
