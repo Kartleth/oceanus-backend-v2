@@ -238,8 +238,10 @@ export class DocumentacionController {
         storage: diskStorage({
           destination: './uploads',
           filename: (req, file, cb) => {
-            const originalName = file.originalname;
-            cb(null, originalName); // Usar el nombre original del archivo
+            const fileKey = req.params.fileKey;
+            const ext = extname(file.originalname);
+            const fileName = `${Date.now()}-${fileKey}${ext}`;
+            cb(null, fileName);
           },
         }),
         fileFilter: (req, file, cb) => {
@@ -279,6 +281,7 @@ export class DocumentacionController {
 
     return { message: `${fileKey} actualizado correctamente`, newFilePath };
   }
+
   // Fin de la ruta para actualizar un archivo específico de documentación por su fileKey
   //--------------------------------------------------------------------------------
 
