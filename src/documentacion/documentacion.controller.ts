@@ -245,13 +245,29 @@ export class DocumentacionController {
           },
         }),
         fileFilter: (req, file, cb) => {
-          const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
-          if (
-            !allowedExtensions.includes(
-              extname(file.originalname).toLowerCase(),
-            )
-          ) {
-            return cb(new Error('Archivo no permitido'), false);
+          if (file.fieldname === 'foto') {
+            const allowedExtensions = ['.jpg', '.jpeg', '.png'];
+            if (
+              !allowedExtensions.includes(
+                extname(file.originalname).toLowerCase(),
+              )
+            ) {
+              return cb(
+                new Error(
+                  'Solo se permiten imágenes en formato JPG, JPEG o PNG para el campo "foto"',
+                ),
+                false,
+              );
+            }
+          } else {
+            const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
+            if (
+              !allowedExtensions.includes(
+                extname(file.originalname).toLowerCase(),
+              )
+            ) {
+              return cb(new Error('Archivo no permitido'), false);
+            }
           }
           cb(null, true);
         },
@@ -263,10 +279,9 @@ export class DocumentacionController {
   )
   async updateSpecificDocument(
     @Param('personaId') personaId: number,
-    @Param('fileKey') fileKey: string, // Este es el valor dinámico
+    @Param('fileKey') fileKey: string,
     @UploadedFiles() files: { [key: string]: Express.Multer.File[] },
   ) {
-    // Validar si se ha recibido el archivo
     if (!files[fileKey] || files[fileKey].length === 0) {
       throw new BadRequestException(`No se recibió el archivo para ${fileKey}`);
     }
