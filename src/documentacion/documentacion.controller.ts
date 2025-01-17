@@ -9,6 +9,7 @@ import {
   UploadedFiles,
   Delete,
   BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { DocumentacionService } from './documentacion.service';
 import { CreateDocumentacionDto } from './dto/create-documentacion.dto';
@@ -20,6 +21,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Persona } from 'src/personas/entities/persona.entity';
 import { Documentacion } from './entities/documentacion.entity';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('documentacion')
 export class DocumentacionController {
@@ -35,6 +37,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para agregar documentación a una persona (Es del metodo que borrare despues)
   @Post(':personaId')
+  @UseGuards(JwtAuthGuard)
   async addDocumentToPersona(
     @Param('personaId') personaId: number,
     @Body() createDocumentacionDto: CreateDocumentacionDto,
@@ -50,6 +53,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para obtener toda la documentación aun no implementada
   @Get()
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.documentacionService.findAll();
   }
@@ -59,6 +63,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para obtener la documentación de una persona por su id
   @Get(':id')
+  @UseGuards(JwtAuthGuard)
   async findOne(@Param('id') id: string) {
     return await this.documentacionService.findOne(+id);
   }
@@ -66,6 +71,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
 
   @Get(':personaId/getDoc/:documentKey')
+  @UseGuards(JwtAuthGuard)
   async getDocument(
     @Param('personaId') personaId: number,
     @Param('documentKey') documentKey: string,
@@ -125,6 +131,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para actualizar/editar archivos de documentación, sirve para agregar nuevo documento también
   @Patch('updateDoc/:personaId')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileFieldsInterceptor(
       [
@@ -215,9 +222,9 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para actualizar un archivo específico de documentación por su fileKey
   @Patch(':personaId/updateDoc/:fileKey')
+  @UseGuards(JwtAuthGuard)
   @UseInterceptors(
     FileFieldsInterceptor(
-      // Aquí puedes agregar todos los campos posibles
       [
         { name: 'credencial', maxCount: 1 },
         { name: 'licencia', maxCount: 1 },
@@ -245,30 +252,33 @@ export class DocumentacionController {
           },
         }),
         fileFilter: (req, file, cb) => {
-          if (file.fieldname === 'foto') {
-            const allowedExtensions = ['.jpg', '.jpeg', '.png'];
-            if (
-              !allowedExtensions.includes(
-                extname(file.originalname).toLowerCase(),
-              )
-            ) {
-              return cb(
-                new Error(
-                  'Solo se permiten imágenes en formato JPG, JPEG o PNG para el campo "foto"',
-                ),
-                false,
-              );
-            }
-          } else {
-            const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
-            if (
-              !allowedExtensions.includes(
-                extname(file.originalname).toLowerCase(),
-              )
-            ) {
-              return cb(new Error('Archivo no permitido'), false);
-            }
+          const allowedExtensions =
+            file.fieldname === 'foto'
+              ? ['.jpg', '.jpeg', '.png']
+              : ['.jpg', '.jpeg', '.png', '.pdf'];
+
+          // Verifica la extensión del archivo
+          if (
+            !allowedExtensions.includes(
+              extname(file.originalname).toLowerCase(),
+            )
+          ) {
+            console.error(`Archivo no permitido: ${file.originalname}`);
+            return cb(new Error('Archivo no permitido'), false);
           }
+
+          // Verifica el tamaño del archivo
+          const maxFileSize = 5 * 1024 * 1024; // 5 MB
+          if (file.size > maxFileSize) {
+            console.error(
+              `El archivo ${file.originalname} excede el límite de tamaño.`,
+            );
+            return cb(
+              new Error('El archivo excede el límite de tamaño permitido'),
+              false,
+            );
+          }
+
           cb(null, true);
         },
         limits: {
@@ -303,6 +313,7 @@ export class DocumentacionController {
   //--------------------------------------------------------------------------------
   // Ruta para eliminar un archivo de documentación
   @Delete(':personaId/deleteDoc/:fileKey')
+  @UseGuards(JwtAuthGuard)
   async deleteFile(
     @Param('personaId') personaId: number,
     @Param('fileKey') fileKey: string,
