@@ -24,10 +24,7 @@ export class Contrato {
   @PrimaryGeneratedColumn()
   idcontrato: number;
 
-  @Column({ default: null })
-  titulo: string;
-
-  @Column({ default: '0' })
+  @Column({ nullable: false })
   nombrecontrato: string;
 
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
