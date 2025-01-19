@@ -22,7 +22,7 @@ export class Documentacion {
   curp: string;
 
   @Column({ nullable: true })
-  inss: string;
+  nss: string;
 
   @Column({ nullable: true })
   constanciasat: string;
