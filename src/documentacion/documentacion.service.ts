@@ -261,18 +261,13 @@ export class DocumentacionService {
       }
     }
 
-    // Elimina la referencia en la base de datos
-    // Elimina la referencia en la base de datos
     try {
       console.log(
         'Documentación antes de eliminar el archivo:',
         persona.documentacion,
       );
 
-      // Actualizar la clave eliminada en el objeto
       persona.documentacion[fileKey] = null;
-
-      // Guardar los cambios en la base de datos
       await this.documentacionRepository.save(persona.documentacion);
 
       console.log('Documentación después de guardar:', persona.documentacion);
