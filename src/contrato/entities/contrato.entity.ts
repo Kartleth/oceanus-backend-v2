@@ -54,7 +54,7 @@ export class Contrato {
   })
   subcontrato: TipoSubcontrato;
 
-  @Column()
+  @Column({ nullable: true })
   idcontratofuente: number;
 
   @Column({ default: null })

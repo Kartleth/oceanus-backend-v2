@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ContratoService } from './contrato.service';
 import { CreateContratoDto } from './dto/create-contrato.dto';
 import { UpdateContratoDto } from './dto/update-contrato.dto';
@@ -8,7 +16,9 @@ export class ContratoController {
   constructor(private readonly contratoService: ContratoService) {}
 
   @Post()
-  create(@Body() createContratoDto: CreateContratoDto) {
+  async create(@Body() createContratoDto: CreateContratoDto) {
+    console.log('ContratoController => create => data =>', createContratoDto);
+
     return this.contratoService.create(createContratoDto);
   }
 
@@ -23,7 +33,10 @@ export class ContratoController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContratoDto: UpdateContratoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateContratoDto: UpdateContratoDto,
+  ) {
     return this.contratoService.update(+id, updateContratoDto);
   }
 
