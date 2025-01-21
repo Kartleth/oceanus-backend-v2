@@ -45,6 +45,9 @@ export class ContratoService {
         HttpStatus.NOT_FOUND,
       );
     }
+    const fianzas = [];
+    if (createContratoDto.fianza) {
+    }
     const contrato = await this.contratoRepository.save({
       nombrecontrato: createContratoDto.nombreContrato,
       facturas: createContratoDto.facturas,
@@ -56,6 +59,7 @@ export class ContratoService {
       fianzas: createContratoDto.fianza,
       montocontrato: createContratoDto.montoContrato,
       anticipocontrato: createContratoDto.anticipoContrato,
+      numerocontrato: createContratoDto.numeroContrato,
       contratado: empresaContratado,
       contratante: empresaContratante,
       direccion: createContratoDto.direccion,

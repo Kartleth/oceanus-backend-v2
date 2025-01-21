@@ -58,7 +58,7 @@ export class Contrato {
   idcontratofuente: number;
 
   @Column({ default: null })
-  numerocontrato: number;
+  numerocontrato: string;
 
   @Column({ type: 'timestamp' })
   iniciocontrato: Date;

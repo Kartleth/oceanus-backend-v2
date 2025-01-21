@@ -22,6 +22,7 @@ export class CreateContratoDto {
   montoContrato: number;
   anticipoContrato: number;
   direccion: string;
+  numeroContrato?: string;
   facturas?: Array<CreateFacturaDto>;
   ordenes?: Array<CreateOrdenServicioDto>;
 }
