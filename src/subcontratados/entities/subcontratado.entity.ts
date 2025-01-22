@@ -1,5 +1,9 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+export enum EstadoSubcontratado {
+  ACTIVO = 'Activo',
+  INACTIVO = 'Inactivo',
+}
 @Entity()
 export class Subcontratado {
   @PrimaryGeneratedColumn()
@@ -12,7 +16,7 @@ export class Subcontratado {
   rfc: string;
 
   @Column({ default: null })
-  inss: string;
+  nss: string;
 
   @Column({ default: null })
   ine: string;
@@ -20,7 +24,11 @@ export class Subcontratado {
   @Column({ default: null, length: 18 })
   curp: string;
 
-  @Column({ default: 'activo' })
+  @Column({
+    type: 'enum',
+    enum: EstadoSubcontratado,
+    default: EstadoSubcontratado.ACTIVO,
+  })
   estado: string;
 
   @Column({ default: null })

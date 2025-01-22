@@ -20,7 +20,7 @@ export class Docsubcontratado {
   rfc: string;
 
   @Column({ default: null })
-  inss: string;
+  nss: string;
 
   @Column({ default: null })
   ine: string;
