@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SubcontratadosService } from './subcontratados.service';
 import { CreateSubcontratadoDto } from './dto/create-subcontratado.dto';
 import { UpdateSubcontratadoDto } from './dto/update-subcontratado.dto';
@@ -23,7 +31,10 @@ export class SubcontratadosController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSubcontratadoDto: UpdateSubcontratadoDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSubcontratadoDto: UpdateSubcontratadoDto,
+  ) {
     return this.subcontratadosService.update(+id, updateSubcontratadoDto);
   }
 
