@@ -47,6 +47,7 @@ export class ContratoService {
     }
     const fianzas = [];
     if (createContratoDto.fianza) {
+      
     }
     const contrato = await this.contratoRepository.save({
       nombrecontrato: createContratoDto.nombreContrato,
