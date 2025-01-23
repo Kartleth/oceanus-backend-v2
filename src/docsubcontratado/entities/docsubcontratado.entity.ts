@@ -12,10 +12,6 @@ export class Docsubcontratado {
   @PrimaryGeneratedColumn()
   iddocsubc: number;
 
-  @OneToOne(() => Subcontratado)
-  @JoinColumn()
-  subcontratado: Subcontratado;
-
   @Column({ default: null })
   rfc: string;
 
@@ -30,4 +26,11 @@ export class Docsubcontratado {
 
   @Column({ default: null })
   foto: string;
+
+  @OneToOne(
+    () => Subcontratado,
+    (subcontratado) => subcontratado.docsubcontratado,
+  )
+  @JoinColumn()
+  subcontratado: Subcontratado;
 }

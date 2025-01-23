@@ -4,6 +4,8 @@ import { UpdateSubcontratadoDto } from './dto/update-subcontratado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subcontratado } from './entities/subcontratado.entity';
+import { Docsubcontratado } from 'src/docsubcontratado/entities/docsubcontratado.entity';
+import { CreateDocsubcontratadoDto } from 'src/docsubcontratado/dto/create-docsubcontratado.dto';
 
 @Injectable()
 export class SubcontratadosService {
@@ -11,6 +13,36 @@ export class SubcontratadosService {
     @InjectRepository(Subcontratado)
     private readonly subcontratadoRepository: Repository<Subcontratado>,
   ) {}
+
+  async addDocumentoSubcontratado(
+    subcontratadoId: number,
+    createDocsubcontratadoDto: CreateDocsubcontratadoDto,
+  ): Promise<Docsubcontratado> {
+    // Buscar al subcontratado con la relación 'docsubcontratado'
+    const subcontratado = await this.subcontratadoRepository.findOne({
+      where: { idsubcontratado: subcontratadoId },
+      relations: ['docsubcontratado'],
+    });
+
+    if (!subcontratado) {
+      throw new Error('Subcontratado no encontrado');
+    }
+
+    // Crear el nuevo documento asociado al subcontratado
+    const docsubcontratado = this.subcontratadoRepository.manager.create(
+      Docsubcontratado,
+      {
+        ...createDocsubcontratadoDto,
+        subcontratado, // Asociar el subcontratado
+      },
+    );
+
+    // Guardar el documento
+    return await this.subcontratadoRepository.manager.save(
+      Docsubcontratado,
+      docsubcontratado,
+    );
+  }
 
   async create(
     createSubcontratadoDto: CreateSubcontratadoDto,

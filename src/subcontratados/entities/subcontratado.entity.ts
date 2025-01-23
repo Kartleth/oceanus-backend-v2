@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Docsubcontratado } from 'src/docsubcontratado/entities/docsubcontratado.entity';
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum EstadoSubcontratado {
   ACTIVO = 'Activo',
@@ -33,4 +34,13 @@ export class Subcontratado {
 
   @Column({ default: null })
   doc: string;
+
+  @OneToOne(
+    () => Docsubcontratado,
+    (docsubcontratado) => docsubcontratado.subcontratado,
+    {
+      cascade: ['insert'],
+    },
+  )
+  docsubcontratado: Docsubcontratado;
 }
