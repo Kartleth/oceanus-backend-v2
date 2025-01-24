@@ -18,7 +18,9 @@ export class CreateContratoDto {
   inicioContrato: Date;
   finContrato: Date;
   convenio?: Array<CreateConvenioDto>;
-  fianza?: Array<CreateFianzaDto>;
+  fianzaCumplimiento?: CreateFianzaDto;
+  fianzaOculto?: CreateFianzaDto;
+  fianzaAnticipo?: CreateFianzaDto;
   montoContrato: number;
   anticipoContrato: number;
   direccion: string;

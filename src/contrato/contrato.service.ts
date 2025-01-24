@@ -32,12 +32,13 @@ export class ContratoService {
     @InjectRepository(PersonalContrato)
     private readonly personalContratoRepository: Repository<PersonalContrato>,
   ) {}
-  async create(createContratoDto: CreateContratoDto) {
+
+  async create(data: CreateContratoDto) {
     const empresaContratante = await this.empresaRepository.findOneBy({
-      idempresa: createContratoDto.idContratante,
+      idempresa: data.idContratante,
     });
     const empresaContratado = await this.empresaRepository.findOneBy({
-      idempresa: createContratoDto.idContratado,
+      idempresa: data.idContratado,
     });
     if (!empresaContratante || !empresaContratado) {
       throw new HttpException(
@@ -45,27 +46,65 @@ export class ContratoService {
         HttpStatus.NOT_FOUND,
       );
     }
-    const fianzas = [];
-    if (createContratoDto.fianza) {
-      
+    let fianzaAnticipo: Fianza | undefined;
+    if (data.fianzaAnticipo) {
+      fianzaAnticipo = await this.fianzaRepository.save({
+        anticipodoc: data.fianzaAnticipo.anticipodoc,
+        aseguradora: data.fianzaAnticipo.aseguradora,
+        documento: data.fianzaAnticipo.documento,
+        fin: data.fianzaAnticipo.fin,
+        inicio: data.fianzaAnticipo.inicio,
+        monto: data.fianzaAnticipo.monto,
+        poliza: data.fianzaAnticipo.poliza,
+        tipodecambio: data.fianzaAnticipo.tipodecambio,
+      });
+    }
+    let fianzaOculto: Fianza | undefined;
+    if (data.fianzaOculto) {
+      fianzaOculto = await this.fianzaRepository.save({
+        anticipodoc: data.fianzaOculto.anticipodoc,
+        aseguradora: data.fianzaOculto.aseguradora,
+        documento: data.fianzaOculto.documento,
+        fin: data.fianzaOculto.fin,
+        inicio: data.fianzaOculto.inicio,
+        monto: data.fianzaOculto.monto,
+        poliza: data.fianzaOculto.poliza,
+        tipodecambio: data.fianzaOculto.tipodecambio,
+      });
+    }
+    let fianzaCumplimiento: Fianza | undefined;
+    if (data.fianzaCumplimiento) {
+      fianzaCumplimiento = await this.fianzaRepository.save({
+        anticipodoc: data.fianzaCumplimiento.anticipodoc,
+        aseguradora: data.fianzaCumplimiento.aseguradora,
+        documento: data.fianzaCumplimiento.documento,
+        fin: data.fianzaCumplimiento.fin,
+        inicio: data.fianzaCumplimiento.inicio,
+        monto: data.fianzaCumplimiento.monto,
+        poliza: data.fianzaCumplimiento.poliza,
+        tipodecambio: data.fianzaCumplimiento.tipodecambio,
+      });
+      console.log(fianzaAnticipo);
     }
     const contrato = await this.contratoRepository.save({
-      nombrecontrato: createContratoDto.nombreContrato,
-      facturas: createContratoDto.facturas,
-      ordenes: createContratoDto.ordenes,
-      subcontrato: createContratoDto.tipoSubcontrato,
-      iniciocontrato: createContratoDto.inicioContrato,
-      fincontrato: createContratoDto.finContrato,
-      convenios: createContratoDto.convenio,
-      fianzas: createContratoDto.fianza,
-      montocontrato: createContratoDto.montoContrato,
-      anticipocontrato: createContratoDto.anticipoContrato,
-      numerocontrato: createContratoDto.numeroContrato,
+      fianzaAnticipo: fianzaAnticipo,
+      fianzaCumplimiento: fianzaCumplimiento,
+      fianzaOculto: fianzaOculto,
+      nombrecontrato: data.nombreContrato,
+      facturas: data.facturas,
+      ordenes: data.ordenes,
+      subcontrato: data.tipoSubcontrato,
+      iniciocontrato: data.inicioContrato,
+      fincontrato: data.finContrato,
+      convenios: data.convenio,
+      montocontrato: data.montoContrato,
+      anticipocontrato: data.anticipoContrato,
+      numerocontrato: data.numeroContrato,
       contratado: empresaContratado,
       contratante: empresaContratante,
-      direccion: createContratoDto.direccion,
+      direccion: data.direccion,
     });
-    for (const persona of createContratoDto.personal) {
+    for (const persona of data.personal) {
       const personadb = await this.personaRepository.findOneBy({
         id: persona.idPersona,
       });

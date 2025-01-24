@@ -12,6 +12,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 export enum TipoSubcontrato {
@@ -70,9 +71,17 @@ export class Contrato {
   @JoinTable({ name: 'contrato_convenio' })
   convenios: Array<Convenio>;
 
-  @ManyToMany(() => Fianza, (fianza) => fianza.contratos)
-  @JoinTable({ name: 'contrato_fianza' })
-  fianzas: Array<Fianza>;
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaAnticipo: Fianza;
+
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaOculto: Fianza;
+
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaCumplimiento: Fianza;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   montocontrato: number;
