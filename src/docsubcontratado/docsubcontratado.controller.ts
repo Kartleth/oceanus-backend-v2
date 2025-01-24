@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFiles,
 } from '@nestjs/common';
 import { DocsubcontratadoService } from './docsubcontratado.service';
 import { CreateDocsubcontratadoDto } from './dto/create-docsubcontratado.dto';
@@ -14,6 +16,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Subcontratado } from 'src/subcontratados/entities/subcontratado.entity';
 import { Repository } from 'typeorm';
 import { Docsubcontratado } from './entities/docsubcontratado.entity';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { extname } from 'path';
 
 @Controller('docsubcontratado')
 export class DocsubcontratadoController {
@@ -99,6 +104,85 @@ export class DocsubcontratadoController {
       return { message: 'Error al obtener el documento', error: error.message };
     }
   }
+  // Fin de la ruta para obtener la documentación de un subcontratdo por el documentKey
+  //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  // Ruta para actualizar/editar archivos de documentación, sirve para agregar nuevo documento también
+  @Patch('updateDoc/:subcontratadoId')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'rfc', maxCount: 1 },
+        { name: 'nss', maxCount: 1 },
+        { name: 'ine', maxCount: 1 },
+        { name: 'curp', maxCount: 1 },
+        { name: 'foto', maxCount: 1 },
+      ],
+      {
+        storage: diskStorage({
+          destination: './uploadsSubcontratados',
+          filename: (req, file, cb) => {
+            const ext = extname(file.originalname);
+            const fileName = `${Date.now()}${ext}`;
+            cb(null, fileName);
+          },
+        }),
+        fileFilter: (req, file, cb) => {
+          const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
+          if (
+            !allowedExtensions.includes(
+              extname(file.originalname).toLowerCase(),
+            )
+          ) {
+            const errorMessage = `Archivo no permitido. Se esperaba uno de los siguientes formatos: ${allowedExtensions.join(', ')}`;
+            return cb(new Error(errorMessage), false);
+          }
+          cb(null, true);
+        },
+        limits: {
+          fileSize: 5 * 1024 * 1024, // Límite de 5MB para los archivos
+        },
+      },
+    ),
+  )
+  async updateDocumentFiles(
+    @Param('subcontratadoId') subcontratadoId: number,
+    @UploadedFiles() files: { [fieldname: string]: Express.Multer.File[] },
+    @Body() updateDocsubcontratadoDto: UpdateDocsubcontratadoDto,
+  ) {
+    try {
+      console.log('Archivos recibidos:', files);
+
+      if (!files || Object.keys(files).length === 0) {
+        throw new Error('No se recibieron archivos');
+      }
+
+      const filePaths = {};
+      for (const key in files) {
+        if (files[key]) {
+          filePaths[key] = files[key][0].filename;
+        }
+      }
+
+      console.log('Rutas generadas para guardar:', filePaths);
+
+      const updatedDto: UpdateDocsubcontratadoDto = {
+        ...updateDocsubcontratadoDto,
+        filePaths,
+      };
+
+      await this.docsubcontratadoService.updateDocumentacion(
+        subcontratadoId,
+        updatedDto,
+      );
+      return { message: 'Archivos actualizados correctamente', filePaths };
+    } catch (error) {
+      console.error('Error detallado al actualizar archivos:', error);
+      return { message: 'Error al actualizar archivos', error: error.message };
+    }
+  }
+
+  // Fin de la ruta para actualizar/editar archivos de documentación
   //--------------------------------------------------------------------------------
 }
