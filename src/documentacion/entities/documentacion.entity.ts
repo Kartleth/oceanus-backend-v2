@@ -1,60 +1,53 @@
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne } from 'typeorm';
 import { Persona } from 'src/personas/entities/persona.entity';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  OneToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 @Entity()
 export class Documentacion {
   @PrimaryGeneratedColumn()
   iddocumento: number;
 
-  @OneToOne(() => Persona)
-  @JoinColumn()
-  empleado: Persona;
-
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   credencial: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   licencia: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   pasaporte: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   cv: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   curp: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   nss: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   constanciasat: string;
 
-  @Column({ nullable: false })
+  @Column({ nullable: true })
   foto: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   actnacimiento: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   estcuenta: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   altasegsocial: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   cedulaprofe: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   copiacontrato: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   comprodomicilio: string;
+
+  @OneToOne(() => Persona, (persona) => persona.documentacion)
+  empleado: Persona;
 }

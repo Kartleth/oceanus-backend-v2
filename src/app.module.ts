@@ -24,7 +24,7 @@ import { FamiliaresModule } from './familiares/familiares.module';
 import { DatosMedicosModule } from './datos_medicos/datos_medicos.module';
 import { DocumentacionModule } from './documentacion/documentacion.module';
 import { DocsubcontratadoModule } from './docsubcontratado/docsubcontratado.module';
-
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     // Configurar el módulo de configuración
@@ -74,6 +74,8 @@ import { DocsubcontratadoModule } from './docsubcontratado/docsubcontratado.modu
     DocumentacionModule,
 
     DocsubcontratadoModule,
+
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

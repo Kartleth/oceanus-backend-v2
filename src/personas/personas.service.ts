@@ -69,6 +69,7 @@ export class PersonasService {
     const personas = await this.personasRepository.find({
       relations: { datosAcademicos: true, datosMedicos: true },
     });
+    console.log('Personas cargadas:', personas);
     return personas;
   }
 

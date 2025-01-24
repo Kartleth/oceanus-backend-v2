@@ -8,6 +8,7 @@ import {
   Delete,
   HttpException,
   HttpStatus,
+  UseGuards,
   Put,
 } from '@nestjs/common';
 import { PersonasService } from './personas.service';
@@ -15,7 +16,7 @@ import { CreatePersonaDatosCompletosDto } from './dto/create-persona.dto';
 import { UpdatePersonaDto } from './dto/update-persona.dto';
 import { DatosMedicosService } from 'src/datos_medicos/datos_medicos.service';
 import { FormacademicaService } from 'src/formacademica/formacademica.service';
-
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 @Controller('personas')
 export class PersonasController {
   constructor(
@@ -45,6 +46,7 @@ export class PersonasController {
   }
 
   @Get()
+  @UseGuards(JwtAuthGuard)
   async findAll() {
     return await this.personasService.findAll();
   }

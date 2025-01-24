@@ -36,6 +36,14 @@ export class UsuariosService {
     return user;
   }
 
+  async findOneByUsername(usuario: string): Promise<Usuario> {
+    const user = await this.usuarioRepository.findOne({ where: { usuario } });
+    if (!user) {
+      throw new Error(`Usuario con nombre de usuario ${usuario} no encontrado`);
+    }
+    return user;
+  }
+
   async update(
     id: number,
     updateUsuarioDto: Partial<Usuario>,
