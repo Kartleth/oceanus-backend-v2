@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  BadRequestException,
 } from '@nestjs/common';
 import { DocsubcontratadoService } from './docsubcontratado.service';
 import { CreateDocsubcontratadoDto } from './dto/create-docsubcontratado.dto';
@@ -184,5 +185,81 @@ export class DocsubcontratadoController {
   }
 
   // Fin de la ruta para actualizar/editar archivos de documentación
+  //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
+  // Ruta para actualizar un archivo específico de documentación por su fileKey
+  @Patch(':subcontratadoId/updateDoc/:fileKey')
+  @UseInterceptors(
+    FileFieldsInterceptor(
+      [
+        { name: 'rfc', maxCount: 1 },
+        { name: 'nss', maxCount: 1 },
+        { name: 'ine', maxCount: 1 },
+        { name: 'curp', maxCount: 1 },
+        { name: 'foto', maxCount: 1 },
+      ],
+      {
+        storage: diskStorage({
+          destination: './uploadsSubcontratados',
+          filename: (req, file, cb) => {
+            const fileKey = req.params.fileKey;
+            const ext = extname(file.originalname);
+            const fileName = `${Date.now()}-${fileKey}${ext}`;
+            cb(null, fileName);
+          },
+        }),
+        fileFilter: (req, file, cb) => {
+          const allowedExtensions =
+            file.fieldname === 'foto'
+              ? ['.jpg', '.jpeg', '.png']
+              : ['.jpg', '.jpeg', '.png', '.pdf'];
+
+          const fileExt = extname(file.originalname).toLowerCase();
+          if (!allowedExtensions.includes(fileExt)) {
+            console.error(`Archivo no permitido: ${file.originalname}`);
+            return cb(new Error('Archivo no permitido'), false);
+          }
+
+          const maxFileSize = 5 * 1024 * 1024; // 5 MB
+          if (file.size > maxFileSize) {
+            console.error(
+              `El archivo ${file.originalname} excede el límite de tamaño.`,
+            );
+            return cb(
+              new Error('El archivo excede el límite de tamaño permitido'),
+              false,
+            );
+          }
+
+          cb(null, true);
+        },
+        limits: {
+          fileSize: 5 * 1024 * 1024, // 5 MB
+        },
+      },
+    ),
+  )
+  async updateSpecificDocument(
+    @Param('subcontratadoId') subcontratadoId: number,
+    @Param('fileKey') fileKey: string,
+    @UploadedFiles() files: { [key: string]: Express.Multer.File[] },
+  ) {
+    if (!files[fileKey] || files[fileKey].length === 0) {
+      throw new BadRequestException(`No se recibió el archivo para ${fileKey}`);
+    }
+
+    const newFilePath = files[fileKey][0].filename;
+
+    await this.docsubcontratadoService.updateSpecificDocument(
+      subcontratadoId,
+      fileKey,
+      newFilePath,
+    );
+
+    return { message: `${fileKey} actualizado correctamente`, newFilePath };
+  }
+
+  // Fin de la ruta para actualizar un archivo específico de documentación por su fileKey
   //--------------------------------------------------------------------------------
 }

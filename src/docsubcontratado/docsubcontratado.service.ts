@@ -75,6 +75,55 @@ export class DocsubcontratadoService {
   //Fin del metodo para actualizar la documentación de la persona
   //--------------------------------------------------------------------------------
 
+  //--------------------------------------------------------------------------------
+  // Método para actualizar un documento específico de la persona
+  async updateSpecificDocument(
+    subcontratadoId: number,
+    fileKey: string,
+    newFilePath: string,
+  ): Promise<void> {
+    const subcontratado = await this.subcontratadoRepository.findOne({
+      where: { idsubcontratado: subcontratadoId },
+      relations: ['docsubcontratado'],
+    });
+
+    if (!subcontratado?.docsubcontratado) {
+      throw new NotFoundException(
+        'No se encontró la documentación para este subcontratado',
+      );
+    }
+
+    if (!(fileKey in subcontratado.docsubcontratado)) {
+      throw new NotFoundException(
+        `No se encontró la clave de documento: ${fileKey}`,
+      );
+    }
+
+    const oldFilePath = subcontratado.docsubcontratado[fileKey];
+    if (oldFilePath) {
+      await this.deleteFileIfExists(oldFilePath);
+    }
+
+    subcontratado.docsubcontratado[fileKey] = newFilePath;
+    await this.docsubcontratadoRepository.save(subcontratado.docsubcontratado);
+  }
+
+  private async deleteFileIfExists(filePath: string): Promise<void> {
+    try {
+      const fullPath = path.join(
+        __dirname,
+        '..',
+        '..',
+        'uploadsSubcontratados',
+        filePath,
+      );
+      await fs.promises.access(fullPath, fs.constants.F_OK);
+      await fs.promises.unlink(fullPath);
+    } catch (err) {
+      console.error(`Error al intentar eliminar el archivo ${filePath}:`, err);
+    }
+  }
+
   create(createDocsubcontratadoDto: CreateDocsubcontratadoDto) {
     return 'This action adds a new docsubcontratado';
   }
