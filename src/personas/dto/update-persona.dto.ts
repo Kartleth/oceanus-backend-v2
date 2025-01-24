@@ -23,5 +23,5 @@ export class UpdatePersonaDto extends PartialType(CreatePersonaDto) {
   estadocivil?: string;
   // Campos de datos médicos y formación académica
   formacademica?: UpdateFormacademicaDto;
-  datosmedico?: UpdateDatosMedicoDto;
+  datosMedico?: UpdateDatosMedicoDto;
 }

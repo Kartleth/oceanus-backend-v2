@@ -12,6 +12,10 @@ export class PersonasService {
   constructor(
     @InjectRepository(Persona)
     private readonly personasRepository: Repository<Persona>,
+    @InjectRepository(DatosMedico)
+    private readonly datosMedicosRepository: Repository<DatosMedico>,
+    @InjectRepository(Formacademica)
+    private readonly formacademicaRepository: Repository<Formacademica>,
   ) {}
 
   async create(data: CreatePersonaDto) {
@@ -78,7 +82,41 @@ export class PersonasService {
   }
 
   async update(id: number, updatePersonaDto: UpdatePersonaDto) {
-    //Codigo para hacer update que luego se va a agregar porque ahorita se esta arreglando la BD
+    const persona = await this.personasRepository.findOne({
+      relations: {
+        datosMedicos: true,
+        datosAcademicos: true,
+      },
+      where: { id: id },
+    });
+    const resultados = [];
+    if (updatePersonaDto.datosMedico) {
+      const datosMedicos = updatePersonaDto.datosMedico;
+      delete updatePersonaDto.datosMedico;
+      resultados.push(
+        await this.datosMedicosRepository.update(
+          { idmedicos: persona.datosMedicos.idmedicos },
+          datosMedicos,
+        ),
+      );
+    }
+    if (updatePersonaDto.datosAcademicos) {
+      const datosAcademicos = updatePersonaDto.datosAcademicos;
+      delete updatePersonaDto.datosAcademicos;
+      resultados.push(
+        await this.formacademicaRepository.update(
+          { idacademicos: persona.datosAcademicos.idacademicos },
+          datosAcademicos,
+        ),
+      );
+    }
+    if (Object.keys(updatePersonaDto).length === 0) {
+      return resultados;
+    }
+    resultados.push(
+      await this.personasRepository.update({ id: id }, updatePersonaDto),
+    );
+    return resultados;
   }
 
   async remove(id: number) {

@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { PersonasService } from './personas.service';
 import { CreatePersonaDatosCompletosDto } from './dto/create-persona.dto';
@@ -55,9 +56,12 @@ export class PersonasController {
     return await this.personasService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePersonaDto: UpdatePersonaDto) {
-    return this.personasService.update(+id, updatePersonaDto);
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updatePersonaDto: UpdatePersonaDto,
+  ) {
+    return await this.personasService.update(+id, updatePersonaDto);
   }
 
   @Delete(':id')

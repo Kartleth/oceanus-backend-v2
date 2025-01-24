@@ -12,6 +12,7 @@ import {
   ManyToMany,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 export enum TipoSubcontrato {
@@ -24,10 +25,7 @@ export class Contrato {
   @PrimaryGeneratedColumn()
   idcontrato: number;
 
-  @Column({ default: null })
-  titulo: string;
-
-  @Column({ default: '0' })
+  @Column({ nullable: false })
   nombrecontrato: string;
 
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
@@ -57,11 +55,11 @@ export class Contrato {
   })
   subcontrato: TipoSubcontrato;
 
-  @Column()
+  @Column({ nullable: true })
   idcontratofuente: number;
 
   @Column({ default: null })
-  numerocontrato: number;
+  numerocontrato: string;
 
   @Column({ type: 'timestamp' })
   iniciocontrato: Date;
@@ -73,9 +71,17 @@ export class Contrato {
   @JoinTable({ name: 'contrato_convenio' })
   convenios: Array<Convenio>;
 
-  @ManyToMany(() => Fianza, (fianza) => fianza.contratos)
-  @JoinTable({ name: 'contrato_fianza' })
-  fianzas: Array<Fianza>;
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaAnticipo: Fianza;
+
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaOculto: Fianza;
+
+  @OneToOne(() => Fianza)
+  @JoinColumn()
+  fianzaCumplimiento: Fianza;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   montocontrato: number;
