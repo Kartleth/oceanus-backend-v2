@@ -76,8 +76,8 @@ export class SubcontratadosService {
     return this.subcontratadoRepository.save(subcontratado);
   }
 
-  async remove(id: number): Promise<void> {
-    const subcontratado = await this.findOne(id);
-    await this.subcontratadoRepository.remove(subcontratado);
+  async remove(id: number) {
+    const result = await this.subcontratadoRepository.delete(id);
+    return result;
   }
 }

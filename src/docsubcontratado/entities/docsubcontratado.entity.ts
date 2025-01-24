@@ -30,6 +30,9 @@ export class Docsubcontratado {
   @OneToOne(
     () => Subcontratado,
     (subcontratado) => subcontratado.docsubcontratado,
+    {
+      onDelete: 'CASCADE',
+    },
   )
   @JoinColumn()
   subcontratado: Subcontratado;

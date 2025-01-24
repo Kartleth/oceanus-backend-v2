@@ -51,7 +51,8 @@ export class SubcontratadosController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.subcontratadosService.remove(+id);
+  async remove(@Param('id') id: string) {
+    console.log(id);
+    return await this.subcontratadosService.remove(+id);
   }
 }
