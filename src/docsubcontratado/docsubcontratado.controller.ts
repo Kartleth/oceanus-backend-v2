@@ -34,16 +34,6 @@ export class DocsubcontratadoController {
   findAll() {
     return this.docsubcontratadoService.findAll();
   }
-
-  //--------------------------------------------------------------------------------
-  // Ruta para obtener la documentación de una persona por su id
-  @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return this.docsubcontratadoService.findOne(+id);
-  }
-  // Fin de la ruta para obtener la documentación de una persona por su id
-  //--------------------------------------------------------------------------------
-
   @Patch(':id')
   update(
     @Param('id') id: string,
@@ -56,4 +46,59 @@ export class DocsubcontratadoController {
   remove(@Param('id') id: string) {
     return this.docsubcontratadoService.remove(+id);
   }
+
+  //--------------------------------------------------------------------------------
+  // Ruta para obtener la documentación de una persona por su id
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    return this.docsubcontratadoService.findOne(+id);
+  }
+  // Fin de la ruta para obtener la documentación de una persona por su id
+  //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
+  // Ruta para obtener la documentación de un subcontratdo por el documentKey
+  @Get(':subcontratadoId/getDoc/:documentKey')
+  async getDocument(
+    @Param('subcontratadoId') subcontratadoId: number,
+    @Param('documentKey') documentKey: string,
+  ) {
+    try {
+      const validDocumentKeys = ['rfc', 'nss', 'ine', 'curp', 'foto'];
+
+      if (!validDocumentKeys.includes(documentKey)) {
+        throw new Error('DocumentKey no válido');
+      }
+
+      const subcontratado = await this.subcontratadoRepository.findOne({
+        where: { idsubcontratado: subcontratadoId },
+      });
+
+      if (!subcontratado) {
+        throw new Error('Subcontratado no encontrado');
+      }
+
+      const docsubcontratado = await this.docsubcontratadoRepository.findOne({
+        where: { subcontratado: subcontratado },
+      });
+
+      if (!docsubcontratado) {
+        throw new Error('No se encontró documentación para este subcontratado');
+      }
+
+      const documentPath = docsubcontratado[documentKey];
+
+      if (!documentPath) {
+        throw new Error(`No se encontró el archivo para "${documentKey}"`);
+      }
+
+      const fileUrl = `http://localhost:3001/uploadsSubcontratados/${documentPath}`;
+      return { message: 'Archivo encontrado', fileUrl };
+    } catch (error) {
+      console.error('Error al obtener el documento:', error);
+      return { message: 'Error al obtener el documento', error: error.message };
+    }
+  }
+
+  //--------------------------------------------------------------------------------
 }
