@@ -1,7 +1,6 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
@@ -11,7 +10,6 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { DocsubcontratadoService } from './docsubcontratado.service';
-import { CreateDocsubcontratadoDto } from './dto/create-docsubcontratado.dto';
 import { UpdateDocsubcontratadoDto } from './dto/update-docsubcontratado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Subcontratado } from 'src/subcontratados/entities/subcontratado.entity';
@@ -31,26 +29,9 @@ export class DocsubcontratadoController {
     private readonly subcontratadoRepository: Repository<Subcontratado>,
   ) {}
 
-  @Post()
-  create(@Body() createDocsubcontratadoDto: CreateDocsubcontratadoDto) {
-    return this.docsubcontratadoService.create(createDocsubcontratadoDto);
-  }
-
   @Get()
   findAll() {
     return this.docsubcontratadoService.findAll();
-  }
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDocsubcontratadoDto: UpdateDocsubcontratadoDto,
-  ) {
-    return this.docsubcontratadoService.update(+id, updateDocsubcontratadoDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.docsubcontratadoService.remove(+id);
   }
 
   //--------------------------------------------------------------------------------
@@ -262,4 +243,15 @@ export class DocsubcontratadoController {
 
   // Fin de la ruta para actualizar un archivo específico de documentación por su fileKey
   //--------------------------------------------------------------------------------
+
+  //--------------------------------------------------------------------------------
+  // Ruta para eliminar un archivo de documentación
+  @Delete(':subcontratadoId/deleteDoc/:fileKey')
+  async deleteFile(
+    @Param('subcontratadoId') subcontratadoId: number,
+    @Param('fileKey') fileKey: string,
+  ) {
+    await this.docsubcontratadoService.deleteDocument(subcontratadoId, fileKey);
+    return { message: 'Archivo eliminado correctamente' };
+  }
 }

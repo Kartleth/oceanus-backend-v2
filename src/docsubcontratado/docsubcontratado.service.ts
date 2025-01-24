@@ -1,11 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateDocsubcontratadoDto } from './dto/create-docsubcontratado.dto';
 import { UpdateDocsubcontratadoDto } from './dto/update-docsubcontratado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Docsubcontratado } from './entities/docsubcontratado.entity';
 import { Repository } from 'typeorm';
 import { Subcontratado } from 'src/subcontratados/entities/subcontratado.entity';
-import path from 'path';
+import * as path from 'path';
 import * as fs from 'fs';
 
 @Injectable()
@@ -124,20 +123,81 @@ export class DocsubcontratadoService {
     }
   }
 
-  create(createDocsubcontratadoDto: CreateDocsubcontratadoDto) {
-    return 'This action adds a new docsubcontratado';
+  //--------------------------------------------------------------------------------
+  //Metodo para eliminar un documento de la persona
+  async deleteDocument(
+    subcontratadoId: number,
+    fileKey: string,
+  ): Promise<void> {
+    const subcontratado = await this.subcontratadoRepository.findOne({
+      where: { idsubcontratado: subcontratadoId },
+      relations: ['docsubcontratado'],
+    });
+
+    if (!subcontratado?.docsubcontratado) {
+      throw new NotFoundException(
+        'No se encontró la documentación para este subcontratado',
+      );
+    }
+
+    const filePath = subcontratado.docsubcontratado[fileKey];
+    console.log('filePath:', filePath);
+    if (!filePath) {
+      throw new NotFoundException(
+        `No se encontró el archivo con la clave ${fileKey}`,
+      );
+    }
+
+    const fullPath = path.join(
+      __dirname,
+      '..',
+      '..',
+      'uploadsSubcontratados',
+      filePath,
+    );
+
+    try {
+      await fs.promises.access(fullPath, fs.constants.F_OK);
+      await fs.promises.unlink(fullPath);
+      console.log(`Archivo eliminado del sistema de archivos: ${fullPath}`);
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        console.warn(
+          `Archivo ya no existe en el sistema de archivos: ${fullPath}`,
+        );
+      } else {
+        throw new Error(`Error al eliminar archivo: ${err.message}`);
+      }
+    }
+
+    try {
+      console.log(
+        'Documentación antes de eliminar el archivo:',
+        subcontratado.docsubcontratado,
+      );
+
+      subcontratado.docsubcontratado[fileKey] = null;
+      await this.docsubcontratadoRepository.save(
+        subcontratado.docsubcontratado,
+      );
+
+      console.log(
+        'Documentación después de guardar:',
+        subcontratado.docsubcontratado,
+      );
+    } catch (err) {
+      console.error(`Error al actualizar la base de datos: ${err.message}`);
+      throw new Error(
+        'Error al eliminar la referencia del archivo en la base de datos',
+      );
+    }
   }
+
+  //Fin del metodo para eliminar un documento de la persona
+  //--------------------------------------------------------------------------------
 
   findAll() {
     return `This action returns all docsubcontratado`;
-  }
-
-  update(id: number, updateDocsubcontratadoDto: UpdateDocsubcontratadoDto) {
-    return `This action updates a #${id} docsubcontratado`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} docsubcontratado`;
   }
 
   //--------------------------------------------------------------------------------
