@@ -56,7 +56,7 @@ export class Persona {
   @Column({ type: 'date' })
   iniciocontrato: Date;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   fincontrato: Date;
 
   @Column({ default: null, length: 50 })
