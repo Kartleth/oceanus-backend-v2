@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { SubcontratadosService } from './subcontratados.service';
 import { CreateSubcontratadoDto } from './dto/create-subcontratado.dto';
@@ -42,17 +43,25 @@ export class SubcontratadosController {
     return this.subcontratadosService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateSubcontratadoDto: UpdateSubcontratadoDto,
-  ) {
-    return this.subcontratadosService.update(+id, updateSubcontratadoDto);
-  }
+  //@Patch(':id')
+  //update(
+  //  @Param('id') id: string,
+  //  @Body() updateSubcontratadoDto: UpdateSubcontratadoDto,
+  //) {
+  //  return this.subcontratadosService.update(+id, updateSubcontratadoDto);
+  //}
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     console.log(id);
     return await this.subcontratadosService.remove(+id);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateSubcontratadoDto: UpdateSubcontratadoDto,
+  ) {
+    return await this.subcontratadosService.update(+id, updateSubcontratadoDto);
   }
 }
