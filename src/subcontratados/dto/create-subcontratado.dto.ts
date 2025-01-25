@@ -1,14 +1,13 @@
-import { IsEnum, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString, Length } from 'class-validator';
 import { EstadoSubcontratado } from '../entities/subcontratado.entity';
-import { PrimaryGeneratedColumn } from 'typeorm';
 
 export class CreateSubcontratadoDto {
-  @PrimaryGeneratedColumn()
   idSubcontratado: number;
 
   @IsString()
   nombre: string;
 
+  @Length(12, 13)
   @IsString()
   rfc: string;
 
@@ -18,6 +17,7 @@ export class CreateSubcontratadoDto {
   @IsString()
   ine: string;
 
+  @Length(17, 18)
   @IsString()
   curp: string;
 
