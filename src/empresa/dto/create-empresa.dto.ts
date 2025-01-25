@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsDate, IsEmail, IsOptional, IsString, Length } from 'class-validator';
 
 export class CreateEmpresaDto {
@@ -58,5 +59,6 @@ export class CreateEmpresaDto {
   nombrecontrato: string;
 
   @IsDate()
+  @Type(() => Date)
   fechavencimientoconstancia: Date;
 }
