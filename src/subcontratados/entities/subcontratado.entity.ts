@@ -30,7 +30,7 @@ export class Subcontratado {
     enum: EstadoSubcontratado,
     default: EstadoSubcontratado.ACTIVO,
   })
-  estado: EstadoSubcontratado;
+  estado: string;
 
   @Column({ default: null })
   doc: string;
