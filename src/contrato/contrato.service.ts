@@ -121,12 +121,40 @@ export class ContratoService {
     return { message: 'Contrato creado con exito.' };
   }
 
-  findAll() {
-    return `This action returns all contrato`;
+  async findAll() {
+    const contratos = await this.contratoRepository.find({
+      relations: {
+        facturas: true,
+        contratado: true,
+        contratante: true,
+        ordenes: true,
+        personalcontrato: { contrato: true, persona: true },
+        convenios: true,
+        fianzaAnticipo: true,
+        fianzaCumplimiento: true,
+        fianzaOculto: true,
+      },
+    });
+    console.dir('Contratos cargados:', contratos);
+    return contratos;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} contrato`;
+  async findOne(id: number) {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: id },
+      relations: {
+        facturas: true,
+        contratado: true,
+        contratante: true,
+        ordenes: true,
+        personalcontrato: true,
+        convenios: true,
+        fianzaAnticipo: true,
+        fianzaCumplimiento: true,
+        fianzaOculto: true,
+      },
+    });
+    return contrato;
   }
 
   update(id: number, updateContratoDto: UpdateContratoDto) {
