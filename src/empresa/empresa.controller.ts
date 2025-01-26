@@ -37,7 +37,8 @@ export class EmpresaController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.empresaService.remove(+id);
+  async remove(@Param('id') id: string) {
+    console.log(id);
+    return await this.empresaService.remove(+id);
   }
 }

@@ -34,8 +34,8 @@ export class EmpresaService {
     return this.empresaRepository.save(empresa);
   }
 
-  async remove(id: number): Promise<void> {
-    const empresa = await this.findOne(id);
-    await this.empresaRepository.remove(empresa);
+  async remove(id: number) {
+    const result = await this.empresaRepository.delete(id);
+    return result;
   }
 }
