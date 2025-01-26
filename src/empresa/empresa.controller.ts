@@ -17,6 +17,7 @@ export class EmpresaController {
 
   @Post()
   create(@Body() createEmpresaDto: CreateEmpresaDto) {
+    console.log('Datos recibidos:', createEmpresaDto);
     return this.empresaService.create(createEmpresaDto);
   }
 

@@ -10,7 +10,7 @@ export class Empresa {
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ nullable: false })
+  @Column({ nullable: false, length: 150 })
   razonsocial: string;
 
   @Column({ default: null })
@@ -54,7 +54,7 @@ export class Empresa {
   @Column({ default: null })
   nombrecontrato: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   fechavencimientoconstancia: Date;
 
   //otro
