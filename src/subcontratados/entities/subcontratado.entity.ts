@@ -1,5 +1,12 @@
 import { Docsubcontratado } from 'src/docsubcontratado/entities/docsubcontratado.entity';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Empresa } from 'src/empresa/entities/empresa.entity';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 export enum EstadoSubcontratado {
   ACTIVO = 'Activo',
@@ -43,4 +50,7 @@ export class Subcontratado {
     },
   )
   docsubcontratado: Docsubcontratado;
+
+  @OneToMany(() => Empresa, (empresa) => empresa.subcontratado)
+  empresa: Empresa;
 }

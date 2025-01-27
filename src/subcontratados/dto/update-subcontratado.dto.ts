@@ -5,6 +5,7 @@ import { EstadoSubcontratado } from '../entities/subcontratado.entity';
 export class UpdateSubcontratadoDto extends PartialType(
   CreateSubcontratadoDto,
 ) {
+  idEmpresa?: number;
   nombre?: string;
   rfc?: string;
   nss?: string;

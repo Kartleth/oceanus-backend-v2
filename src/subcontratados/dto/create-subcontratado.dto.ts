@@ -4,6 +4,8 @@ import { EstadoSubcontratado } from '../entities/subcontratado.entity';
 export class CreateSubcontratadoDto {
   idSubcontratado: number;
 
+  idEmpresa: number;
+
   @IsString()
   nombre: string;
 
