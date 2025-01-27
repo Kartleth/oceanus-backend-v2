@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { ContratoService } from './contrato.service';
 import { CreateContratoDto } from './dto/create-contrato.dto';
 import { UpdateContratoDto } from './dto/update-contrato.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('contrato')
 export class ContratoController {
@@ -23,13 +25,14 @@ export class ContratoController {
   }
 
   @Get()
-  findAll() {
-    return this.contratoService.findAll();
+  @UseGuards(JwtAuthGuard)
+   async findAll() {
+    return  await this.contratoService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contratoService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.contratoService.findOne(+id);
   }
 
   @Patch(':id')
