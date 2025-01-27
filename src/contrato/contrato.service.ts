@@ -157,7 +157,36 @@ export class ContratoService {
     return contrato;
   }
 
-  update(id: number, updateContratoDto: UpdateContratoDto) {
+  async update(id: number, updateContratoDto: UpdateContratoDto) {
+    const contrato = await this.contratoRepository.findOne({
+      relations: {
+        facturas: true,
+        contratado: true,
+        contratante: true,
+        ordenes: true,
+        personalcontrato: true,
+        convenios: true,
+        fianzaAnticipo: true,
+        fianzaCumplimiento: true,
+        fianzaOculto: true,
+      },
+      where: {idcontrato: id},
+    })
+    const resultados = [];
+    if (updateContratoDto.fianzaAnticipo) {
+      const fianzaAnticipo = updateContratoDto.fianzaAnticipo;
+      delete updateContratoDto.fianzaanticipo;
+      resultados.push(
+        await this.fianzaRepository.update(
+          {idfianza: contrato.fianzaAnticipo.idfianza},
+          fianzaAnticipo,
+        )
+      )
+
+    }
+    if (updateContratoDto.fianzaCumplimiento){
+      
+    }
     return `This action updates a #${id} contrato`;
   }
 
