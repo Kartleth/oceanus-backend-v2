@@ -161,7 +161,8 @@ export class ContratoService {
     return `This action updates a #${id} contrato`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} contrato`;
+  async remove(id: number) {
+    const result = await this.contratoRepository.delete(id);
+    return result;
   }
 }
