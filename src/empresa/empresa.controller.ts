@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { EmpresaService } from './empresa.service';
 import { CreateEmpresaDto } from './dto/create-empresa.dto';
@@ -31,14 +32,23 @@ export class EmpresaController {
     return this.empresaService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateEmpresaDto: UpdateEmpresaDto) {
-    return this.empresaService.update(+id, updateEmpresaDto);
-  }
+  //@Patch(':id')
+  //update(@Param('id') id: string, @Body() updateEmpresaDto: UpdateEmpresaDto) {
+  //  return this.empresaService.update(+id, updateEmpresaDto);
+  //}
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
     console.log(id);
     return await this.empresaService.remove(+id);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateEmpresaDto: UpdateEmpresaDto,
+  ) {
+    console.log(updateEmpresaDto);
+    return await this.empresaService.update(+id, updateEmpresaDto);
   }
 }
