@@ -24,13 +24,13 @@ export class Empresa {
 
   //representante legal
   @Column({ default: null })
-  represenatelegal: string;
+  representantelegal: string;
 
   @Column({ default: null })
-  correoRepresenatelegal: string;
+  correoRepresentantelegal: string;
 
   @Column({ default: null })
-  telefonoRepresenatelegal: string;
+  telefonoRepresentantelegal: string;
 
   //Datos de facturación
   @Column({ nullable: false, length: 13 })
