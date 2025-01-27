@@ -6,23 +6,12 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Empresa {
+  //Información de la empresa
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ default: '0' })
-  logo: string;
-
-  @Column({ nullable: false, length: 13 })
-  rfc: string;
-
-  @Column({ default: '0' })
+  @Column({ nullable: false, length: 150 })
   razonsocial: string;
-
-  @Column({ default: '0' })
-  representantelegal: string;
-
-  @Column({ default: null })
-  nombrecontrato: string;
 
   @Column({ default: null })
   correo: string;
@@ -31,7 +20,30 @@ export class Empresa {
   telefono: string;
 
   @Column({ default: null })
+  logo: string;
+
+  //representante legal
+  @Column({ default: null })
+  representantelegal: string;
+
+  @Column({ default: null })
+  correoRepresentantelegal: string;
+
+  @Column({ default: null })
+  telefonoRepresentantelegal: string;
+
+  //Datos de facturación
+  @Column({ nullable: false, length: 13 })
+  rfc: string;
+
+  @Column({ default: null })
   correofacturacion: string;
+
+  @Column({ default: null, length: 200 })
+  constanciafiscal: string;
+
+  @Column({ default: null })
+  tiporegimen: string;
 
   @Column({ default: null })
   numerocuenta: string;
@@ -40,14 +52,12 @@ export class Empresa {
   banco: string;
 
   @Column({ default: null })
-  tiporegimen: string;
+  nombrecontrato: string;
 
-  @Column({ default: null, length: 200 })
-  constanciafiscal: string;
-
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   fechavencimientoconstancia: Date;
 
+  //otro
   @OneToMany(() => Contrato, (contrato) => contrato.contratante)
   contratosEmitidos: Array<Contrato>;
 
