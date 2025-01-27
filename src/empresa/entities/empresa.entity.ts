@@ -80,6 +80,6 @@ export class Empresa {
   @OneToMany(() => Factura, (factura) => factura.empresa)
   facturas: Array<Factura>;
 
-  @ManyToMany(() => Subcontratado, (subcontratado) => subcontratado.empresa)
-  subcontratado: Array<Subcontratado>;
+  @OneToMany(() => Subcontratado, (subcontratado) => subcontratado.empresa)
+  subcontratado: Subcontratado[];
 }

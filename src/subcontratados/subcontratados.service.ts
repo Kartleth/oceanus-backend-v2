@@ -6,12 +6,15 @@ import { Repository } from 'typeorm';
 import { Subcontratado } from './entities/subcontratado.entity';
 import { Docsubcontratado } from 'src/docsubcontratado/entities/docsubcontratado.entity';
 import { CreateDocsubcontratadoDto } from 'src/docsubcontratado/dto/create-docsubcontratado.dto';
+import { Empresa } from 'src/empresa/entities/empresa.entity';
 
 @Injectable()
 export class SubcontratadosService {
   constructor(
     @InjectRepository(Subcontratado)
     private readonly subcontratadoRepository: Repository<Subcontratado>,
+    @InjectRepository(Empresa)
+    private readonly empresaRepository: Repository<Empresa>,
   ) {}
 
   async addDocumentoSubcontratado(
@@ -47,9 +50,24 @@ export class SubcontratadosService {
   async create(
     createSubcontratadoDto: CreateSubcontratadoDto,
   ): Promise<Subcontratado> {
-    const newSubcontratado = this.subcontratadoRepository.create(
-      createSubcontratadoDto,
-    );
+    const { idEmpresa, ...subcontratadoData } = createSubcontratadoDto;
+
+    const newSubcontratado =
+      this.subcontratadoRepository.create(subcontratadoData);
+
+    if (idEmpresa) {
+      const empresa = await this.empresaRepository.findOne({
+        where: { idempresa: idEmpresa },
+      });
+
+      if (!empresa) {
+        throw new NotFoundException(
+          `Empresa con ID ${idEmpresa} no encontrada`,
+        );
+      }
+      newSubcontratado.empresa = empresa;
+    }
+
     return this.subcontratadoRepository.save(newSubcontratado);
   }
 

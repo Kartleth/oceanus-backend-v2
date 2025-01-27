@@ -3,6 +3,8 @@ import { Empresa } from 'src/empresa/entities/empresa.entity';
 import {
   Column,
   Entity,
+  JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -51,6 +53,9 @@ export class Subcontratado {
   )
   docsubcontratado: Docsubcontratado;
 
-  @OneToMany(() => Empresa, (empresa) => empresa.subcontratado)
+  @ManyToOne(() => Empresa, (empresa) => empresa.subcontratado, {
+    eager: true,
+  })
+  @JoinColumn({ name: 'idEmpresa' })
   empresa: Empresa;
 }
