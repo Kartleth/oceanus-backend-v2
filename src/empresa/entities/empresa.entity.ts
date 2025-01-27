@@ -19,7 +19,7 @@ export class Empresa {
   razonsocial: string;
 
   @Column({ default: '0' })
-  represenatelegal: string;
+  representantelegal: string;
 
   @Column({ default: null })
   nombrecontrato: string;

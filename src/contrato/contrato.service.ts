@@ -47,42 +47,42 @@ export class ContratoService {
       );
     }
     let fianzaAnticipo: Fianza | undefined;
-    if (data.fianzaAnticipo) {
+    if (data.fianzaanticipo) {
       fianzaAnticipo = await this.fianzaRepository.save({
-        anticipodoc: data.fianzaAnticipo.anticipodoc,
-        aseguradora: data.fianzaAnticipo.aseguradora,
-        documento: data.fianzaAnticipo.documento,
-        fin: data.fianzaAnticipo.fin,
-        inicio: data.fianzaAnticipo.inicio,
-        monto: data.fianzaAnticipo.monto,
-        poliza: data.fianzaAnticipo.poliza,
-        tipodecambio: data.fianzaAnticipo.tipodecambio,
+        anticipodoc: data.fianzaanticipo.anticipodoc,
+        aseguradora: data.fianzaanticipo.aseguradora,
+        documento: data.fianzaanticipo.documento,
+        fin: data.fianzaanticipo.fin,
+        inicio: data.fianzaanticipo.inicio,
+        monto: data.fianzaanticipo.monto,
+        poliza: data.fianzaanticipo.poliza,
+        tipodecambio: data.fianzaanticipo.tipodecambio,
       });
     }
     let fianzaOculto: Fianza | undefined;
-    if (data.fianzaOculto) {
+    if (data.fianzaoculto) {
       fianzaOculto = await this.fianzaRepository.save({
-        anticipodoc: data.fianzaOculto.anticipodoc,
-        aseguradora: data.fianzaOculto.aseguradora,
-        documento: data.fianzaOculto.documento,
-        fin: data.fianzaOculto.fin,
-        inicio: data.fianzaOculto.inicio,
-        monto: data.fianzaOculto.monto,
-        poliza: data.fianzaOculto.poliza,
-        tipodecambio: data.fianzaOculto.tipodecambio,
+        anticipodoc: data.fianzaoculto.anticipodoc,
+        aseguradora: data.fianzaoculto.aseguradora,
+        documento: data.fianzaoculto.documento,
+        fin: data.fianzaoculto.fin,
+        inicio: data.fianzaoculto.inicio,
+        monto: data.fianzaoculto.monto,
+        poliza: data.fianzaoculto.poliza,
+        tipodecambio: data.fianzaoculto.tipodecambio,
       });
     }
     let fianzaCumplimiento: Fianza | undefined;
-    if (data.fianzaCumplimiento) {
+    if (data.fianzacumplimiento) {
       fianzaCumplimiento = await this.fianzaRepository.save({
-        anticipodoc: data.fianzaCumplimiento.anticipodoc,
-        aseguradora: data.fianzaCumplimiento.aseguradora,
-        documento: data.fianzaCumplimiento.documento,
-        fin: data.fianzaCumplimiento.fin,
-        inicio: data.fianzaCumplimiento.inicio,
-        monto: data.fianzaCumplimiento.monto,
-        poliza: data.fianzaCumplimiento.poliza,
-        tipodecambio: data.fianzaCumplimiento.tipodecambio,
+        anticipodoc: data.fianzacumplimiento.anticipodoc,
+        aseguradora: data.fianzacumplimiento.aseguradora,
+        documento: data.fianzacumplimiento.documento,
+        fin: data.fianzacumplimiento.fin,
+        inicio: data.fianzacumplimiento.inicio,
+        monto: data.fianzacumplimiento.monto,
+        poliza: data.fianzacumplimiento.poliza,
+        tipodecambio: data.fianzacumplimiento.tipodecambio,
       });
       console.log(fianzaAnticipo);
     }
@@ -94,8 +94,8 @@ export class ContratoService {
       facturas: data.facturas,
       ordenes: data.ordenes,
       subcontrato: data.tipoSubcontrato,
-      iniciocontrato: data.inicioContrato,
-      fincontrato: data.finContrato,
+      iniciocontrato: data.iniciocontrato,
+      fincontrato: data.fincontrato,
       convenios: data.convenio,
       montocontrato: data.montoContrato,
       anticipocontrato: data.anticipoContrato,

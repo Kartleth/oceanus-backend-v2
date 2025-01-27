@@ -61,10 +61,10 @@ export class Contrato {
   @Column({ default: null })
   numerocontrato: string;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date' })
   iniciocontrato: Date;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date', nullable: true })
   fincontrato: Date;
 
   @ManyToMany(() => Convenio, (convenio) => convenio.contratos)
