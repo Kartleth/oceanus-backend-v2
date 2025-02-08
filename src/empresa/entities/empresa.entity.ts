@@ -9,7 +9,7 @@ export class Empresa {
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ default: '0' })
+  @Column({ nullable: true })
   logo: string;
 
   @Column({ nullable: false, length: 13 })

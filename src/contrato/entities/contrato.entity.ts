@@ -73,15 +73,15 @@ export class Contrato {
 
   @OneToOne(() => Fianza)
   @JoinColumn()
-  fianzaAnticipo: Fianza;
+  fianzaanticipo: Fianza;
 
   @OneToOne(() => Fianza)
   @JoinColumn()
-  fianzaOculto: Fianza;
+  fianzaoculto: Fianza;
 
   @OneToOne(() => Fianza)
   @JoinColumn()
-  fianzaCumplimiento: Fianza;
+  fianzacumplimiento: Fianza;
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   montocontrato: number;

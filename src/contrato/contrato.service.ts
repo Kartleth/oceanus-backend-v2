@@ -130,9 +130,9 @@ export class ContratoService {
         ordenes: true,
         personalcontrato: { contrato: true, persona: true },
         convenios: true,
-        fianzaAnticipo: true,
-        fianzaCumplimiento: true,
-        fianzaOculto: true,
+        fianzaanticipo: true,
+        fianzacumplimiento: true,
+        fianzaoculto: true,
       },
     });
     console.dir('Contratos cargados:', contratos);
@@ -149,9 +149,9 @@ export class ContratoService {
         ordenes: true,
         personalcontrato: true,
         convenios: true,
-        fianzaAnticipo: true,
-        fianzaCumplimiento: true,
-        fianzaOculto: true,
+        fianzaanticipo: true,
+        fianzacumplimiento: true,
+        fianzaoculto: true,
       },
     });
     return contrato;
@@ -166,28 +166,53 @@ export class ContratoService {
         ordenes: true,
         personalcontrato: true,
         convenios: true,
-        fianzaAnticipo: true,
-        fianzaCumplimiento: true,
-        fianzaOculto: true,
+        fianzaanticipo: true,
+        fianzacumplimiento: true,
+        fianzaoculto: true,
       },
-      where: {idcontrato: id},
-    })
+      where: { idcontrato: id },
+    });
     const resultados = [];
-    if (updateContratoDto.fianzaAnticipo) {
-      const fianzaAnticipo = updateContratoDto.fianzaAnticipo;
+    if (updateContratoDto.fianzaanticipo) {
+      const fianzaAnticipo = updateContratoDto.fianzaanticipo;
       delete updateContratoDto.fianzaanticipo;
       resultados.push(
         await this.fianzaRepository.update(
-          {idfianza: contrato.fianzaAnticipo.idfianza},
+          { idfianza: contrato.fianzaanticipo.idfianza },
           fianzaAnticipo,
-        )
-      )
-
+        ),
+      );
     }
-    if (updateContratoDto.fianzaCumplimiento){
-      
+    if (updateContratoDto.fianzacumplimiento) {
+      const fianzaCumplimiento = updateContratoDto.fianzacumplimiento;
+      delete updateContratoDto.fianzacumplimiento;
+      resultados.push(
+        await this.fianzaRepository.update(
+          { idfianza: contrato.fianzacumplimiento.idfianza },
+          fianzaCumplimiento,
+        ),
+      );
     }
-    return `This action updates a #${id} contrato`;
+    if (updateContratoDto.fianzaoculto) {
+      const fianzaOculto = updateContratoDto.fianzaoculto;
+      delete updateContratoDto.fianzaoculto;
+      resultados.push(
+        await this.fianzaRepository.update(
+          { idfianza: contrato.fianzaoculto.idfianza },
+          fianzaOculto,
+        ),
+      );
+    }
+    if (Object.keys(updateContratoDto).length == 0) {
+      return resultados;
+    }
+    resultados.push(
+      await this.contratoRepository.update(
+        { idcontrato: id },
+        updateContratoDto,
+      ),
+    );
+    return resultados;
   }
 
   async remove(id: number) {
