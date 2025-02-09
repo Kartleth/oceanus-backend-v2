@@ -20,9 +20,22 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { username: user.username, sub: user.userId };
+    const validatedUser = await this.validateUser(user.usuario, user.password);
+    if (!validatedUser) {
+      throw new Error('Usuario o contraseña incorrectos');
+    }
+
+    const payload = { usuario: validatedUser.usuario, sub: validatedUser.id };
+
+    const access_token = this.jwtService.sign(payload);
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token,
+      user: {
+        id: validatedUser.id,
+        usuario: validatedUser.usuario,
+        type: validatedUser.type,
+      },
     };
   }
 }
