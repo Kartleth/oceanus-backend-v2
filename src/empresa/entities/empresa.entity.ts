@@ -10,7 +10,7 @@ export class Empresa {
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ nullable: false, length: 150 })
+  @Column({ nullable: true, length: 150 })
   razonsocial: string;
 
   @Column({ default: null })
@@ -19,7 +19,7 @@ export class Empresa {
   @Column({ default: null })
   telefono: string;
 
-  @Column({ default: null })
+  @Column({ nullable: true })
   logo: string;
 
   //representante legal
@@ -39,7 +39,7 @@ export class Empresa {
   @Column({ default: null })
   correofacturacion: string;
 
-  @Column({ default: null, length: 200 })
+  @Column({ nullable: true, length: 200 })
   constanciafiscal: string;
 
   @Column({ default: null })
