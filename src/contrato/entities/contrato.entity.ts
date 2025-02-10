@@ -61,7 +61,7 @@ export class Contrato {
   @Column({ default: null })
   numerocontrato: string;
 
-  @Column({ type: 'date' })
+  @Column({ type: 'date', nullable: true })
   iniciocontrato: Date;
 
   @Column({ type: 'date', nullable: true })

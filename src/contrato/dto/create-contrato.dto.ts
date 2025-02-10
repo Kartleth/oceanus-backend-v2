@@ -15,7 +15,7 @@ export class CreateContratoDto {
   idContratado: number;
   personal: Array<{ idPersona: number; tipoPersonal: TipoPersonal }>;
   tipoSubcontrato?: TipoSubcontrato;
-  iniciocontrato: Date;
+  iniciocontrato?: Date;
   fincontrato: Date;
   convenio?: Array<CreateConvenioDto>;
   fianzacumplimiento?: CreateFianzaDto;
