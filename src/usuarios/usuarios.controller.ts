@@ -66,7 +66,6 @@ export class UsuariosController {
   async login(@Body() loginDto: { usuario: string; password: string }) {
     const { usuario, password } = loginDto;
 
-    // Aquí puedes agregar lógica de validación de usuario y contraseña
     const usuarioValido = await this.usuariosService.validateUser(
       usuario,
       password,
@@ -76,5 +75,10 @@ export class UsuariosController {
       throw new Error('Usuario o contraseña incorrectos');
     }
     return { message: 'Login exitoso', usuario: usuarioValido };
+  }
+
+  @Patch('update-password')
+  async updatePassword(@Body() body: { usuario: string; newPassword: string }) {
+    return this.usuariosService.updatePassword(body.usuario, body.newPassword);
   }
 }

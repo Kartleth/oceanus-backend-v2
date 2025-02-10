@@ -3,29 +3,28 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
-import bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsuariosService {
   constructor(
-    @InjectRepository(Usuario) // Inyección del repositorio de TypeORM
-    private usuarioRepository: Repository<Usuario>,
+    @InjectRepository(Usuario)
+    private readonly usuarioRepository: Repository<Usuario>,
   ) {}
 
-  // Método para crear un usuario
-  async create(createUsuarioDto: CreateUsuarioDto): Promise<Usuario> {
-    //const salt = bcrypt.genSaltSync(); // Generar el salt
-    //createUsuarioDto.password = bcrypt.hashSync(
-    //  createUsuarioDto.password,
-    //  salt,
-    //); // Encriptar la contraseña
+  async create(createUsuarioDto: CreateUsuarioDto) {
+    const hashedPassword = await bcrypt.hash(createUsuarioDto.password, 10);
 
-    const usuario = this.usuarioRepository.create(createUsuarioDto);
-    return this.usuarioRepository.save(usuario);
+    const newUser = this.usuarioRepository.create({
+      ...createUsuarioDto,
+      password: hashedPassword,
+    });
+
+    return this.usuarioRepository.save(newUser);
   }
 
   findAll() {
-    return this.usuarioRepository.find(); // Obtener todos los usuarios
+    return this.usuarioRepository.find();
   }
 
   async findOne(id: number): Promise<Usuario> {
@@ -58,7 +57,7 @@ export class UsuariosService {
       updateUsuarioDto.password = bcrypt.hashSync(
         updateUsuarioDto.password,
         salt,
-      ); // Encripta si se actualiza la contraseña
+      );
     }
 
     await this.usuarioRepository.update(id, updateUsuarioDto);
@@ -97,16 +96,30 @@ export class UsuariosService {
     usuario: string,
     password: string,
   ): Promise<Usuario | null> {
-    // Buscar al usuario en la base de datos
     const foundUser = await this.usuarioRepository.findOne({
       where: { usuario },
     });
 
-    // Verificar que la contraseña sea correctas (USAR BYCRYPT PARA COMPARAR LAS CONTRASEÑAAAS)
-    if (foundUser && foundUser.password === password) {
+    if (foundUser && (await bcrypt.compare(password, foundUser.password))) {
       return foundUser;
     }
 
     return null;
+  }
+
+  async updatePassword(usuario: string, newPassword: string) {
+    const user = await this.usuarioRepository.findOne({
+      where: { usuario },
+    });
+
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+
+    await this.usuarioRepository.save(user);
+    return user;
   }
 }
