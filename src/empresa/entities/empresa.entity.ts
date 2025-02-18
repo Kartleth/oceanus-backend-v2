@@ -5,10 +5,10 @@ import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Empresa {
+export class Cliente {
   //Información de la empresa
   @PrimaryGeneratedColumn()
-  idempresa: number;
+  idCliente: number;
 
   @Column({ nullable: true, length: 150 })
   razonsocial: string;
