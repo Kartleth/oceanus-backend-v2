@@ -66,10 +66,10 @@ export class Cliente {
 
   @OneToMany(
     () => EmpresaPersonal,
-    (empresapersonal) => empresapersonal.empresa,
+    (empresapersonal) => empresapersonal.cliente,
   )
   empresapersonal: Array<EmpresaPersonal>;
 
-  @OneToMany(() => Factura, (factura) => factura.empresa)
+  @OneToMany(() => Factura, (factura) => factura.cliente)
   facturas: Array<Factura>;
 }
