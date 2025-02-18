@@ -14,7 +14,7 @@ export class Factura {
   idfactura: number;
 
   @ManyToOne(() => Cliente, (cliente) => cliente.facturas)
-  @JoinColumn({ name: 'idcontrato' })
+  @JoinColumn({ name: 'idCliente' })
   cliente: Cliente;
 
   @ManyToOne(() => Contrato, (contrato) => contrato.facturas)
