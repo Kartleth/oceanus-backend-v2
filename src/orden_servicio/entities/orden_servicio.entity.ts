@@ -1,5 +1,5 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
-import { Cliente } from 'src/empresa/entities/cliente.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import {
   Column,
   Entity,

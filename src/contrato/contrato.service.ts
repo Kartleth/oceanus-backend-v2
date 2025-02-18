@@ -4,7 +4,7 @@ import { UpdateContratoDto } from './dto/update-contrato.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contrato } from './entities/contrato.entity';
 import { Repository } from 'typeorm';
-import { Cliente } from 'src/empresa/entities/cliente.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Persona } from 'src/personas/entities/persona.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { Convenio } from 'src/convenio/entities/convenio.entity';

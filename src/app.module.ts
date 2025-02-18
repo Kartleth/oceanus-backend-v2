@@ -11,7 +11,7 @@ import { ContratoModule } from './contrato/contrato.module';
 import { ConvenioModule } from './convenio/convenio.module';
 import { PersonasModule } from './personas/personas.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
-import { ClienteModule } from './empresa/cliente.module';
+import { ClienteModule } from './cliente/cliente.module';
 import { NotificacionesModule } from './notificaciones/notificaciones.module';
 import { FianzaModule } from './fianza/fianza.module';
 import { SubcontratadosModule } from './subcontratados/subcontratados.module';

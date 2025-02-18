@@ -3,7 +3,7 @@ import { ContratoService } from './contrato.service';
 import { ContratoController } from './contrato.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Contrato } from './entities/contrato.entity';
-import { Cliente } from 'src/empresa/entities/cliente.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Persona } from 'src/personas/entities/persona.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { Factura } from 'src/factura/entities/factura.entity';
