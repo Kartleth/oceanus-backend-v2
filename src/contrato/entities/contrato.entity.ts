@@ -1,5 +1,5 @@
 import { Convenio } from 'src/convenio/entities/convenio.entity';
-import { Empresa } from 'src/empresa/entities/empresa.entity';
+import { Empresa } from 'src/empresa/entities/cliente.entity';
 import { Factura } from 'src/factura/entities/factura.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
