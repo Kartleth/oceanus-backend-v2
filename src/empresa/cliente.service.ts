@@ -1,41 +1,41 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmpresaDto } from './dto/create-empresa.dto';
-import { UpdateEmpresaDto } from './dto/update-empresa.dto';
+import { CreateClienteDto } from './dto/create-cliente.dto';
+import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Empresa } from './entities/cliente.entity';
+import { Cliente } from './entities/cliente.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
-export class EmpresaService {
+export class ClienteService {
   constructor(
-    @InjectRepository(Empresa)
-    private readonly empresaRepository: Repository<Empresa>,
+    @InjectRepository(Cliente)
+    private readonly clienteRepository: Repository<Cliente>,
   ) {}
 
-  async create(createEmpresaDto: CreateEmpresaDto): Promise<Empresa> {
-    const nuevaEmpresa = this.empresaRepository.create(createEmpresaDto);
-    return this.empresaRepository.save(nuevaEmpresa);
+  async create(createClienteDto: CreateClienteDto): Promise<Cliente> {
+    const nuevoCliente = this.clienteRepository.create(createClienteDto);
+    return this.clienteRepository.save(nuevoCliente);
   }
 
-  async findAll(): Promise<Empresa[]> {
-    return this.empresaRepository.find();
+  async findAll(): Promise<Cliente[]> {
+    return this.clienteRepository.find();
   }
 
-  async findOne(id: number): Promise<Empresa> {
-    return this.empresaRepository.findOne({ where: { idempresa: id } });
+  async findOne(id: number): Promise<Cliente> {
+    return this.clienteRepository.findOne({ where: { idCliente: id } });
   }
 
   async update(
     id: number,
-    updateEmpresaDto: UpdateEmpresaDto,
-  ): Promise<Empresa> {
-    const empresa = await this.findOne(id);
-    Object.assign(empresa, updateEmpresaDto);
-    return this.empresaRepository.save(empresa);
+    updateClienteDto: UpdateClienteDto,
+  ): Promise<Cliente> {
+    const cliente = await this.findOne(id);
+    Object.assign(cliente, updateClienteDto);
+    return this.clienteRepository.save(cliente);
   }
 
   async remove(id: number) {
-    const result = await this.empresaRepository.delete(id);
+    const result = await this.clienteRepository.delete(id);
     return result;
   }
 }

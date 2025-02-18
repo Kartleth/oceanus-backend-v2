@@ -1,9 +1,9 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateEmpresaDto } from './create-empresa.dto';
+import { CreateClienteDto } from './create-cliente.dto';
 import { Type } from 'class-transformer';
 import { IsString, IsOptional, IsEmail, Length, IsDate } from 'class-validator';
 
-export class UpdateEmpresaDto extends PartialType(CreateEmpresaDto) {
+export class UpdateClienteDto extends PartialType(CreateClienteDto) {
   @IsString()
   razonsocial: string;
 
