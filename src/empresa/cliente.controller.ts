@@ -3,33 +3,32 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Put,
 } from '@nestjs/common';
-import { EmpresaService } from './cliente.service';
-import { CreateEmpresaDto } from './dto/create-empresa.dto';
-import { UpdateEmpresaDto } from './dto/update-empresa.dto';
+import { ClienteService } from './cliente.service';
+import { CreateClienteDto } from './dto/create-empresa.dto';
+import { UpdateClienteDto } from './dto/update-empresa.dto';
 
-@Controller('empresa')
-export class EmpresaController {
-  constructor(private readonly empresaService: EmpresaService) {}
+@Controller('cliente')
+export class ClienteController {
+  constructor(private readonly ClienteService: ClienteService) {}
 
   @Post()
-  create(@Body() createEmpresaDto: CreateEmpresaDto) {
-    console.log('Datos recibidos:', createEmpresaDto);
-    return this.empresaService.create(createEmpresaDto);
+  create(@Body() createClienteDto: CreateClienteDto) {
+    console.log('Datos recibidos:', createClienteDto);
+    return this.ClienteService.create(createClienteDto);
   }
 
   @Get()
   findAll() {
-    return this.empresaService.findAll();
+    return this.ClienteService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.empresaService.findOne(+id);
+    return this.ClienteService.findOne(+id);
   }
 
   //@Patch(':id')
@@ -40,15 +39,15 @@ export class EmpresaController {
   @Delete(':id')
   async remove(@Param('id') id: string) {
     console.log(id);
-    return await this.empresaService.remove(+id);
+    return await this.ClienteService.remove(+id);
   }
 
   @Put(':id')
   async update(
     @Param('id') id: string,
-    @Body() updateEmpresaDto: UpdateEmpresaDto,
+    @Body() updateClienteDto: UpdateClienteDto,
   ) {
-    console.log(updateEmpresaDto);
-    return await this.empresaService.update(+id, updateEmpresaDto);
+    console.log(updateClienteDto);
+    return await this.ClienteService.update(+id, updateClienteDto);
   }
 }
