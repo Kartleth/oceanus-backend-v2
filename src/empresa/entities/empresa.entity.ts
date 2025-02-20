@@ -6,6 +6,9 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Empresa {
+  static findOne(arg0: { where: { nombre: string } }) {
+    throw new Error('Method not implemented.');
+  }
   //Información de la empresa
   @PrimaryGeneratedColumn()
   idempresa: number;

@@ -5,6 +5,8 @@ import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -20,6 +22,10 @@ export enum TipoSubcontrato {
   ContratoOrigen = 'contrato origen',
   Cotizacion = 'cotizacion',
 }
+
+export enum Oceanus {
+  Oceanus = 'Oceanus',
+}
 @Entity()
 export class Contrato {
   @PrimaryGeneratedColumn()
@@ -28,9 +34,11 @@ export class Contrato {
   @Column({ nullable: false })
   nombrecontrato: string;
 
-  @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
-  @JoinColumn({ name: 'idcontratante' })
-  contratante: Empresa;
+  // @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
+  // @JoinColumn({ name: 'idcontratante' })
+  // contratante: Empresa;
+  @Column({ default: Oceanus.Oceanus, type: 'enum', enum: Oceanus })
+  contratante: Oceanus;
 
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosRecibidos)
   @JoinColumn({ name: 'idcontratado' })
