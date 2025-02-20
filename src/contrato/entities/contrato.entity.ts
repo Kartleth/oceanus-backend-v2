@@ -22,10 +22,6 @@ export enum TipoSubcontrato {
   ContratoOrigen = 'contrato origen',
   Cotizacion = 'cotizacion',
 }
-
-export enum Oceanus {
-  Oceanus = 'Oceanus',
-}
 @Entity()
 export class Contrato {
   @PrimaryGeneratedColumn()
@@ -33,12 +29,6 @@ export class Contrato {
 
   @Column({ nullable: false })
   nombrecontrato: string;
-
-  // @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
-  // @JoinColumn({ name: 'idcontratante' })
-  // contratante: Empresa;
-  @Column({ default: Oceanus.Oceanus, type: 'enum', enum: Oceanus })
-  contratante: Oceanus;
 
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosRecibidos)
   @JoinColumn({ name: 'idcontratado' })

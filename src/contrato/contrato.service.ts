@@ -34,55 +34,52 @@ export class ContratoService {
   ) {}
 
   async create(data: CreateContratoDto) {
-    const empresaContratante = await this.empresaRepository.findOneBy({
-      idempresa: data.idContratante,
-    });
     const empresaContratado = await this.empresaRepository.findOneBy({
       idempresa: data.idContratado,
     });
-    if (!empresaContratante || !empresaContratado) {
+    if (!empresaContratado) {
       throw new HttpException(
-        'Empresas contratante y contratados no encontradas',
+        'Empresa contratada no encontrada',
         HttpStatus.NOT_FOUND,
       );
     }
     let fianzaAnticipo: Fianza | undefined;
-    if (data.fianzaanticipo) {
+    if (data.fianzaAnticipo) {
       fianzaAnticipo = await this.fianzaRepository.save({
-        anticipodoc: data.fianzaanticipo.anticipodoc,
-        aseguradora: data.fianzaanticipo.aseguradora,
-        documento: data.fianzaanticipo.documento,
-        fin: data.fianzaanticipo.fin,
-        inicio: data.fianzaanticipo.inicio,
-        monto: data.fianzaanticipo.monto,
-        poliza: data.fianzaanticipo.poliza,
-        tipodecambio: data.fianzaanticipo.tipodecambio,
+        anticipodoc: data.fianzaAnticipo.anticipodoc,
+        aseguradora: data.fianzaAnticipo.aseguradora,
+        documento: data.fianzaAnticipo.documento,
+        fin: data.fianzaAnticipo.fin,
+        inicio: data.fianzaAnticipo.inicio,
+        monto: data.fianzaAnticipo.monto,
+        poliza: data.fianzaAnticipo.poliza,
+        tipodecambio: data.fianzaAnticipo.tipodecambio,
       });
     }
     let fianzaOculto: Fianza | undefined;
-    if (data.fianzaoculto) {
+    if (data.fianzaOculto) {
       fianzaOculto = await this.fianzaRepository.save({
-        anticipodoc: data.fianzaoculto.anticipodoc,
-        aseguradora: data.fianzaoculto.aseguradora,
-        documento: data.fianzaoculto.documento,
-        fin: data.fianzaoculto.fin,
-        inicio: data.fianzaoculto.inicio,
-        monto: data.fianzaoculto.monto,
-        poliza: data.fianzaoculto.poliza,
-        tipodecambio: data.fianzaoculto.tipodecambio,
+        anticipodoc: data.fianzaOculto.anticipodoc,
+        aseguradora: data.fianzaOculto.aseguradora,
+        documento: data.fianzaOculto.documento,
+        fin: data.fianzaOculto.fin,
+        inicio: data.fianzaOculto.inicio,
+        monto: data.fianzaOculto.monto,
+        poliza: data.fianzaOculto.poliza,
+        tipodecambio: data.fianzaOculto.tipodecambio,
       });
     }
     let fianzaCumplimiento: Fianza | undefined;
-    if (data.fianzacumplimiento) {
+    if (data.fianzaCumplimiento) {
       fianzaCumplimiento = await this.fianzaRepository.save({
-        anticipodoc: data.fianzacumplimiento.anticipodoc,
-        aseguradora: data.fianzacumplimiento.aseguradora,
-        documento: data.fianzacumplimiento.documento,
-        fin: data.fianzacumplimiento.fin,
-        inicio: data.fianzacumplimiento.inicio,
-        monto: data.fianzacumplimiento.monto,
-        poliza: data.fianzacumplimiento.poliza,
-        tipodecambio: data.fianzacumplimiento.tipodecambio,
+        anticipodoc: data.fianzaCumplimiento.anticipodoc,
+        aseguradora: data.fianzaCumplimiento.aseguradora,
+        documento: data.fianzaCumplimiento.documento,
+        fin: data.fianzaCumplimiento.fin,
+        inicio: data.fianzaCumplimiento.inicio,
+        monto: data.fianzaCumplimiento.monto,
+        poliza: data.fianzaCumplimiento.poliza,
+        tipodecambio: data.fianzaCumplimiento.tipodecambio,
       });
       console.log(fianzaAnticipo);
     }
@@ -101,7 +98,6 @@ export class ContratoService {
       anticipocontrato: data.anticipoContrato,
       numerocontrato: data.numeroContrato,
       contratado: empresaContratado,
-      contratante: empresaContratante,
       direccion: data.direccion,
     });
     for (const persona of data.personal) {
@@ -126,7 +122,6 @@ export class ContratoService {
       relations: {
         facturas: true,
         contratado: true,
-        contratante: true,
         ordenes: true,
         personalcontrato: { contrato: true, persona: true },
         convenios: true,
@@ -145,7 +140,6 @@ export class ContratoService {
       relations: {
         facturas: true,
         contratado: true,
-        contratante: true,
         ordenes: true,
         personalcontrato: true,
         convenios: true,

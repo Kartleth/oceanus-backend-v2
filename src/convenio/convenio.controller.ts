@@ -22,6 +22,8 @@ export class ConvenioController {
     return this.convenioService.findOne(+id);
   }
 
+  // findAllByContractId
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateConvenioDto: UpdateConvenioDto) {
     return this.convenioService.update(+id, updateConvenioDto);

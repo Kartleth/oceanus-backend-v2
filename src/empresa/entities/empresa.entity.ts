@@ -13,7 +13,7 @@ export class Empresa {
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ nullable: true, length: 150 })
+  @Column({ length: 150 })
   razonsocial: string;
 
   @Column({ default: null })
@@ -59,10 +59,6 @@ export class Empresa {
 
   @Column({ type: 'date', nullable: true })
   fechavencimientoconstancia: Date;
-
-  //otro
-  @OneToMany(() => Contrato, (contrato) => contrato.contratante)
-  contratosEmitidos: Array<Contrato>;
 
   @OneToMany(() => Contrato, (contrato) => contrato.contratado)
   contratosRecibidos: Array<Contrato>;

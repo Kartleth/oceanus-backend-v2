@@ -17,7 +17,7 @@ export class EmpresaService {
     return this.empresaRepository.save(nuevaEmpresa);
   }
 
-  async findAll(): Promise<Empresa[]> {
+  async findAll() {
     return this.empresaRepository.find();
   }
 
