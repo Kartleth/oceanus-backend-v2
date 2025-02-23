@@ -65,8 +65,7 @@ export class Contrato {
   @Column({ type: 'date', nullable: true })
   fincontrato: Date;
 
-  @ManyToMany(() => Convenio, (convenio) => convenio.contratos)
-  @JoinTable({ name: 'contrato_convenio' })
+  @OneToMany(() => Convenio, (convenio) => convenio.contrato)
   convenios: Array<Convenio>;
 
   @OneToOne(() => Fianza)
