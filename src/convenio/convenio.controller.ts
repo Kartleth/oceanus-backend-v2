@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ConvenioService } from './convenio.service';
 import { CreateConvenioDto } from './dto/create-convenio.dto';
 import { UpdateConvenioDto } from './dto/update-convenio.dto';
@@ -23,9 +31,16 @@ export class ConvenioController {
   }
 
   // findAllByContractId
+  @Get('contract/:contractId')
+  async findAllByContractId(@Param('contractId') contractId: string) {
+    return await this.convenioService.findAllByContractId(+contractId);
+  }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConvenioDto: UpdateConvenioDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateConvenioDto: UpdateConvenioDto,
+  ) {
     return this.convenioService.update(+id, updateConvenioDto);
   }
 
