@@ -32,7 +32,7 @@ export class ConvenioController {
   }
 
   // findAllByContractId
-  @Get('contract/:contractId')
+  @Get('contrato/:contractId')
   async findAllByContractId(@Param('contractId') contractId: string) {
     return await this.convenioService.findAllByContractId(+contractId);
   }
