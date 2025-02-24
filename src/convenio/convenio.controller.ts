@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ConvenioService } from './convenio.service';
 import { CreateConvenioDto } from './dto/create-convenio.dto';

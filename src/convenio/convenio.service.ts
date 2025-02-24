@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateConvenioDto } from './dto/create-convenio.dto';
 import { UpdateConvenioDto } from './dto/update-convenio.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -35,17 +40,27 @@ export class ConvenioService {
   async findAllByContractId(idcontrato: number) {
     return await this.convenioRepository
       .createQueryBuilder('convenio')
-      .leftJoinAndSelect('convenio.contratos', 'contrato')
-      .where('contrato.idcontrato = :contractId', { idcontrato })
+      .leftJoinAndSelect('convenio.contrato', 'contrato')
+      .where('contrato.idcontrato = :idcontrato', { idcontrato })
       .getMany();
   }
 
-  findAll() {
-    return `This action returns all convenio`;
+  async findAll() {
+    const convenios = await this.convenioRepository.find({
+      relations: { contrato: true },
+    });
+    console.log('Convenios cargados:', convenios);
+    return convenios;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} convenio`;
+  async findOne(id: number) {
+    const convenio = await this.convenioRepository.findOne({
+      where: { idconvenio: id },
+    });
+    if (!convenio) {
+      throw new NotFoundException(`Convenio con ID ${id} no encontrado`);
+    }
+    return convenio;
   }
 
   update(id: number, updateConvenioDto: UpdateConvenioDto) {
