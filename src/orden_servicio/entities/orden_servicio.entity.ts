@@ -1,12 +1,10 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
-import { Empresa } from 'src/empresa/entities/empresa.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
-  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 

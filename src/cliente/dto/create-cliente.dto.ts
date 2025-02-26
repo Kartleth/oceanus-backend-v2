@@ -1,4 +1,4 @@
-export class CreateEmpresaDto {
+export class CreateClienteDto {
   razonsocial: string;
   correo: string;
   telefono: string;

@@ -5,13 +5,10 @@ import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class Empresa {
-  static findOne(arg0: { where: { nombre: string } }) {
-    throw new Error('Method not implemented.');
-  }
+export class Cliente {
   //Información de la empresa
   @PrimaryGeneratedColumn()
-  idempresa: number;
+  idCliente: number;
 
   @Column({ length: 150 })
   razonsocial: string;
@@ -65,10 +62,10 @@ export class Empresa {
 
   @OneToMany(
     () => EmpresaPersonal,
-    (empresapersonal) => empresapersonal.empresa,
+    (empresapersonal) => empresapersonal.cliente,
   )
   empresapersonal: Array<EmpresaPersonal>;
 
-  @OneToMany(() => Factura, (factura) => factura.empresa)
+  @OneToMany(() => Factura, (factura) => factura.cliente)
   facturas: Array<Factura>;
 }

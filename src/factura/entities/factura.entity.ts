@@ -1,5 +1,5 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
-import { Empresa } from 'src/empresa/entities/empresa.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import {
   Column,
   Entity,
@@ -13,9 +13,9 @@ export class Factura {
   @PrimaryGeneratedColumn()
   idfactura: number;
 
-  @ManyToOne(() => Empresa, (empresa) => empresa.facturas)
-  @JoinColumn({ name: 'idempresa' })
-  empresa: Empresa;
+  @ManyToOne(() => Cliente, (cliente) => cliente.facturas)
+  @JoinColumn({ name: 'idCliente' })
+  cliente: Cliente;
 
   @ManyToOne(() => Contrato, (contrato) => contrato.facturas)
   @JoinColumn({ name: 'idcontrato' })

@@ -4,7 +4,7 @@ import { UpdateContratoDto } from './dto/update-contrato.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Contrato } from './entities/contrato.entity';
 import { Repository } from 'typeorm';
-import { Empresa } from 'src/empresa/entities/empresa.entity';
+import { Cliente } from 'src/cliente/entities/cliente.entity';
 import { Persona } from 'src/personas/entities/persona.entity';
 import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
@@ -17,8 +17,8 @@ export class ContratoService {
   constructor(
     @InjectRepository(Contrato)
     private readonly contratoRepository: Repository<Contrato>,
-    @InjectRepository(Empresa)
-    private readonly empresaRepository: Repository<Empresa>,
+    @InjectRepository(Cliente)
+    private readonly clienteRepository: Repository<Cliente>,
     @InjectRepository(Persona)
     private readonly personaRepository: Repository<Persona>,
     @InjectRepository(Fianza)
@@ -34,8 +34,11 @@ export class ContratoService {
   ) {}
 
   async create(data: CreateContratoDto) {
-    const empresaContratado = await this.empresaRepository.findOneBy({
-      idempresa: data.idContratado,
+    const empresaContratante = await this.clienteRepository.findOneBy({
+      idCliente: data.idContratante,
+    });
+    const empresaContratado = await this.clienteRepository.findOneBy({
+      idCliente: data.idContratado,
     });
     if (!empresaContratado) {
       throw new HttpException(

@@ -70,7 +70,7 @@ export class Persona {
 
   @OneToMany(
     () => EmpresaPersonal,
-    (empresapersonal) => empresapersonal.empresa,
+    (empresapersonal) => empresapersonal.cliente,
   )
   empresapersonal: Array<EmpresaPersonal>;
 
