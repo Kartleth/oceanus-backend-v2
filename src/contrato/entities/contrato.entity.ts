@@ -5,6 +5,8 @@ import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
+  BeforeInsert,
+  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
@@ -27,10 +29,6 @@ export class Contrato {
 
   @Column({ nullable: false })
   nombrecontrato: string;
-
-  @ManyToOne(() => Empresa, (empresa) => empresa.contratosEmitidos)
-  @JoinColumn({ name: 'idcontratante' })
-  contratante: Empresa;
 
   @ManyToOne(() => Empresa, (empresa) => empresa.contratosRecibidos)
   @JoinColumn({ name: 'idcontratado' })
@@ -67,8 +65,7 @@ export class Contrato {
   @Column({ type: 'date', nullable: true })
   fincontrato: Date;
 
-  @ManyToMany(() => Convenio, (convenio) => convenio.contratos)
-  @JoinTable({ name: 'contrato_convenio' })
+  @OneToMany(() => Convenio, (convenio) => convenio.contrato)
   convenios: Array<Convenio>;
 
   @OneToOne(() => Fianza)

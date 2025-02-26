@@ -1,23 +1,30 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
-import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Convenio {
   @PrimaryGeneratedColumn()
   idconvenio: number;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date', nullable: true })
   fechainicio: Date;
 
-  @Column({ type: 'timestamp' })
+  @Column({ type: 'date', nullable: true })
   fechafinal: Date;
 
-  @Column({ type: 'decimal', precision: 12, scale: 2 })
+  @Column({ type: 'decimal', precision: 12, scale: 2, nullable: true })
   montoadicional: number;
 
-  @Column()
+  @Column({ nullable: true })
   documento: string;
 
-  @ManyToMany(() => Contrato, (contrato) => contrato.convenios)
-  contratos: Array<Contrato>;
+  @ManyToOne(() => Contrato, (contrato) => contrato.convenios)
+  contrato: Contrato;
 }

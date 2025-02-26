@@ -6,11 +6,14 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Empresa {
+  static findOne(arg0: { where: { nombre: string } }) {
+    throw new Error('Method not implemented.');
+  }
   //Información de la empresa
   @PrimaryGeneratedColumn()
   idempresa: number;
 
-  @Column({ nullable: true, length: 150 })
+  @Column({ length: 150 })
   razonsocial: string;
 
   @Column({ default: null })
@@ -56,10 +59,6 @@ export class Empresa {
 
   @Column({ type: 'date', nullable: true })
   fechavencimientoconstancia: Date;
-
-  //otro
-  @OneToMany(() => Contrato, (contrato) => contrato.contratante)
-  contratosEmitidos: Array<Contrato>;
 
   @OneToMany(() => Contrato, (contrato) => contrato.contratado)
   contratosRecibidos: Array<Contrato>;
