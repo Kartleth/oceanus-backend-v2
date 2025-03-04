@@ -26,8 +26,8 @@ export class ContratoController {
 
   @Get()
   @UseGuards(JwtAuthGuard)
-   async findAll() {
-    return  await this.contratoService.findAll();
+  async findAll() {
+    return await this.contratoService.findAll();
   }
 
   @Get(':id')

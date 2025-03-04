@@ -43,6 +43,10 @@ export class Contrato {
   @OneToMany(
     () => PersonalContrato,
     (personalcontrato) => personalcontrato.contrato,
+    {
+      cascade: ['remove'],
+      onDelete: 'CASCADE',
+    },
   )
   personalcontrato: Array<PersonalContrato>;
 

@@ -1,6 +1,12 @@
 import { Contrato } from 'src/contrato/entities/contrato.entity';
 import { Persona } from 'src/personas/entities/persona.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 export enum TipoPersonal {
   Terceros = 'terceros',
   Oceanus = 'oceanus',
@@ -17,7 +23,10 @@ export class PersonalContrato {
 
   //@Column()
   //idcontrato: number;
-  @ManyToOne(() => Contrato, (contrato) => contrato.personalcontrato)
+  @ManyToOne(() => Contrato, (contrato) => contrato.personalcontrato, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'idcontratoclear' })
   contrato: Contrato;
 
   @Column({ type: 'enum', enum: TipoPersonal, default: TipoPersonal.Terceros })
