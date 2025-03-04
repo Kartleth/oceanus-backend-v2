@@ -34,9 +34,6 @@ export class ContratoService {
   ) {}
 
   async create(data: CreateContratoDto) {
-    const empresaContratante = await this.clienteRepository.findOneBy({
-      idCliente: data.idContratante,
-    });
     const empresaContratado = await this.clienteRepository.findOneBy({
       idCliente: data.idContratado,
     });
