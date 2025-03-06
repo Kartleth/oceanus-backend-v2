@@ -67,7 +67,8 @@ export class ConvenioService {
     return `This action updates a #${id} convenio`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} convenio`;
+  async remove(id: number) {
+    const result = await this.convenioRepository.delete(id);
+    return result;
   }
 }
