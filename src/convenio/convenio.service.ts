@@ -10,6 +10,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Convenio } from './entities/convenio.entity';
 import { Repository } from 'typeorm';
 import { Contrato } from 'src/contrato/entities/contrato.entity';
+import { ConvenioDto } from './dto/convenio.dto';
 
 @Injectable()
 export class ConvenioService {
@@ -38,11 +39,20 @@ export class ConvenioService {
   }
 
   async findAllByContractId(idcontrato: number) {
-    return await this.convenioRepository
+    const resultado = await this.convenioRepository
       .createQueryBuilder('convenio')
       .leftJoinAndSelect('convenio.contrato', 'contrato')
       .where('contrato.idcontrato = :idcontrato', { idcontrato })
       .getMany();
+    const convenios: Array<ConvenioDto> = resultado.map((convenio) => ({
+      documento: convenio.documento,
+      fechafinal: convenio.fechafinal,
+      fechainicio: convenio.fechainicio,
+      contrato: convenio.contrato,
+      idconvenio: convenio.idconvenio,
+      montoadicional: convenio.montoadicional,
+    }));
+    return convenios;
   }
 
   async findAll() {
