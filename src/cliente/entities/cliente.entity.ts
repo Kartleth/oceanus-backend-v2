@@ -23,7 +23,7 @@ export class Cliente {
   logo: string;
 
   //representante legal
-  @Column({ default: null })
+  @Column()
   representantelegal: string;
 
   @Column({ default: null })
