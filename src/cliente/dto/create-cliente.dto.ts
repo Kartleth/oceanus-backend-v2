@@ -14,4 +14,7 @@ export class CreateClienteDto {
   banco: string;
   nombrecontrato: string;
   fechavencimientoconstancia: Date;
+  nombreAdministrativo: string;
+  correoAdministrativo: string;
+  telefonoAdministrativo: string;
 }

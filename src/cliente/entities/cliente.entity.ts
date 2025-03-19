@@ -57,6 +57,16 @@ export class Cliente {
   @Column({ type: 'date', nullable: true })
   fechavencimientoconstancia: Date;
 
+  //Datos de contacto administrativo
+  @Column({ default: null })
+  nombreAdministrativo: string;
+
+  @Column({ default: null })
+  correoAdministrativo: string;
+
+  @Column({ default: null })
+  telefonoAdministrativo: string;
+
   @OneToMany(() => Contrato, (contrato) => contrato.contratado)
   contratosRecibidos: Array<Contrato>;
 
