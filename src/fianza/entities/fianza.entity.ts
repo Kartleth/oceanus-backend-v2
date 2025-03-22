@@ -6,17 +6,29 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
 export enum TipoCambio {
   Peso = 'peso',
   Dolar = 'dolar',
 }
+
+export enum TipoFianza {
+  ANTICIPO = 'ANTICIPO',
+  OCULTO = 'OCULTO',
+  CUMPLIMIENTO = 'CUMPLIMIENTO',
+}
+
 @Entity()
 export class Fianza {
   @PrimaryGeneratedColumn()
   idfianza: number;
+
+  @Column({ type: 'enum', enum: TipoFianza })
+  tipo: TipoFianza;
 
   @Column({ default: null })
   documento: string;
@@ -41,4 +53,8 @@ export class Fianza {
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   monto: number;
+
+  @ManyToOne(() => Contrato, (contrato) => contrato.fianzas)
+  @JoinColumn({ name: 'idcontrato' })
+  contrato: Contrato;
 }

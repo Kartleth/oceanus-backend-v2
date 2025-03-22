@@ -1,15 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FianzaService } from './fianza.service';
 import { CreateFianzaDto } from './dto/create-fianza.dto';
 import { UpdateFianzaDto } from './dto/update-fianza.dto';
+import { Fianza } from './entities/fianza.entity';
 
 @Controller('fianza')
 export class FianzaController {
   constructor(private readonly fianzaService: FianzaService) {}
 
-  @Post()
-  create(@Body() createFianzaDto: CreateFianzaDto) {
-    return this.fianzaService.create(createFianzaDto);
+  @Post('contrato/:idContrato')
+  async crearFianza(
+    @Param('idContrato') idContrato: number,
+    @Body() datosFianza: CreateFianzaDto,
+  ): Promise<Fianza> {
+    return this.fianzaService.createFianza(idContrato, datosFianza);
+  }
+
+  @Get('contrato/:idContrato')
+  async obtenerFianzasPorContrato(@Param('idContrato') idContrato: number) {
+    return this.fianzaService.obtenerFianzasPorContrato(+idContrato);
   }
 
   @Get()

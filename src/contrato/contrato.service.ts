@@ -125,9 +125,7 @@ export class ContratoService {
         ordenes: true,
         personalcontrato: { contrato: true, persona: true },
         convenios: true,
-        fianzaAnticipo: true,
-        fianzaCumplimiento: true,
-        fianzaOculto: true,
+        fianzas: true,
       },
     });
     console.dir('Contratos cargados:', contratos);
@@ -143,9 +141,7 @@ export class ContratoService {
         ordenes: true,
         personalcontrato: true,
         convenios: true,
-        fianzaAnticipo: true,
-        fianzaCumplimiento: true,
-        fianzaOculto: true,
+        fianzas: true,
       },
     });
     return contrato;
