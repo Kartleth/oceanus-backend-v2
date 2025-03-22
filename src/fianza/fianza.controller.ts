@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  NotFoundException,
 } from '@nestjs/common';
 import { FianzaService } from './fianza.service';
 import { CreateFianzaDto } from './dto/create-fianza.dto';
@@ -27,6 +28,19 @@ export class FianzaController {
   @Get('contrato/:idContrato')
   async obtenerFianzasPorContrato(@Param('idContrato') idContrato: number) {
     return this.fianzaService.obtenerFianzasPorContrato(+idContrato);
+  }
+
+  @Get('contrato/:idContrato/fianza-anticipo')
+  async getFianzasAnticipoByContrato(
+    @Param('idContrato') idContrato: number,
+  ): Promise<Fianza[]> {
+    const fianzas = await this.fianzaService.obtenerFianzasAnticipo(idContrato);
+    if (!fianzas) {
+      throw new NotFoundException(
+        'No se encontraron fianzas de anticipo para este contrato',
+      );
+    }
+    return fianzas;
   }
 
   @Get()

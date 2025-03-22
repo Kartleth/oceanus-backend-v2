@@ -45,7 +45,6 @@ export class FianzaService {
       );
     }
 
-    // Filtrar las fianzas por tipo
     const fianzasAnticipo = contrato.fianzas.filter(
       (f) => f.tipo === TipoFianza.ANTICIPO,
     );
@@ -63,6 +62,25 @@ export class FianzaService {
       fianzasOculto,
       fianzasCumplimiento,
     };
+  }
+
+  // Obtener fianzas de anticipo por contrato
+  async obtenerFianzasAnticipo(idContrato: number): Promise<Fianza[]> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+      relations: ['fianzas'],
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+
+    const fianzasAnticipo = contrato.fianzas.filter(
+      (f) => f.tipo === 'ANTICIPO',
+    );
+    return fianzasAnticipo;
   }
 
   async findAll(): Promise<Fianza[]> {

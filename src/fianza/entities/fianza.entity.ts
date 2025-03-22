@@ -12,8 +12,8 @@ import {
 } from 'typeorm';
 
 export enum TipoCambio {
-  Peso = 'peso',
-  Dolar = 'dolar',
+  PESO = 'PESO',
+  DOLAR = 'DOLAR',
 }
 
 export enum TipoFianza {
@@ -33,7 +33,7 @@ export class Fianza {
   @Column({ default: null })
   documento: string;
 
-  @Column({ default: TipoCambio.Peso, type: 'enum', enum: TipoCambio })
+  @Column({ default: TipoCambio.PESO, type: 'enum', enum: TipoCambio })
   tipodecambio: string;
 
   @Column({ default: null })
