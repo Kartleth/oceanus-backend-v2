@@ -48,7 +48,7 @@ export class FianzaController {
     @Param('idContrato') idContrato: number,
     @Param('idFianza') idFianza: number,
   ): Promise<Fianza> {
-    const fianza = await this.fianzaService.obtenerFianzaPorId(
+    const fianza = await this.fianzaService.obtenerFianzaAnticipoPorId(
       idContrato,
       idFianza,
     );

@@ -84,7 +84,7 @@ export class FianzaService {
   }
 
   // Obtener fianzas contrato y el Id de fianza de anticipo
-  async obtenerFianzaPorId(
+  async obtenerFianzaAnticipoPorId(
     idContrato: number,
     idFianza: number,
   ): Promise<Fianza | null> {
@@ -92,6 +92,7 @@ export class FianzaService {
       where: {
         idfianza: idFianza,
         contrato: { idcontrato: idContrato },
+        tipo: TipoFianza.ANTICIPO,
       },
       relations: ['contrato'],
     });
