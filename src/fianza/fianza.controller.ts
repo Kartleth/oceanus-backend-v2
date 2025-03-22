@@ -43,6 +43,23 @@ export class FianzaController {
     return fianzas;
   }
 
+  @Get('contrato/:idContrato/fianza-anticipo/:idFianza')
+  async getFianzaAnticipoById(
+    @Param('idContrato') idContrato: number,
+    @Param('idFianza') idFianza: number,
+  ): Promise<Fianza> {
+    const fianza = await this.fianzaService.obtenerFianzaPorId(
+      idContrato,
+      idFianza,
+    );
+    if (!fianza) {
+      throw new NotFoundException(
+        'No se encontró la fianza de anticipo con el ID proporcionado para este contrato',
+      );
+    }
+    return fianza;
+  }
+
   @Get()
   findAll() {
     return this.fianzaService.findAll();

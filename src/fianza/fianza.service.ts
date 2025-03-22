@@ -83,6 +83,20 @@ export class FianzaService {
     return fianzasAnticipo;
   }
 
+  // Obtener fianzas contrato y el Id de fianza de anticipo
+  async obtenerFianzaPorId(
+    idContrato: number,
+    idFianza: number,
+  ): Promise<Fianza | null> {
+    return this.fianzaRepository.findOne({
+      where: {
+        idfianza: idFianza,
+        contrato: { idcontrato: idContrato },
+      },
+      relations: ['contrato'],
+    });
+  }
+
   async findAll(): Promise<Fianza[]> {
     return await this.fianzaRepository.find({ relations: ['contrato'] });
   }
