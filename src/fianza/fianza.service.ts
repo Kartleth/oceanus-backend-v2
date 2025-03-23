@@ -64,6 +64,29 @@ export class FianzaService {
     };
   }
 
+  //Crear fianza anticipo
+  async createFianzaAnticipo(
+    idContrato: number,
+    dto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+    const nuevaFianza = this.fianzaRepository.create({
+      ...dto,
+      contrato,
+      tipo: TipoFianza.ANTICIPO,
+    });
+
+    return await this.fianzaRepository.save(nuevaFianza);
+  }
+
   // Obtener fianzas de anticipo por contrato
   async obtenerFianzasAnticipo(idContrato: number): Promise<Fianza[]> {
     const contrato = await this.contratoRepository.findOne({

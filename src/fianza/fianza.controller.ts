@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FianzaService } from './fianza.service';
 import { CreateFianzaDto } from './dto/create-fianza.dto';
@@ -28,6 +29,14 @@ export class FianzaController {
   @Get('contrato/:idContrato')
   async obtenerFianzasPorContrato(@Param('idContrato') idContrato: number) {
     return this.fianzaService.obtenerFianzasPorContrato(+idContrato);
+  }
+
+  @Post('contrato/:idContrato/fianza-anticipo')
+  async createFianzaAnticipo(
+    @Param('idContrato', ParseIntPipe) idContrato: number,
+    @Body() createFianzaDto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    return this.fianzaService.createFianzaAnticipo(idContrato, createFianzaDto);
   }
 
   @Get('contrato/:idContrato/fianza-anticipo')
