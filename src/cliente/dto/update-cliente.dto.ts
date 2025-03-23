@@ -63,4 +63,16 @@ export class UpdateClienteDto extends PartialType(CreateClienteDto) {
   @IsDate()
   @Type(() => Date)
   fechavencimientoconstancia: Date;
+
+  @IsOptional()
+  @IsString()
+  nombreAdministrativo: string;
+
+  @IsOptional()
+  @IsEmail()
+  correoAdministrativo: string;
+
+  @IsOptional()
+  @IsString()
+  telefonoAdministrativo: string;
 }
