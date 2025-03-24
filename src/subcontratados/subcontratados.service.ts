@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateSubcontratadoDto } from './dto/create-subcontratado.dto';
 import { UpdateSubcontratadoDto } from './dto/update-subcontratado.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,14 +12,15 @@ import { Subcontratado } from './entities/subcontratado.entity';
 import { Docsubcontratado } from 'src/docsubcontratado/entities/docsubcontratado.entity';
 import { CreateDocsubcontratadoDto } from 'src/docsubcontratado/dto/create-docsubcontratado.dto';
 import { Contrato } from 'src/contrato/entities/contrato.entity';
+import { SubcontratoDto } from './dto/subcontrato.dto';
 
 @Injectable()
 export class SubcontratadosService {
   constructor(
     @InjectRepository(Subcontratado)
     private readonly subcontratadoRepository: Repository<Subcontratado>,
-     @InjectRepository(Contrato)
-        private readonly contratoRepository: Repository<Contrato>,
+    @InjectRepository(Contrato)
+    private readonly contratoRepository: Repository<Contrato>,
   ) {}
 
   async addDocumentoSubcontratado(
@@ -61,18 +67,19 @@ export class SubcontratadosService {
   //   return this.subcontratadoRepository.save(newSubcontratado);
   // }
 
-  // async findAll(): Promise<Subcontratado[]> {
-  //   return this.subcontratadoRepository.find();
-  // }
+  async findAll(): Promise<Subcontratado[]> {
+    return this.subcontratadoRepository.find();
+  }
+
   async create(data: CreateSubcontratadoDto) {
     const contratodb = await this.contratoRepository.findOneBy({
       idcontrato: data.idContrato,
     });
-  
+
     if (!contratodb) {
       throw new HttpException('Contrato no encontrado.', HttpStatus.NOT_FOUND);
     }
-  
+
     const subcontratado = await this.subcontratadoRepository.save({
       contrato: contratodb, // Se asocia el contrato
       nombre: data.nombre,
@@ -83,10 +90,30 @@ export class SubcontratadosService {
       estado: data.estado,
       doc: data.doc,
     });
-  
+
     return { message: 'Subcontratado creado con éxito.' };
   }
-  
+  async findAllByContractId(idcontrato: number) {
+    const resultado = await this.subcontratadoRepository
+      .createQueryBuilder('subcontratado')
+      .leftJoinAndSelect('subcontratado.contrato', 'contrato')
+      .where('contrato.idcontrato = :idcontrato', { idcontrato })
+      .getMany();
+
+    const subcontrato: Array<SubcontratoDto> = resultado.map((subcontrato) => ({
+      idSucontratado: subcontrato.idsubcontratado,
+      nombre: subcontrato.nombre,
+      rfc: subcontrato.rfc,
+      nss: subcontrato.nss,
+      ine: subcontrato.ine,
+      curp: subcontrato.curp,
+      estado: subcontrato.estado,
+      doc: subcontrato.doc,
+      contrato: subcontrato.contrato,
+    }));
+
+    return subcontrato;
+  }
   async findOne(id: number): Promise<Subcontratado> {
     const subcontratado = await this.subcontratadoRepository.findOne({
       where: { idsubcontratado: id },
