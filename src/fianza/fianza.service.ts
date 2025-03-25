@@ -36,7 +36,7 @@ export class FianzaService {
   async obtenerFianzasPorContrato(idContrato: number) {
     const contrato = await this.contratoRepository.findOne({
       where: { idcontrato: idContrato },
-      relations: { fianzas: true }, // Cargar todas las fianzas del contrato
+      relations: { fianzas: true },
     });
 
     if (!contrato) {
@@ -116,6 +116,63 @@ export class FianzaService {
         idfianza: idFianza,
         contrato: { idcontrato: idContrato },
         tipo: TipoFianza.ANTICIPO,
+      },
+      relations: ['contrato'],
+    });
+  }
+
+  //Crear fianza cumplimiento
+  async createFianzaCumplimiento(
+    idContrato: number,
+    dto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+    const nuevaFianza = this.fianzaRepository.create({
+      ...dto,
+      contrato,
+      tipo: TipoFianza.CUMPLIMIENTO,
+    });
+
+    return await this.fianzaRepository.save(nuevaFianza);
+  }
+
+  // Obtener fianzas de cumplimiento por contrato
+  async obtenerFianzasCumplimiento(idContrato: number): Promise<Fianza[]> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+      relations: ['fianzas'],
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+
+    const fianzasCumplimiento = contrato.fianzas.filter(
+      (f) => f.tipo === 'CUMPLIMIENTO',
+    );
+    return fianzasCumplimiento;
+  }
+
+  // Obtener fianzas contrato y el Id de fianza de cumplimiento
+  async obtenerFianzaCumplimientoPorId(
+    idContrato: number,
+    idFianza: number,
+  ): Promise<Fianza | null> {
+    return this.fianzaRepository.findOne({
+      where: {
+        idfianza: idFianza,
+        contrato: { idcontrato: idContrato },
+        tipo: TipoFianza.CUMPLIMIENTO,
       },
       relations: ['contrato'],
     });
