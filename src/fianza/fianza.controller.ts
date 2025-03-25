@@ -31,6 +31,8 @@ export class FianzaController {
     return this.fianzaService.obtenerFianzasPorContrato(+idContrato);
   }
 
+  //Lógica para fianza de anticipo
+
   @Post('contrato/:idContrato/fianza-anticipo')
   async createFianzaAnticipo(
     @Param('idContrato', ParseIntPipe) idContrato: number,
@@ -64,6 +66,50 @@ export class FianzaController {
     if (!fianza) {
       throw new NotFoundException(
         'No se encontró la fianza de anticipo con el ID proporcionado para este contrato',
+      );
+    }
+    return fianza;
+  }
+
+  // Lógica para fianza de cumplimiento
+
+  @Post('contrato/:idContrato/fianza-cumplimiento')
+  async createFianzaCumplimiento(
+    @Param('idContrato', ParseIntPipe) idContrato: number,
+    @Body() createFianzaDto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    return this.fianzaService.createFianzaCumplimiento(
+      idContrato,
+      createFianzaDto,
+    );
+  }
+
+  @Get('contrato/:idContrato/fianza-cumplimiento')
+  async getFianzasCumplimientoByContrato(
+    @Param('idContrato') idContrato: number,
+  ): Promise<Fianza[]> {
+    const fianzas =
+      await this.fianzaService.obtenerFianzasCumplimiento(idContrato);
+    if (!fianzas) {
+      throw new NotFoundException(
+        'No se encontraron fianzas de cumplimiento para este contrato',
+      );
+    }
+    return fianzas;
+  }
+
+  @Get('contrato/:idContrato/fianza-cumplimiento/:idFianza')
+  async getFianzaCumplimientoById(
+    @Param('idContrato') idContrato: number,
+    @Param('idFianza') idFianza: number,
+  ): Promise<Fianza> {
+    const fianza = await this.fianzaService.obtenerFianzaCumplimientoPorId(
+      idContrato,
+      idFianza,
+    );
+    if (!fianza) {
+      throw new NotFoundException(
+        'No se encontró la fianza de cumplimiento con el ID proporcionado para este contrato',
       );
     }
     return fianza;
