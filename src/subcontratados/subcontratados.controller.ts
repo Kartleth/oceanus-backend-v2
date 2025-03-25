@@ -42,7 +42,10 @@ export class SubcontratadosController {
   findOne(@Param('id') id: string) {
     return this.subcontratadosService.findOne(+id);
   }
-
+  @Get(`contrato/:contractId`)
+  async findAllByContractI(@Param(`contractId`) contractId: string) {
+    return await this.subcontratadosService.findAllByContractId(+contractId);
+  }
   //@Patch(':id')
   //update(
   //  @Param('id') id: string,
