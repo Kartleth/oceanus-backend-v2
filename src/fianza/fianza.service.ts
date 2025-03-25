@@ -178,6 +178,61 @@ export class FianzaService {
     });
   }
 
+  //Crear fianza ocutlo
+  async createFianzaOculto(
+    idContrato: number,
+    dto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+    const nuevaFianza = this.fianzaRepository.create({
+      ...dto,
+      contrato,
+      tipo: TipoFianza.OCULTO,
+    });
+
+    return await this.fianzaRepository.save(nuevaFianza);
+  }
+
+  // Obtener fianzas de oculto por contrato
+  async obtenerFianzasOculto(idContrato: number): Promise<Fianza[]> {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+      relations: ['fianzas'],
+    });
+
+    if (!contrato) {
+      throw new NotFoundException(
+        `Contrato con ID ${idContrato} no encontrado`,
+      );
+    }
+
+    const fianzasOculto = contrato.fianzas.filter((f) => f.tipo === 'OCULTO');
+    return fianzasOculto;
+  }
+
+  // Obtener fianzas contrato y el Id de fianza de cumplimiento
+  async obtenerFianzaOcultoPorId(
+    idContrato: number,
+    idFianza: number,
+  ): Promise<Fianza | null> {
+    return this.fianzaRepository.findOne({
+      where: {
+        idfianza: idFianza,
+        contrato: { idcontrato: idContrato },
+        tipo: TipoFianza.OCULTO,
+      },
+      relations: ['contrato'],
+    });
+  }
+
   async findAll(): Promise<Fianza[]> {
     return await this.fianzaRepository.find({ relations: ['contrato'] });
   }
