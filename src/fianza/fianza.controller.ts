@@ -115,6 +115,46 @@ export class FianzaController {
     return fianza;
   }
 
+  // Lógica para fianza de oculto
+
+  @Post('contrato/:idContrato/fianza-oculto')
+  async createFianzaOculto(
+    @Param('idContrato', ParseIntPipe) idContrato: number,
+    @Body() createFianzaDto: CreateFianzaDto,
+  ): Promise<Fianza> {
+    return this.fianzaService.createFianzaOculto(idContrato, createFianzaDto);
+  }
+
+  @Get('contrato/:idContrato/fianza-oculto')
+  async getFianzasOcultoByContrato(
+    @Param('idContrato') idContrato: number,
+  ): Promise<Fianza[]> {
+    const fianzas = await this.fianzaService.obtenerFianzasOculto(idContrato);
+    if (!fianzas) {
+      throw new NotFoundException(
+        'No se encontraron fianzas oculto para este contrato',
+      );
+    }
+    return fianzas;
+  }
+
+  @Get('contrato/:idContrato/fianza-oculto/:idFianza')
+  async getFianzaOcultoById(
+    @Param('idContrato') idContrato: number,
+    @Param('idFianza') idFianza: number,
+  ): Promise<Fianza> {
+    const fianza = await this.fianzaService.obtenerFianzaOcultoPorId(
+      idContrato,
+      idFianza,
+    );
+    if (!fianza) {
+      throw new NotFoundException(
+        'No se encontró la fianza Oculto con el ID proporcionado para este contrato',
+      );
+    }
+    return fianza;
+  }
+
   @Get()
   findAll() {
     return this.fianzaService.findAll();
