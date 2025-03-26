@@ -10,6 +10,7 @@ import { Factura } from 'src/factura/entities/factura.entity';
 import { Convenio } from 'src/convenio/entities/convenio.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
+import { FianzaModule } from 'src/fianza/fianza.module';
 
 @Module({
   imports: [
@@ -23,8 +24,10 @@ import { PersonalContrato } from 'src/personal_contrato/entities/personal_contra
       OrdenServicio,
       PersonalContrato,
     ]),
+    FianzaModule,
   ],
   controllers: [ContratoController],
   providers: [ContratoService],
+  exports: [ContratoService],
 })
 export class ContratoModule {}

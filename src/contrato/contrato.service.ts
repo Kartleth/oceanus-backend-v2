@@ -11,6 +11,7 @@ import { Convenio } from 'src/convenio/entities/convenio.entity';
 import { Factura } from 'src/factura/entities/factura.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
+import { FianzaService } from 'src/fianza/fianza.service';
 
 @Injectable()
 export class ContratoService {
@@ -31,9 +32,10 @@ export class ContratoService {
     private readonly ordenServicioRepository: Repository<OrdenServicio>,
     @InjectRepository(PersonalContrato)
     private readonly personalContratoRepository: Repository<PersonalContrato>,
+    private readonly fianzaService: FianzaService,
   ) {}
 
-  async create(data: CreateContratoDto) {
+  async createContrato(data: CreateContratoDto) {
     const empresaContratado = await this.clienteRepository.findOneBy({
       idCliente: data.idContratado,
     });
@@ -115,6 +117,65 @@ export class ContratoService {
     }
 
     return { message: 'Contrato creado con exito.' };
+  }
+
+  async create(data: CreateContratoDto) {
+    const empresaContratado = await this.clienteRepository.findOneBy({
+      idCliente: data.idContratado,
+    });
+    if (!empresaContratado) {
+      throw new HttpException(
+        'Empresa contratada no encontrada',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+    const contrato = await this.contratoRepository.save({
+      nombrecontrato: data.nombreContrato,
+      facturas: data.facturas,
+      ordenes: data.ordenes,
+      subcontrato: data.tipoSubcontrato,
+      iniciocontrato: data.iniciocontrato,
+      fincontrato: data.fincontrato,
+      convenios: data.convenio,
+      montocontrato: data.montoContrato,
+      anticipocontrato: data.anticipoContrato,
+      numerocontrato: data.numeroContrato,
+      contratado: empresaContratado,
+      direccion: data.direccion,
+    });
+    if (data.fianzaAnticipo) {
+      await this.fianzaService.createFianzaAnticipo(
+        contrato.idcontrato,
+        data.fianzaAnticipo,
+      );
+    }
+
+    if (data.fianzaCumplimiento) {
+      await this.fianzaService.createFianzaCumplimiento(
+        contrato.idcontrato,
+        data.fianzaCumplimiento,
+      );
+    }
+
+    if (data.fianzaOculto) {
+      await this.fianzaService.createFianzaOculto(
+        contrato.idcontrato,
+        data.fianzaOculto,
+      );
+    }
+    for (const persona of data.personal) {
+      const personadb = await this.personaRepository.findOneBy({
+        id: persona.idPersona,
+      });
+      if (!personadb) continue;
+      await this.personalContratoRepository.save({
+        contrato,
+        persona: personadb,
+        tipopersonal: persona.tipoPersonal,
+      });
+    }
+
+    return { message: 'Contrato creado con éxito.' };
   }
 
   async findAll() {
