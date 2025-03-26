@@ -174,7 +174,7 @@ export class ContratoService {
         tipopersonal: persona.tipoPersonal,
       });
     }
-
+    console.log('Contrato guardado:', contrato);
     return { message: 'Contrato creado con éxito.' };
   }
 
