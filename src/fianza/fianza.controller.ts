@@ -8,6 +8,7 @@ import {
   Delete,
   NotFoundException,
   ParseIntPipe,
+  Put,
 } from '@nestjs/common';
 import { FianzaService } from './fianza.service';
 import { CreateFianzaDto } from './dto/create-fianza.dto';
@@ -165,9 +166,17 @@ export class FianzaController {
     return this.fianzaService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFianzaDto: UpdateFianzaDto) {
-    return this.fianzaService.update(+id, updateFianzaDto);
+  @Put(':idContrato/:idFianza')
+  async actualizarFianza(
+    @Param('idContrato', ParseIntPipe) idContrato: number,
+    @Param('idFianza', ParseIntPipe) idFianza: number,
+    @Body() updateFianzaDto: UpdateFianzaDto,
+  ): Promise<Fianza> {
+    return await this.fianzaService.actualizarFianza(
+      idContrato,
+      idFianza,
+      updateFianzaDto,
+    );
   }
 
   @Delete('contrato/:idContrato/:idFianza')

@@ -250,8 +250,24 @@ export class FianzaService {
     return fianza;
   }
 
-  update(id: number, updateFianzaDto: UpdateFianzaDto) {
-    return `This action updates a #${id} fianza`;
+  async actualizarFianza(
+    idContrato: number,
+    idFianza: number,
+    updateFianzaDto: UpdateFianzaDto,
+  ): Promise<Fianza> {
+    const fianza = await this.fianzaRepository.findOne({
+      where: { idfianza: idFianza, contrato: { idcontrato: idContrato } },
+      relations: ['contrato'],
+    });
+
+    if (!fianza) {
+      throw new NotFoundException(
+        `No se encontró una fianza con ID ${idFianza} en el contrato ${idContrato}`,
+      );
+    }
+
+    Object.assign(fianza, updateFianzaDto); // Actualiza solo los campos enviados en el DTO
+    return await this.fianzaRepository.save(fianza);
   }
 
   async eliminarFianza(idContrato: number, idFianza: number): Promise<void> {
