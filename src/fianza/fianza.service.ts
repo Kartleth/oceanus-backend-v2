@@ -254,8 +254,21 @@ export class FianzaService {
     return `This action updates a #${id} fianza`;
   }
 
-  async remove(id: number): Promise<void> {
-    const fianza = await this.findOne(id);
+  async eliminarFianza(idContrato: number, idFianza: number): Promise<void> {
+    const fianza = await this.fianzaRepository.findOne({
+      where: {
+        idfianza: idFianza,
+        contrato: { idcontrato: idContrato },
+      },
+      relations: ['contrato'],
+    });
+
+    if (!fianza) {
+      throw new NotFoundException(
+        `No se encontró una fianza con ID ${idFianza} en el contrato ${idContrato}`,
+      );
+    }
+
     await this.fianzaRepository.remove(fianza);
   }
 }

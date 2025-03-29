@@ -170,8 +170,12 @@ export class FianzaController {
     return this.fianzaService.update(+id, updateFianzaDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.fianzaService.remove(+id);
+  @Delete('contrato/:idContrato/:idFianza')
+  async eliminarFianza(
+    @Param('idContrato', ParseIntPipe) idContrato: number,
+    @Param('idFianza', ParseIntPipe) idFianza: number,
+  ): Promise<{ message: string }> {
+    await this.fianzaService.eliminarFianza(idContrato, idFianza);
+    return { message: `Fianza con ID ${idFianza} eliminada correctamente` };
   }
 }
