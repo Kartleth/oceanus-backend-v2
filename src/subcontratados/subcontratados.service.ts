@@ -52,21 +52,6 @@ export class SubcontratadosService {
       docsubcontratado,
     );
   }
-
-  // async create(
-  //   data: CreateSubcontratadoDto,
-  // ): Promise<Subcontratado> {
-  //   const contratodb = await this.contratoRepository.findOneBy({
-  //     idcontrato: data.idContrato,
-  //   });
-  //   if(!contratodb){
-  //           throw new HttpException('Contrato no encontrado.', HttpStatus.NOT_FOUND);
-  //   }
-  //   const newSubcontratado = this.subcontratadoRepository.create(
-  //     data,);
-  //   return this.subcontratadoRepository.save(newSubcontratado);
-  // }
-
   async create(data: CreateSubcontratadoDto) {
     const contratodb = await this.contratoRepository.findOneBy({
       idcontrato: data.idContrato,
@@ -86,8 +71,8 @@ export class SubcontratadosService {
       estado: data.estado,
       doc: data.doc,
     });
-
-    return { message: 'Subcontratado creado con éxito.' };
+    console.log('Contrato encontrado:', contratodb);
+    return { message: 'Subcontratado creado con éxito', subcontratado };
   }
   async findAllByContractId(idcontrato: number) {
     const resultado = await this.subcontratadoRepository
@@ -107,7 +92,6 @@ export class SubcontratadosService {
       doc: subcontrato.doc,
       contrato: subcontrato.contrato,
     }));
-
     return subcontrato;
   }
   async findAll() {

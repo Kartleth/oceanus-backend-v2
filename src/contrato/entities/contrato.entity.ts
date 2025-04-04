@@ -17,6 +17,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Subcontratado } from 'src/subcontratados/entities/subcontratado.entity';
 export enum TipoSubcontrato {
   Subcontrato = 'subcontrato',
   ContratoOrigen = 'contrato origen',
@@ -92,4 +93,7 @@ export class Contrato {
 
   @Column({ default: null })
   direccion: string;
+
+  @OneToMany(() => Subcontratado, (sub) => sub.contrato)
+  subcontratos: Subcontratado[];
 }

@@ -38,21 +38,14 @@ export class SubcontratadosController {
     return this.subcontratadosService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.subcontratadosService.findOne(+id);
-  }
   @Get(`contrato/:contractId`)
   async findAllByContractI(@Param(`contractId`) contractId: string) {
     return await this.subcontratadosService.findAllByContractId(+contractId);
   }
-  //@Patch(':id')
-  //update(
-  //  @Param('id') id: string,
-  //  @Body() updateSubcontratadoDto: UpdateSubcontratadoDto,
-  //) {
-  //  return this.subcontratadosService.update(+id, updateSubcontratadoDto);
-  //}
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.subcontratadosService.findOne(+id);
+  }
 
   @Delete(':id')
   async remove(@Param('id') id: string) {

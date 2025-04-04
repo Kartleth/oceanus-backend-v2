@@ -52,7 +52,7 @@ export class Subcontratado {
   )
   docsubcontratado: Docsubcontratado;
 
-  @ManyToOne(() => Contrato, (contrato) => contrato.subcontrato)
+  @ManyToOne(() => Contrato, (contrato) => contrato.subcontratos)
   @JoinColumn({ name: 'idContrato' })
   contrato: Contrato;
 }
