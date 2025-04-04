@@ -67,10 +67,6 @@ export class SubcontratadosService {
   //   return this.subcontratadoRepository.save(newSubcontratado);
   // }
 
-  async findAll(): Promise<Subcontratado[]> {
-    return this.subcontratadoRepository.find();
-  }
-
   async create(data: CreateSubcontratadoDto) {
     const contratodb = await this.contratoRepository.findOneBy({
       idcontrato: data.idContrato,
@@ -113,6 +109,13 @@ export class SubcontratadosService {
     }));
 
     return subcontrato;
+  }
+  async findAll() {
+    const subcontratos = await this.subcontratadoRepository.find({
+      relations: { contrato: true },
+    });
+    console.log('Subcontratos cargados:', subcontratos);
+    return subcontratos;
   }
   async findOne(id: number): Promise<Subcontratado> {
     const subcontratado = await this.subcontratadoRepository.findOne({
