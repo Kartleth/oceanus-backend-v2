@@ -82,7 +82,7 @@ export class SubcontratadosService {
       .getMany();
 
     const subcontrato: Array<SubcontratoDto> = resultado.map((subcontrato) => ({
-      idSucontratado: subcontrato.idsubcontratado,
+      idsubcontratado: subcontrato.idsubcontratado,
       nombre: subcontrato.nombre,
       rfc: subcontrato.rfc,
       nss: subcontrato.nss,

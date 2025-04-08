@@ -2,7 +2,7 @@ import { Contrato } from 'src/contrato/entities/contrato.entity';
 import { EstadoSubcontratado } from '../entities/subcontratado.entity';
 
 export class SubcontratoDto {
-  idSucontratado: number;
+  idsubcontratado: number;
   contrato: Contrato;
   nombre: string;
   rfc: string;
