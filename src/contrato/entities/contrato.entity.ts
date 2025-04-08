@@ -5,16 +5,12 @@ import { Fianza } from 'src/fianza/entities/fianza.entity';
 import { OrdenServicio } from 'src/orden_servicio/entities/orden_servicio.entity';
 import { PersonalContrato } from 'src/personal_contrato/entities/personal_contrato.entity';
 import {
-  BeforeInsert,
-  BeforeUpdate,
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Subcontratado } from 'src/subcontratados/entities/subcontratado.entity';
@@ -61,8 +57,8 @@ export class Contrato {
   @Column({ nullable: true })
   idcontratofuente: string;
 
-  @Column({ default: null })
-  numerocontrato: string;
+  @Column({ nullable: true })
+  numerocontrato?: string;
 
   @Column({ type: 'date', nullable: true })
   iniciocontrato: Date;
@@ -73,17 +69,8 @@ export class Contrato {
   @OneToMany(() => Convenio, (convenio) => convenio.contrato)
   convenios: Array<Convenio>;
 
-  @OneToOne(() => Fianza)
-  @JoinColumn()
-  fianzaAnticipo: Fianza;
-
-  @OneToOne(() => Fianza)
-  @JoinColumn()
-  fianzaOculto: Fianza;
-
-  @OneToOne(() => Fianza)
-  @JoinColumn()
-  fianzaCumplimiento: Fianza;
+  @OneToMany(() => Fianza, (fianza) => fianza.contrato)
+  fianzas: Fianza[];
 
   @Column({ type: 'decimal', precision: 12, scale: 2 })
   montocontrato: number;

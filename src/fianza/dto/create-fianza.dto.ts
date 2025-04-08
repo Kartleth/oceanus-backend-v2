@@ -1,6 +1,7 @@
-import { TipoCambio } from "../entities/fianza.entity";
+import { TipoCambio, TipoFianza } from '../entities/fianza.entity';
 
 export class CreateFianzaDto {
+  tipo: TipoFianza;
   documento?: string;
   tipodecambio: TipoCambio;
   inicio: Date;
