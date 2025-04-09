@@ -178,6 +178,96 @@ export class ContratoService {
     return { message: 'Contrato creado con éxito.' };
   }
 
+  async editar(idContrato: number, data: UpdateContratoDto) {
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: idContrato },
+      relations: ['contratado'],
+    });
+
+    if (!contrato) {
+      throw new HttpException('Contrato no encontrado', HttpStatus.NOT_FOUND);
+    }
+
+    if (data.idContratado) {
+      contrato.contratado = await this.getEmpresaContratado(data.idContratado);
+    }
+
+    this.updateContratoFields(contrato, data);
+
+    await this.contratoRepository.save(contrato);
+
+    if (data.personal?.length) {
+      await this.updatePersonalContrato(idContrato, data.personal, contrato);
+    }
+
+    return { message: 'Contrato actualizado con éxito.' };
+  }
+
+  private async getEmpresaContratado(idContratado: number): Promise<Cliente> {
+    const empresaContratado = await this.clienteRepository.findOneBy({
+      idCliente: idContratado,
+    });
+
+    if (!empresaContratado) {
+      throw new HttpException(
+        'Empresa contratada no encontrada',
+        HttpStatus.NOT_FOUND,
+      );
+    }
+
+    return empresaContratado;
+  }
+
+  private updateContratoFields(
+    contrato: Contrato,
+    data: UpdateContratoDto,
+  ): void {
+    if (data.nombreContrato !== undefined)
+      contrato.nombrecontrato = data.nombreContrato;
+
+    if (data.tipoSubcontrato !== undefined)
+      contrato.subcontrato = data.tipoSubcontrato;
+
+    if (data.iniciocontrato !== undefined)
+      contrato.iniciocontrato = data.iniciocontrato;
+
+    if (data.fincontrato !== undefined) contrato.fincontrato = data.fincontrato;
+
+    if (data.montoContrato !== undefined)
+      contrato.montocontrato = data.montoContrato;
+
+    if (data.anticipoContrato !== undefined)
+      contrato.anticipocontrato = data.anticipoContrato;
+
+    if (data.numeroContrato !== undefined)
+      contrato.numerocontrato = data.numeroContrato;
+
+    if (data.direccion !== undefined) contrato.direccion = data.direccion;
+  }
+
+  private async updatePersonalContrato(
+    idContrato: number,
+    personal: UpdateContratoDto['personal'],
+    contrato: Contrato,
+  ): Promise<void> {
+    await this.personalContratoRepository.delete({
+      contrato: { idcontrato: idContrato },
+    });
+
+    for (const persona of personal) {
+      const personadb = await this.personaRepository.findOneBy({
+        id: persona.idPersona,
+      });
+      if (!personadb) continue;
+
+      await this.personalContratoRepository.save({
+        contrato,
+        persona: personadb,
+        tipopersonal: persona.tipoPersonal,
+      });
+    }
+  }
+
   async findAll() {
     const contratos = await this.contratoRepository.find({
       relations: {
@@ -206,10 +296,6 @@ export class ContratoService {
       },
     });
     return contrato;
-  }
-
-  update(id: number, updateContratoDto: UpdateContratoDto) {
-    return `This action updates a #${id} contrato`;
   }
 
   async remove(id: number) {

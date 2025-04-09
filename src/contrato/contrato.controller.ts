@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ContratoService } from './contrato.service';
 import { CreateContratoDto } from './dto/create-contrato.dto';
@@ -36,11 +37,11 @@ export class ContratoController {
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateContratoDto: UpdateContratoDto,
+  async updateContrato(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: UpdateContratoDto,
   ) {
-    return this.contratoService.update(+id, updateContratoDto);
+    return this.contratoService.editar(id, data);
   }
 
   @Delete(':id')
