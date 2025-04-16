@@ -299,7 +299,22 @@ export class ContratoService {
   }
 
   async remove(id: number) {
-    const result = await this.contratoRepository.delete(id);
-    return result;
+    const contrato = await this.contratoRepository.findOne({
+      where: { idcontrato: id },
+      relations: ['fianzas', 'convenios', 'personalcontrato'],
+    });
+
+    if (!contrato) {
+      throw new HttpException('Contrato no encontrado', HttpStatus.NOT_FOUND);
+    }
+    if (contrato.convenios?.length) {
+      await this.convenioRepository.remove(contrato.convenios);
+    }
+    if (contrato.fianzas?.length) {
+      await this.fianzaRepository.remove(contrato.fianzas);
+    }
+    await this.contratoRepository.remove(contrato);
+
+    return { message: 'Contrato y elementos relacionados eliminados.' };
   }
 }

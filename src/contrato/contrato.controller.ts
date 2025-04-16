@@ -8,6 +8,8 @@ import {
   Delete,
   UseGuards,
   ParseIntPipe,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { ContratoService } from './contrato.service';
 import { CreateContratoDto } from './dto/create-contrato.dto';
@@ -45,7 +47,14 @@ export class ContratoController {
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.contratoService.remove(+id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    try {
+      return await this.contratoService.remove(id);
+    } catch (error) {
+      throw new HttpException(
+        error.message || 'Error al eliminar el contrato',
+        error.status || HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
   }
 }
