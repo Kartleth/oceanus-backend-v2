@@ -218,12 +218,21 @@ export class ContratoService {
     return empresaContratado;
   }
 
-  private updateContratoFields(
+  private async updateContratoFields(
     contrato: Contrato,
     data: UpdateContratoDto,
-  ): void {
+  ): Promise<void> {
     if (data.nombreContrato !== undefined)
       contrato.nombrecontrato = data.nombreContrato;
+
+    if (data.idContratado !== undefined) {
+      const cliente = await this.clienteRepository.findOneBy({
+        idCliente: data.idContratado,
+      });
+      if (cliente) {
+        contrato.contratado = cliente;
+      }
+    }
 
     if (data.tipoSubcontrato !== undefined)
       contrato.subcontrato = data.tipoSubcontrato;
