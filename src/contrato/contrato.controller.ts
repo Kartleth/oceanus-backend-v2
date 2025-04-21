@@ -45,6 +45,7 @@ export class ContratoController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
+    console.log(id);
     return this.contratoService.remove(+id);
   }
 }
