@@ -10,4 +10,5 @@ export class CreateFianzaDto {
   poliza?: string;
   aseguradora?: string;
   monto: number;
+  idcontrato: number;
 }
