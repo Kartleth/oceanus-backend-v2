@@ -23,7 +23,6 @@ export class ContratoController {
   @Post()
   async create(@Body() createContratoDto: CreateContratoDto) {
     console.log('ContratoController => create => data =>', createContratoDto);
-
     return this.contratoService.create(createContratoDto);
   }
 

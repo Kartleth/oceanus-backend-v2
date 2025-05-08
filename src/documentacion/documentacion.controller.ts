@@ -153,19 +153,23 @@ export class DocumentacionController {
           },
         }),
         fileFilter: (req, file, cb) => {
-          const allowedExtensions = ['.jpg', '.jpeg', '.png', '.pdf'];
+          const allowedExtensions =
+            file.fieldname === 'foto'
+              ? ['.jpg', '.jpeg', '.png']
+              : ['.jpg', '.jpeg', '.png', '.pdf', '.xls', '.xlsx'];
+
           if (
             !allowedExtensions.includes(
               extname(file.originalname).toLowerCase(),
             )
           ) {
-            const errorMessage = `Archivo no permitido. Se esperaba uno de los siguientes formatos: ${allowedExtensions.join(', ')}`;
+            const errorMessage = `Archivo no permitido para ${file.fieldname}. Formatos aceptados: ${allowedExtensions.join(', ')}`;
             return cb(new Error(errorMessage), false);
           }
           cb(null, true);
         },
         limits: {
-          fileSize: 5 * 1024 * 1024, // Límite de 5MB para los archivos
+          fileSize: 5 * 1024 * 1024, // 5MB
         },
       },
     ),
@@ -180,6 +184,21 @@ export class DocumentacionController {
 
       if (!files || Object.keys(files).length === 0) {
         throw new Error('No se recibieron archivos');
+      }
+
+      for (const key in files) {
+        if (files[key]) {
+          const file = files[key][0];
+          if (key === 'foto') {
+            const photoExtensions = ['.jpg', '.jpeg', '.png'];
+            const fileExt = extname(file.originalname).toLowerCase();
+            if (!photoExtensions.includes(fileExt)) {
+              throw new Error(
+                'Para el campo foto solo se permiten imágenes (JPG, JPEG, PNG)',
+              );
+            }
+          }
+        }
       }
 
       const filePaths = {};
@@ -200,10 +219,22 @@ export class DocumentacionController {
         personaId,
         updatedDto,
       );
-      return { message: 'Archivos actualizados correctamente', filePaths };
+      return {
+        message: 'Archivos actualizados correctamente',
+        filePaths,
+        details: Object.keys(files).map((key) => ({
+          field: key,
+          originalName: files[key][0].originalname,
+          size: files[key][0].size,
+          mimetype: files[key][0].mimetype,
+        })),
+      };
     } catch (error) {
       console.error('Error detallado al actualizar archivos:', error);
-      return { message: 'Error al actualizar archivos', error: error.message };
+      throw new BadRequestException({
+        message: 'Error al actualizar archivos',
+        error: error.message,
+      });
     }
   }
 
@@ -245,7 +276,7 @@ export class DocumentacionController {
           const allowedExtensions =
             file.fieldname === 'foto'
               ? ['.jpg', '.jpeg', '.png']
-              : ['.jpg', '.jpeg', '.png', '.pdf'];
+              : ['.jpg', '.jpeg', '.png', '.pdf', '.xls', '.xlsx'];
 
           const fileExt = extname(file.originalname).toLowerCase();
           if (!allowedExtensions.includes(fileExt)) {
@@ -281,7 +312,18 @@ export class DocumentacionController {
       throw new BadRequestException(`No se recibió el archivo para ${fileKey}`);
     }
 
-    const newFilePath = files[fileKey][0].filename;
+    const file = files[fileKey][0];
+    const newFilePath = file.filename;
+
+    if (fileKey === 'foto') {
+      const photoExtensions = ['.jpg', '.jpeg', '.png'];
+      const fileExt = extname(file.originalname).toLowerCase();
+      if (!photoExtensions.includes(fileExt)) {
+        throw new BadRequestException(
+          'Para el campo foto solo se permiten imágenes (JPG, JPEG, PNG)',
+        );
+      }
+    }
 
     await this.documentacionService.updateSpecificDocument(
       personaId,
@@ -289,7 +331,13 @@ export class DocumentacionController {
       newFilePath,
     );
 
-    return { message: `${fileKey} actualizado correctamente`, newFilePath };
+    return {
+      message: `${fileKey} actualizado correctamente`,
+      newFilePath,
+      originalName: file.originalname,
+      size: file.size,
+      mimetype: file.mimetype,
+    };
   }
 
   // Fin de la ruta para actualizar un archivo específico de documentación por su fileKey

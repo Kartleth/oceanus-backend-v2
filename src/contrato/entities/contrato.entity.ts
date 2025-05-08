@@ -31,28 +31,8 @@ export class Contrato {
   @JoinColumn({ name: 'idcontratado' })
   contratado: Cliente;
 
-  @OneToMany(() => Factura, (factura) => factura.contrato)
-  facturas: Array<Factura>;
-
   @ManyToMany(() => OrdenServicio, (orden) => orden.contratos)
   ordenes: Array<OrdenServicio>;
-
-  @OneToMany(
-    () => PersonalContrato,
-    (personalcontrato) => personalcontrato.contrato,
-    {
-      cascade: ['remove'],
-      onDelete: 'CASCADE',
-    },
-  )
-  personalcontrato: Array<PersonalContrato>;
-
-  @Column({
-    default: TipoSubcontrato.ContratoOrigen,
-    type: 'enum',
-    enum: TipoSubcontrato,
-  })
-  subcontrato: TipoSubcontrato;
 
   @Column({ nullable: true })
   idcontratofuente: string;
@@ -81,6 +61,26 @@ export class Contrato {
   @Column({ default: null })
   direccion: string;
 
+  @Column({
+    default: TipoSubcontrato.ContratoOrigen,
+    type: 'enum',
+    enum: TipoSubcontrato,
+  })
+  subcontrato: TipoSubcontrato;
+
   @OneToMany(() => Subcontratado, (sub) => sub.contrato)
   subcontratos: Subcontratado[];
+
+  @OneToMany(() => Factura, (factura) => factura.contrato)
+  facturas: Array<Factura>;
+
+  @OneToMany(
+    () => PersonalContrato,
+    (personalcontrato) => personalcontrato.contrato,
+    {
+      cascade: ['remove'],
+      onDelete: 'CASCADE',
+    },
+  )
+  personalcontrato: Array<PersonalContrato>;
 }

@@ -189,26 +189,26 @@ export class DocumentacionService {
       relations: ['documentacion'],
     });
 
-    if (!persona?.documentacion) {
+    if (!persona) {
       throw new NotFoundException(
-        'No se encontró la documentación para esta persona',
+        `No se encontró la persona con ID: ${personaId}`,
       );
     }
 
-    // Validación de fileKey si es necesario
-    if (!(fileKey in persona.documentacion)) {
-      throw new NotFoundException(
-        `No se encontró la clave de documento: ${fileKey}`,
-      );
+    if (!persona.documentacion) {
+      persona.documentacion = this.documentacionRepository.create({
+        [fileKey]: newFilePath,
+      });
+    } else {
+      const oldFilePath = persona.documentacion[fileKey];
+      if (oldFilePath) {
+        await this.deleteFileIfExists(oldFilePath);
+      }
+      persona.documentacion[fileKey] = newFilePath;
     }
 
-    const oldFilePath = persona.documentacion[fileKey];
-    if (oldFilePath) {
-      await this.deleteFileIfExists(oldFilePath);
-    }
-
-    persona.documentacion[fileKey] = newFilePath;
     await this.documentacionRepository.save(persona.documentacion);
+    await this.personaRepository.save(persona);
   }
 
   private async deleteFileIfExists(filePath: string): Promise<void> {
